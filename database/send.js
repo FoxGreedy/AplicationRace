@@ -6,19 +6,35 @@ function sendTestDataSource(model, send) {
 
         if (dadosJSON.type === "uplink") {
 
-            let Newuplink = new model()
+            let NewCoordinate = new model()
 
-            Newuplink.devAdress = dadosJSON.meta.device
             // GPS
-            Newuplink.gps.lat = dadosJSON.params.radio.hardware.gps.lat
-            Newuplink.gps.lng = dadosJSON.params.radio.hardware.gps.lng
-            Newuplink.gps.alt = dadosJSON.params.radio.hardware.gps.alt
+            
+            let payload = dadosJSON.params.payload
+            
+            //Contruindo as informações em base 64
+            let payload64 = new Buffer(payload, 'base64')
+            
+            //Decodificando as informações
+            let payloadAscii = payload64.toString('ascii')
+            
+            let coordenadas = payloadAscii.split(',')
+            let altidude = coordenadas[0]
+            let latitude = coordenadas[1].replace(/[ ]+/g, '');
+            let longitude = coordenadas[2].replace(/[ ]+/g, '');
+            
 
-            Newuplink.save((err, Uplink) => {
+
+            NewCoordinate.devAdress = dadosJSON.meta.device
+            NewCoordinate.gps.alt = altidude
+            NewCoordinate.gps.lat = latitude
+            NewCoordinate.gps.lng = longitude
+
+            NewCoordinate.save((err, Uplink) => {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    console.log("Uplink realizado com sucesso", Uplink)
+                    console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
         }

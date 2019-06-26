@@ -5,9 +5,9 @@ const SchemaLocal = new Schema({
 
     devAdress: { type: String, required: true},
     gps: {
-        lat: { type: Number },
-        lng: { type: Number },
-        alt: { type: Number }
+        lat: { type: String },
+        lng: { type: String },
+        alt: { type: String }
     }
 
 })

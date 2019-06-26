@@ -27,7 +27,7 @@
 
 </head>
 
-<body id="home">
+<body id="information-area">
 
     <div class="wrapper">
         <div id="sidebar" class="sidebar" data-image="img/sidebarpaper.jpg" data-color="black">
@@ -39,13 +39,13 @@
                 </div>
 
                 <ul class="nav">
-                    <li class="nav-item active">
+                    <li class="nav-item">
                         <a class="nav-link" href="/">
                             <i class="nc-icon nc-square-pin"></i>
                             <p>Mapa</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item active">
                         <a class="nav-link" href="/detalhes">
                             <i class="nc-icon nc-chart-pie-35"></i>
                             <p>Informações</p>
@@ -56,23 +56,30 @@
         </div>
 
 
-        <div id="content" class="col-md-12">
+        <div id="content" class="container-fluid">
+            
+            <nav id="barra" class="navbar navbar-expand-lg navbar-dark bg-dark" color-on-scroll="500">
+                <div id="sidebarCollapse" class="animated-icon3 third-button"><span></span><span></span><span></span></div>
+                <!-- Navbar content -->
 
-            <div id="sidebarCollapse" class="animated-icon3 third-button"><span></span><span></span><span></span></div>
+                <a class="navbar-brand" href="/detalhes" style="margin-left: 5%">Informações</a>
 
-            <div id="logo">
-                <img src="img/AmericanTowerLogo.png">
-            </div>
-            <!-- Map -->
-            <div id="estmapa" class="row">
-                <div id="mapa" class="col-md-12">
-                    <div id="map" style="height: 100%"></div>
-                </div>
-            </div>
+                <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="no-icon">Opção 1</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span class="no-icon">Opção 2</span>
+                            </a>
+                        </li>
+                    </ul>
+                
+            </nav>
+
         </div>
-
-
-    </div>
 
 </body>
 
@@ -93,7 +100,7 @@
 
             $('#sidebar').toggleClass('active');
             $('#sidebarCollapse')
-            .toggleClass('ativado')
+                .toggleClass('ativado')
 
             $('.collapse.in').toggleClass('in');
             $('a[aria-expanded=true]').attr('aria-expanded', 'false');

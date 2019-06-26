@@ -16,8 +16,7 @@ const socket = require('./socket/leitura')
 const sending = require('./database/send')
 sending(local, socket)
 
-//Definindo as totas do servidor
-const indexRouter = require('./routes/index')
+
 
 //Configurando a estrutura da aplicação
 var app = express()
@@ -44,7 +43,16 @@ app.use((req, res, next) => {
     next()
 })
 
+
+//Definindo as totas do servidor
+const indexRouter = require('./routes/index')
+const informationRouter = require('./routes/info')
+const historicRouter = require('./routes/historico')
+
+// Usando as rotas do servidor
 app.use('/', indexRouter)
+app.use('/detalhes', informationRouter)
+app.use('/historico', historicRouter)
 
 
 app.use(function (req, res, next) {

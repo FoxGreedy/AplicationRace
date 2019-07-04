@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <script src="js/jquery.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <form>
+        <div>
+            <label for="nome">Nome</label>
+            <input type="text" id="nome">
+        </div>
+        <div>
+            <label for="devAdress">devAdress</label>
+            <input type="text" id="devAdress">
+        </div>
+        <div>
+            <label for="equipe">Equipe</label>
+            <input type="text" id="equipe">
+        </div>
+        <div>
+            <label for="foto">Foto</label>
+            <input type="text" id="foto">
+        </div>
+        <div>
+            <input onclick="enviarDadosCompetidor()" type="submit" value="Enviar">
+        </div>
+    </form>
+
+    <hr>
+</body>
+
+<script>
+
+    function enviarDadosCompetidor() {
+
+        var devAdress = document.getElementById('devAdress').value
+        var nome = document.getElementById('nome').value
+        var foto = document.getElementById('foto').value
+        var equipe = document.getElementById('equipe').value
+
+        var dados = {
+            devAdress: devAdress, 
+            nome: nome, 
+            foto: foto,
+            equipe: equipe
+        }
+
+        $.ajax({
+            url: '/competidor',
+            type: 'post',
+            data: dados,
+            success: (dados) => {
+                
+            },
+            error: (e) => {
+                console.error('Erro', e)
+            }
+        })
+
+    }
+
+</script>
+
+</html>

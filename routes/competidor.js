@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const competidor = require('../model/competidor')
+const dados = require('../model/dados')
 
 router.get('/', (req, res) => {
     competidor.find({})
@@ -43,11 +44,13 @@ router.post('/', (req, res) => {
             newDate.momento = new Date().getTime()
             newDate.distancia = 0
             newDate.nomeCompetidor = user.nome
+            newDate.devAdress = user.devAdress
 
             newDate.save((err, data) => {
                 if (err) {
                     console.error('Error', err)
                 } else {
+                    console.log('Tudo certo', data)
                     res.send(data)
                 }
             })

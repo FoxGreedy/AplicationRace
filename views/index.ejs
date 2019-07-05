@@ -37,6 +37,9 @@
                 <img src="img/AmericanTowerLogo.png">
             </div>
         </div>
+        <div class="expectador">
+            <button class="btn btn-danger" onclick="mudarTela()">Mudar Tela</button>
+        </div>
 
         <div id="content" class="col-md-12">
             <!-- Map -->
@@ -144,7 +147,7 @@
 
         <!-- Inicio card Conteudo2 -->
 
-        <div id="conteudo2" class="row justify-content-end">
+        <div id="conteudo2" class="row justify-content-end ">
             <div id="lateral2" class="col-md-4">
                 <div id="cartao-lateral" class="card text-white">
                     <div id="" class="card-body">
@@ -230,12 +233,30 @@
     var pace = 0
     var Velocidade = 0
 
+    var tela = 1
+
     // Começo algoritmo corrida
+
 
     $(document).ready(() => {
         plottarGrafico('chart1')
         plottarGrafico('chart2')
+        $('#conteudo2').hide()
     })
+
+    function mudarTela() {
+        
+        tela++
+
+        if(tela%2 == 0 ){
+            $('#conteudo1').hide()
+            $('#conteudo2').show()
+        } else{
+            $('#conteudo2').hide()
+            $('#conteudo1').show()            
+        }
+
+    }
 
     function posicionarMarcadoresMapa() {
 
@@ -253,7 +274,7 @@
                 let { infos } = dados
 
                 for (dado in participantes) {
-                    pegarUltimosDadosGPS(participantes[dado].devAdress, participantes[dado].nome)
+                    // pegarUltimosDadosGPS(participantes[dado].devAdress, participantes[dado].nome)
                     for (info in infos) {
                         if (participantes[dado].nome == infos[info].nomeCompetidor) {
                             todasInfosCompetidor.push({ participante: participantes[dado], information: infos[info] })
@@ -276,24 +297,10 @@
             cache: false,
             url: `historico/${device}`,
             success: (dados) => {
-                let { gps } = dados
-                atualizarDados(nome, pegarDistancia(gps.ultimo.gps, gps.penultimo.gps))
+                // let { gps } = dados
+                // atualizarDados(nome, pegarDistancia(gps.ultimo.gps, gps.penultimo.gps))
             }
         })
-    }
-
-    function pegarDistancia(ultima, penultima) {
-        "use strict";
-        var deg2rad = function (deg) { return deg * (Math.PI / 180); },
-            R = 6371,
-            dLat = deg2rad(penultima.lat - ultima.lat),
-            dLng = deg2rad(penultima.lng - ultima.lng),
-            a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(deg2rad(ultima.lat))
-                * Math.cos(deg2rad(ultima.lat))
-                * Math.sin(dLng / 2) * Math.sin(dLng / 2),
-            c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return ((R * c * 1000).toFixed());
     }
 
     function calcularVelocidade(momento, distancia) {
@@ -302,25 +309,6 @@
 
     function calcularPace(momento, distancia) {
 
-    }
-
-    function atualizarDados(nome, distancia) {
-
-        dado = {
-            distancia: distancia
-        }
-
-        $.ajax({
-            url: `dados/${nome}`,
-            type: 'PUT',
-            data: dado,
-            success: (data) => {
-                console.log('Dado atualizado com sucesso')
-            },
-            error: (e) => {
-                console.error('Error', e)
-            }
-        })
     }
 
     function definirColocacao(info) {
@@ -340,11 +328,12 @@
     }
 
     function plottarDados(infos) {
-        for(info in infos){
+        for (info in infos) {
             document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
             document.getElementById(`equipe${Number(info) + 1}`).innerHTML = infos[info].participante.equipe
 
             document.getElementById(`distancia${Number(info) + 1}`).innerHTML = infos[info].information.distancia
+
         }
     }
 

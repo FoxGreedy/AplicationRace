@@ -66,7 +66,6 @@ body {
     margin: 0%;
     padding: 0%;
     top: 0%;
-    /* display: none; */
 }
 
 #conteudo2{
@@ -79,7 +78,13 @@ body {
     padding: 0%;
     top: 0%;
     font-size: 18px;
-    display: none;
+}
+
+.expectador{
+    position: absolute;
+    z-index: 9999;
+    margin-top: 10%;
+    margin-left: 4%;    
 }
 
 #lateral1{

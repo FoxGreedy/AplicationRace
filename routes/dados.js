@@ -67,7 +67,7 @@ router.put('/:nomeCompetidor', (req, res) => {
             } else {
                 distanciaTotal = distancia + data[0].distancia
                 dados.findOneAndUpdate({ nomeCompetidor: nomeCompetidor },
-                    { $set: { distancia: distanciaTotal } },
+                    { $set: { distancia: distanciaTotal, distanciaAtual: distancia } },
                     { upsert: true },
                     (err, data) => {
                         if (err) {

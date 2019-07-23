@@ -36,7 +36,7 @@ function sendOficialDataSource(model, send) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress)
+                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
@@ -64,7 +64,7 @@ function sendTesteDataSource(model, send) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress)
+                    pegarUltimasCoordenadas(Uplink.devAdress, -6)
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
@@ -72,11 +72,7 @@ function sendTesteDataSource(model, send) {
     })
 }
 
-function pegarUltimasCoordenadas(id) {
-
-    var dados = {
-        gps: []
-    }
+function pegarUltimasCoordenadas(id, fuso) {
     gps.find({
         devAdress: id
     }).exec((err, data) => {
@@ -85,10 +81,10 @@ function pegarUltimasCoordenadas(id) {
         } else {
             if (data.length >= 2) {
                 data = data.reverse()
-                dados.gps = { ultimo: data[0], penultimo: data[1] }
-                atualizarDistancia(id, pegarDistancia(data[0].gps, data[1].gps))
-            } else{
-                console.log('Não tem distancia suficiente')
+                console.log(fuso)
+                atualizarDistancia(id, pegarDistancia(data[0].gps, data[1].gps), fuso)
+            } else {
+                iniciarCalculoDistancia(id, fuso)
             }
         }
     })
@@ -108,16 +104,27 @@ function pegarDistancia(ultima, penultima) {
     return ((R * c * 1000).toFixed());
 }
 
-function atualizarDistancia(id, distancia) {
+function calcularData(data, offset) {
+    var milisegundos_com_utc = data.getTime() + (data.getTimezoneOffset() * 60000);
+    return new Date(milisegundos_com_utc + (3600000 * offset));
+}
+
+function atualizarDistancia(id, distancia, fuso) {
 
     dadosCompetidor.find({ devAdress: id })
         .exec((err, data) => {
             if (err) {
                 console.error('Error', err)
             } else {
-                distanciaTotal = distancia + data[0].distancia
-                dadosCompetidor.findOneAndUpdate({ nomeCompetidor: data.nomeCompetidor },
-                    { $set: { distancia: distanciaTotal } },
+                distanciaTotal = distancia + data[0].distanciaTotal
+                dadosCompetidor.findOneAndUpdate({ devAdress: id },
+                    {
+                        $set: {
+                            distanciaTotal: distanciaTotal,
+                            distanciaAtual: distancia,
+                            momentoAtual: calcularData(new Date(), fuso)
+                        }
+                    },
                     { upsert: true },
                     (err, data) => {
                         if (err) {
@@ -128,9 +135,22 @@ function atualizarDistancia(id, distancia) {
                     })
             }
         })
-
 }
 
+function iniciarCalculoDistancia(id, fuso) {
+
+    dadosCompetidor.findOneAndUpdate({ devAdress: id },
+        { $set: { momentoInicio: calcularData(new Date(), fuso) } },
+        { upsert: true },
+        (err, data1) => {
+            if (err) {
+                console.log('Error', err)
+            } else {
+                console.log('Os dados foram atualizados para a atualização', data1)
+            }
+        })
+
+}
 
 
 module.exports.Oficial = sendOficialDataSource

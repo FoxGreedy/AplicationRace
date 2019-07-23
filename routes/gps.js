@@ -2,8 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const gps = require('../model/gps')
-const competidor = require('../model/competidor')
-
+    
 router.get('/', (req, res) => {
     gps.find({})
         .exec((err, data) => {

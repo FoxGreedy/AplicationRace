@@ -2,8 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const SchemaData = new Schema({
-    distancia: { type: Number, default: 0, require: true },
-    momento: { type: Date, required: true },
+    distanciaTotal: { type: Number, default: 0 },
+    distanciaAtual: { type: Number, default: 0 },
+    momentoInicio: { type: Date },
+    momentoAtual: { type: Date },
     nomeCompetidor: { type: String, required: true, unique: true },
     devAdress: { type: String, required: true, unique: true }
 })

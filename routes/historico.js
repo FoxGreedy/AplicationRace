@@ -40,6 +40,31 @@ router.get('/', (req, res) => {
         })
 })
 
+router.get('/gps', (req, res) => {
+
+    var dados = {
+        gps: [],
+        competidor: [],
+    }
+
+    gps.find({})
+        .exec((err, data) => {
+        if (err) {
+            console.error('Error', err)
+        } else {
+            dados.gps = data
+            competidor.find({})
+                .exec((err, data1) => {
+                if (err) {
+                    console.error('Error', err)
+                } else {
+                    dados.competidor = data1
+                    res.send(dados)
+                }
+            })
+        }
+    })
+})
 
 router.get('/:devAdress', (req, res) => {
 
@@ -60,46 +85,6 @@ router.get('/:devAdress', (req, res) => {
     })
 
 })
-
-router.get('/distancia/:devAdress', (req, res) => {
-
-    let dados = {
-        gps: [],
-        competidor: [],
-        dadosCompetidor: []
-    }
-
-    gps.find({
-        devAdress: req.params.devAdress
-    }).exec((err, data) => {
-        if (err) {
-            console.error('Error', err)
-        } else {
-            data = data.reverse()
-            dados.gps = { ultimo: data[0], penultimo: data[1] }
-            competidor.find({
-                devAdress: data[0].devAdress
-            }).exec((err, data1) => {
-                if (err) {
-                    console.error('Error', err)
-                } else {
-                    dados.competidor = data1
-                    dadosCompetidor.find({
-                        nomeCompetidor: data1[0].nome
-                    }).exec((err, data2) => {
-                        if (err) {
-                            console.log('Error', err)
-                        } else {
-                            dados.dadosCompetidor = data2
-                            res.json(dados)
-                        }
-                    })
-                }
-            })
-        }
-    })
-})
-
 
 
 

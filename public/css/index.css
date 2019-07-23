@@ -17,9 +17,8 @@
 #logo > img{
     position: absolute;
     width: 15%;
-    margin-bottom: -12%;
-    margin-top: 1%;
-    margin-left: 1%;
+    top: 5px;
+    right: 5px;
     z-index: 2;
 }
 
@@ -51,63 +50,57 @@ body {
 #mapa, #title{
     margin: 0;
     padding: 0;
+    z-index: 1;
 }
 
 #title{
     padding-top: 5px
 }
 
-#conteudo1{
+#conteudo{
+    position: absolute;
+    top: 0%;
+    z-index: 10;
     height: 100%;
     width: 100%;
-    position: absolute;
-    height: 100%;
-    z-index: 999;
-    margin: 0%;
-    padding: 0%;
-    top: 0%;
+    margin: 0;
+    padding: 0;
 }
 
-#conteudo2{
-    height: 100%;
+.fileira{
     width: 100%;
     position: absolute;
-    height: 100%;
-    z-index: 999;
-    margin: 0%;
-    padding: 0%;
-    top: 0%;
-    font-size: 18px;
+    bottom: 2%
 }
 
-.expectador{
+#linha{
+    margin: 0%;
+    padding: 0%;
+}
+
+#img1, #img2, #img3, #img4, #img5{
+    width: 80px;
+    height: 80px;
+    margin-top: -60px;
+    margin-bottom: 5px;
+}
+
+#body1, #body2, #body3, #body4, #body5{
+    padding: 4%;
+    background-color: #eb0702
+}
+
+#head1, #head2, #head3, #head4, #head5{
+    padding: 0%;
+    background-color: #ba100b
+} 
+
+#expectador{
     position: absolute;
-    z-index: 9999;
+    z-index: 999;
     margin-top: 10%;
     margin-left: 4%;    
-}
-
-#lateral1{
-    height: 70%;
-}
-
-#lateral2{
-    height: 100%;
-}
-
-#baixo{
-    height: 30%;
-}
-
-#cartao-lateral{
-    background: rgba(119, 119, 119, 0.8);
-    height: 90%; margin-top: 5%;
-}
-
-#cartao-baixo{
-    background: rgba(119, 119, 119, 0.8);
-    height: 90%;
-}
+} 
 
 #twitter div, #info-competidores div{
     opacity: 1;

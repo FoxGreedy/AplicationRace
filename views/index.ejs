@@ -20,11 +20,6 @@
     <!-- Grafico -->
     <script src="js/Chart.bundle.min.js"></script>
 
-    <!-- Maps -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0xTJ-f4grTeFqo0ORnd83XwKewDLheZE&callback=initMap"
-        async defer></script>
-
-
 </head>
 
 <body id="home" onload="carregar()">
@@ -37,9 +32,6 @@
                 <img src="img/AmericanTowerLogo.png">
             </div>
         </div>
-        <div class="expectador">
-            <button class="btn btn-danger" onclick="mudarTela()">Mudar Tela</button>
-        </div>
 
         <div id="content" class="col-md-12">
             <!-- Map -->
@@ -50,134 +42,103 @@
             </div>
         </div>
 
-        <!-- Card - Conteudo1 -->
-        <div id="conteudo1" class="row justify-content-end">
-            <div id="lateral1" class="col-md-4">
-                <div id="cartao-lateral" class="card text-white">
-                    <div class="card-header">
-                        <div class="card-title">
-                            <h3>Twitter</h3>
-                        </div>
-                    </div>
-                    <div id="" class="card-body">
 
-                    </div>
-                </div>
-            </div>
-            <div id="baixo" class="col-md-12">
-                <div id="cartao-baixo" class="card text-white">
-                    <div id="Info-competidores" class="card-body">
-                        <div class="row">
-                            <div class="col-md info-competidor">
-                                <div class="media">
-                                    <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                        alt="Imagem de exemplo genérica" style="width: 80px; margin-right: 10px">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">1° Colocado</h5>
-                                        <h6 class="mt-0" id="nome1"></h6>
-                                        <h6 class="mt-0">Equipe: <span id="equipe1"></span></h6>
-                                    </div>
-                                </div>
-                                <b>Distância percorrida: </b><span id="distancia1">0</span> Km <br>
-                                <b>Velocidade Atual: </b><span id="velocidade1">0</span> Km/H <br>
-                                <b>Pace Atual: </b><span id="pace1">0</span> mm/Km <br>
+        <div id="conteudo">
+            <div class="fileira">
+                <div id="linha" class="row">
+                    <div class="col-sm">
+                        <div class="card bg-dark rounded-0 border-dark text-white">
+                            <div id="head1" class="card-header">
+                                <img id="img1" src="./img/competidores/generic.png"
+                                    class="rounded-circle mx-auto d-block border border-dark">
+                                <h4 class="mt-0" style="text-align: center; ">1° Colocado</h4>
                             </div>
-                            <div class="col-md info-competidor">
-                                <div class="media">
-                                    <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                        alt="Imagem de exemplo genérica" style="width: 80px; margin-right: 10px">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">2° Colocado</h5>
-                                        <h6 class="mt-0" id="nome2"></h6>
-                                        <h6 class="mt-0">Equipe: <span id="equipe2"></span></h6>
-                                    </div>
-                                </div>
-                                <b>Distância percorrida: </b><span id="distancia2">0</span> Km <br>
-                                <b>Velocidade Atual: </b><span id="velocidade2">0</span> Km/H <br>
-                                <b>Pace Atual: </b><span id="pace2">0</span> mm/Km <br>
-                            </div>
-                            <div class="col-md info-competidor">
-                                <div class="media">
-                                    <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                        alt="Imagem de exemplo genérica" style="width: 80px; margin-right: 10px">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">3° Colocado</h5>
-                                        <h6 class="mt-0" id="nome3"></h6>
-                                        <h6 class="mt-0">Equipe: <span id="equipe3"></span></h6>
-                                    </div>
-                                </div>
-                                <b>Distância percorrida: </b><span id="distancia3">0</span> Km <br>
-                                <b>Velocidade Atual: </b><span id="velocidade3">0</span> Km/H <br>
-                                <b>Pace Atual: </b><span id="pace3">0</span> mm/Km <br>
-                            </div>
-                            <div class="col-md info-competidor">
-                                <div class="media">
-                                    <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                        alt="Imagem de exemplo genérica" style="width: 80px; margin-right: 10px">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">4° Colocado</h5>
-                                        <h6 class="mt-0" id="nome4"></h6>
-                                        <h6 class="mt-0">Equipe: <span id="equipe4"></span></h6>
-                                    </div>
-                                </div>
-                                <b>Distância percorrida: </b><span id="distancia4">0</span> Km <br>
-                                <b>Velocidade Atual: </b><span id="velocidade4">0</span> Km/H <br>
-                                <b>Pace Atual: </b><span id="pace4">0</span> mm/Km <br>
-                            </div>
-                            <div class="col-md info-competidor">
-                                <div class="media">
-                                    <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                        alt="Imagem de exemplo genérica" style="width: 80px; margin-right: 10px">
-                                    <div class="media-body">
-                                        <h5 class="mt-0">5° Colocado</h5>
-                                        <h6 class="mt-0" id="nome5"></h6>
-                                        <h6 class="mt-0">Equipe: <span id="equipe5"></span></h6>
-                                    </div>
-                                </div>
-                                <b>Distância percorrida: </b><span id="distancia5">0</span> Km <br>
-                                <b>Velocidade Atual: </b><span id="velocidade5">0</span> Km/H <br>
-                                <b>Pace Atual: </b><span id="pace5">0</span> mm/Km <br>
+                            <div id="body1" class="card-body">
+                                <b>Nome: </b><span id="nome1"></span><br>
+                                <b>Equipe: </b> <span id="equipe1"></span> <br>
+                                <b>Velocidade: </b><span id="velocidade1">0</span> Km/H <br>
+                                <b>Ritmo/min: </b><span id="pace1">0s/Km</span><br>
+                                <b>Total : </b><span id="distancia1">0</span>m <br>
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm">
+                        <div class="card bg-danger rounded-0 border-dark text-white">
+                            <div id="head2" class="card-header">
+                                <img id="img2" src="./img/competidores/generic.png"
+                                    class="rounded-circle mx-auto d-block border border-dark">
+                                <h4 class="mt-0" style="text-align: center">2° Colocado</h4>
+                            </div>
+                            <div id="body2" class="card-body ">
+                                <b>Nome: </b><span id="nome2"></span><br>
+                                <b>Equipe: </b> <span id="equipe2"></span> <br>
+                                <b>Velocidade: </b><span id="velocidade2">0</span> Km/H <br>
+                                <b>Ritmo/min: </b><span id="pace2">0s/Km</span> <br>
+                                <b>Total : </b><span id="distancia2">0</span>m <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card bg-danger rounded-0 border-dark text-white">
+                            <div id="head3" class="card-header">
+                                <img id="img3" src="./img/competidores/generic.png"
+                                    class="rounded-circle mx-auto d-block border border-dark">
+                                <h4 class="mt-0" style="text-align: center">3° Colocado</h4>
+                            </div>
+                            <div id="body3" class="card-body">
+                                <b>Nome: </b><span id="nome3"></span><br>
+                                <b>Equipe: </b> <span id="equipe3"></span> <br>
+                                <b>Velocidade: </b><span id="velocidade3">0</span> <br>
+                                <b>Ritmo/min: </b><span id="pace3">0s/Km</span><br>
+                                <b>Total : </b><span id="distancia3">0</span>m <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card bg-danger rounded-0 border-dark text-white">
+                            <div id="head4" class="card-header">
+                                <img id="img4" src="./img/competidores/generic.png"
+                                    class="rounded-circle mx-auto d-block border border-dark">
+                                <h4 class="mt-0" style="text-align: center">4° Colocado</h4>
+                            </div>
+                            <div id="body4" class="card-body text-white">
+                                <b>Nome: </b><span id="nome4"></span><br>
+                                <b>Equipe: </b> <span id="equipe4"></span> <br>
+                                <b>Velocidade: </b><span id="velocidade4">0</span> <br>
+                                <b>Ritmo/min: </b><span id="pace4">0s/Km</span><br>
+                                <b>Total : </b><span id="distancia4">0</span>m <br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card bg-danger rounded-0 border-dark text-white">
+                            <div id="head5" class="card-header">
+                                <img id="img5" src="./img/competidores/generic.png"
+                                    class="rounded-circle mx-auto d-block border border-dark">
+                                <h4 class="mt-0" style="text-align: center">5° Colocado</h4>
+                            </div>
+                            <div id="body5" class="card-body  text-white">
+                                <b>Nome: </b><span id="nome5"></span><br>
+                                <b>Equipe: </b> <span id="equipe5"></span> <br>
+                                <b>Velocidade: </b><span id="velocidade5">0</span> <br>
+                                <b>Ritmo/min: </b><span id="pace5">0s/Km</span><br>
+                                <b>Total : </b><span id="distancia5">0</span>m <br>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
-        <!-- Fim card Conteudo1 -->
-
-        <!-- Inicio card Conteudo2 -->
-
-        <div id="conteudo2" class="row justify-content-end ">
-            <div id="lateral2" class="col-md-4">
-                <div id="cartao-lateral" class="card text-white">
-                    <div id="" class="card-body">
-                        <div class="col-md">
-                            <div class="media">
-                                <img class="rounded-circle" class="align-self-start mr-3" src="./img/generic.png"
-                                    alt="Imagem de exemplo genérica" style="width: 120px; margin-right: 10px">
-                                <div class="media-body">
-                                    <h3 class="mt-0">5° Colocado</h3>
-                                    <h4 class="mt-0">Leandro Nunes</h4>
-                                    <h4 class="mt-0">Equipe: <span>XX</span> </h4>
-                                </div>
-                            </div>
-                            <b>Distância percorrida: </b><span>0</span> Km <br>
-                            <b>Velocidade Atual: </b><span>0</span> Km/H <br>
-                            <b>Pace Atual: </b><span>0</span> mm/Km <br>
-
-                            <canvas id="chart1" height="160" style="margin-top: 10px"></canvas>
-                            <canvas id="chart2" height="160"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Fim card Conteudo2 -->
     </div>
+
+
 
 </body>
 
 <script>
+
+
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -233,33 +194,18 @@
     var pace = 0
     var Velocidade = 0
 
-    var tela = 1
 
-    // Começo algoritmo corrida
-
-
-    $(document).ready(() => {
-        plottarGrafico('chart1')
-        plottarGrafico('chart2')
-        $('#conteudo2').hide()
-    })
-
-    function mudarTela() {
-        
-        tela++
-
-        if(tela%2 == 0 ){
-            $('#conteudo1').hide()
-            $('#conteudo2').show()
-        } else{
-            $('#conteudo2').hide()
-            $('#conteudo1').show()            
-        }
-
-    }
-
-    function posicionarMarcadoresMapa() {
-
+    function iniciarMarcacao() {
+        $.ajax({
+            cache: false,
+            url: `/historico/gps`,
+            success: (dados) => {
+                console.log('dados', dados)
+            }, 
+            error: (err) => {
+                console.error('Erro', err)
+            }
+        })
     }
 
     function carregar() {
@@ -270,11 +216,9 @@
 
                 var todasInfosCompetidor = []
 
-                let { participantes } = dados
-                let { infos } = dados
+                let { participantes, infos } = dados
 
                 for (dado in participantes) {
-                    // pegarUltimosDadosGPS(participantes[dado].devAdress, participantes[dado].nome)
                     for (info in infos) {
                         if (participantes[dado].nome == infos[info].nomeCompetidor) {
                             todasInfosCompetidor.push({ participante: participantes[dado], information: infos[info] })
@@ -284,7 +228,11 @@
 
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
-                console.log(todasInfosCompetidor)
+
+                iniciarMarcacao()
+                // Marcador no mapa
+                // console.log(todasInfosCompetidor)
+
             },
             error: (e) => {
                 console.error('Error', e)
@@ -292,33 +240,58 @@
         })
     }
 
-    function pegarUltimosDadosGPS(device, nome) {
-        $.ajax({
-            cache: false,
-            url: `historico/${device}`,
-            success: (dados) => {
-                // let { gps } = dados
-                // atualizarDados(nome, pegarDistancia(gps.ultimo.gps, gps.penultimo.gps))
+    function calcularMomento(momento1, momento2) {
+        return momento2 - momento1
+    }
+
+    function tranformarMomentoSegundos(momento) {
+        var tempo = momento.split(':')
+        var horas = tempo[0]
+        var minutos = tempo[1]
+
+        segundos = (Number(horas) * 3600) + (Number(minutos) * 60) + Number(tempo[2])
+        return segundos
+    }
+
+    function filtrarHorario(momento) {
+        var horas = momento.split('T')
+        horas = horas[1].split('.')
+        return horas[0]
+    }
+
+    function calcularVelocidade(distancia, tempo) {
+        var velocidade = distancia / tempo
+        return (velocidade * 3.6).toFixed(2)
+    }
+
+    function calcularPace(distancia, tempo) {
+        if (distancia <= 0 && tempo <= 0) {
+            return `0s/Km`
+        } else {
+            var minutos = Number(tempo) / 60
+            var quilometros = Number(distancia) / 1000
+
+            var pace = minutos / quilometros
+
+            if (pace < 1) {
+                return `${parseInt((pace % 60) * 60)}s/Km`
+            } else if (pace % 1 === 0) {
+                return `${parseInt(pace)}min/Km`
+            } else {
+                return `${parseInt(pace)}min ${parseInt(((pace * 60) % 60))}s/Km`
             }
-        })
-    }
-
-    function calcularVelocidade(momento, distancia) {
-
-    }
-
-    function calcularPace(momento, distancia) {
+        }
 
     }
 
     function definirColocacao(info) {
 
         function comparer(a, b) {
-            if (a.information.distancia < b.information.distancia)
-                return -1;
-
-            if (a.information.distancia > b.information.distancia)
+            if (a.information.distanciaTotal < b.information.distanciaTotal)
                 return 1;
+
+            if (a.information.distanciaTotal > b.information.distanciaTotal)
+                return -1;
 
             return 0;
         }
@@ -329,15 +302,40 @@
 
     function plottarDados(infos) {
         for (info in infos) {
+
             document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
             document.getElementById(`equipe${Number(info) + 1}`).innerHTML = infos[info].participante.equipe
+            document.getElementById(`distancia${Number(info) + 1}`).innerHTML = infos[info].information.distanciaTotal
 
-            document.getElementById(`distancia${Number(info) + 1}`).innerHTML = infos[info].information.distancia
+            var dnow = new Date()
+            var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio)
+            var momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual)
+
+            var momentoFinal = `${dnow.getHours()}:${dnow.getMinutes()}:${dnow.getSeconds()}`
+
+            var momentoDiferencaInicio = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                tranformarMomentoSegundos(momentoFinal))
+
+            var momentoDiferencaAtual = calcularMomento(tranformarMomentoSegundos(momentoAtualInicio),
+                tranformarMomentoSegundos(momentoFinal))
+
+            document.getElementById(`velocidade${Number(info) + 1}`).innerHTML = calcularVelocidade(
+                Number(infos[info].information.distanciaAtual),
+                momentoDiferencaAtual
+            )
+
+            document.getElementById(`img${Number(info) + 1}`).src = `/img/competidores/${infos[info].participante.foto}`
+
+            document.getElementById(`pace${Number(info) + 1}`).innerHTML = calcularPace(
+                Number(infos[info].information.distanciaTotal),
+                momentoDiferencaInicio
+            )
 
         }
     }
-
-
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC0xTJ-f4grTeFqo0ORnd83XwKewDLheZE&callback=initMap" async
+    defer></script>
 
 </html>

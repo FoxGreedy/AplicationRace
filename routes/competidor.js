@@ -33,18 +33,24 @@ router.get('/:nome', (req, res) => {
 
 router.post('/', (req, res) => {
 
+    timestamp = new Date()
+
+    function calcularData(data, offset) {
+        var milisegundos_com_utc = data.getTime() + (data.getTimezoneOffset() * 60000);
+        return new Date(milisegundos_com_utc + (3600000 * offset));
+    }
+
     user = req.body
 
     competidor.create(user, (err, data) => {
         if (err) {
-            res.send(err)
+            console.error('Erro', err)
         } else {
-
             var newDate = new dados()
-            newDate.momento = new Date().getTime()
-            newDate.distancia = 0
             newDate.nomeCompetidor = user.nome
             newDate.devAdress = user.devAdress
+            newDate.momentoInicio = calcularData(timestamp, -6)
+            newDate.momentoAtual = calcularData(timestamp, -6)
 
             newDate.save((err, data) => {
                 if (err) {

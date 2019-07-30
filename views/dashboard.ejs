@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link href="css/dashboard.css" rel="stylesheet" />
+
+    <!-- Javascript  -->
+    <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
+    <script src="js/bootstrap-dash.js"></script>
+    <script src="js/scrollbarEffect.js"></script>
+    <script src="js/materialize.min.js"></script>
+
+    <!-- Grafico -->
+    <script src="js/Chart.bundle.min.js"></script>
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="shortcut icon" href="#">
+
+</head>
+
+<body id="dashboard" onload="carregar()">
+
+    <div id="All" class="container-fluid">
+        <div id="items" class="row">
+            <div id="cont-map" class="col-6">
+                <div id="card-map" class="card rounded-0 border-dark">
+                    <div id="body-map" class="card-body">
+                        <div id="map"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="cont-twitter" class="col-6">
+                <div id="card-twitter" class="card rounded-0 border-dark">
+                    <div id="body-twitter" class="card-body">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="graph" class="row">
+            <div id="cont-dash" class="col-12">
+                <div id="card-dash" class="card rounded-0 border-dark">
+                    <!-- <div id="header-dash" class="card-header rounded-0 border-danger">
+                        <h5 class="card-title">Competidores</h5>
+                    </div> -->
+                    <div id="body-dash" class="card-body">
+                        <table id="tabela" class="table">
+                            <thead class="border-0 header">
+                                <tr class="border-0">
+                                    <th scope="col" class="border-0" style="margin: 0; padding: 0;">
+                                        <ul class="indice">
+                                            <li class="media">
+                                                <i class="align-self-center mr-0 material-icons"
+                                                    style="font-size: 25px; padding-left:37%">supervisor_account</i>
+                                                <div class="media-body">
+                                                    <span style="font-size: 25px">32</span>
+                                                </div>
+                                            </li>
+                                            <li class="descricao" style="padding-left: 37%; text-align: left">
+                                                Pessoas
+                                            </li>
+                                        </ul>
+                                    </th>
+                                    <th scope="col" class="border-0" style="margin: 0; padding: 0;">
+                                        <div class="row index">
+                                            <div class="col-3 coluna">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i style="font-size: 25px;"
+                                                                class="align-self-center mr-2 material-icons icone">location_on</i>
+                                                            <div class="media-body">
+                                                                <span style="font-size: 25px">0m</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Total
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i style="font-size: 25px;"
+                                                                class="align-self-center mr-2 material-icons icone">directions_run</i>
+                                                            <div class="media-body">
+                                                                <span style="font-size: 25px">0.00k</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Media
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i style="font-size: 25px;"
+                                                                class="align-self-center mr-2 material-icons icone">whatshot</i>
+                                                            <div class="media-body">
+                                                                <span style="font-size: 25px">0kcal</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Total
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-3 proximas">
+                                                <div class="media dados">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i style="font-size: 25px;"
+                                                                class="align-self-center mr-2 material-icons icone">timer</i>
+                                                            <div class="media-body">
+                                                                <span style="font-size: 25px;">00:00</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Tempo
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="border-0">
+                                        <h5 class="logo">Corporate Run</h5>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="border-top border-danger">
+                                <tr class="border-0">
+                                    <td class="border-right border-top-0 border-danger pessoa">
+                                        <div class="media">
+                                            <div class="imagem">
+                                                <img src="img/competidores/matheus.jpg"
+                                                    class="figure-img img-fluid mr-0">
+                                                <div class="colocacao">
+                                                    1°
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="numero">
+                                                    16
+                                                </div>
+                                                <div class="nome">
+                                                    Matheus
+                                                </div>
+                                                <div class="sobrenome">
+                                                    Gomes
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="border-right border-top-0 border-danger dado">
+                                        <div class="row dados">
+                                            <div class="col-3 coluna">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">location_on</i>
+                                                            <div class="media-body">
+                                                                <span id="distancia">0m</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Distancia
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">directions_run</i>
+                                                            <div class="media-body">
+                                                                <span id="velocidade">0.00</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Velocidade
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">whatshot</i>
+                                                            <div class="media-body">
+                                                                <span id="pace4">0kcal</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Calorias
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media dados">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">timer</i>
+                                                            <div class="media-body">
+                                                                <span id="pace4">00:00</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Ritmo
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="border-0">
+                                        <div class="bar">
+                                            <div id="graphBar" style="width: 100%; height: 100%"></div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr class="border-0">
+                                    <td class="border-right border-top-0 border-danger pessoa">
+                                        <div class="media">
+                                            <div class="imagem">
+                                                <img src="img/competidores/leandro.jpg"
+                                                    class="figure-img img-fluid mr-0">
+                                                <div class="colocacao">
+                                                    2°
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <div class="numero">
+                                                    18
+                                                </div>
+                                                <div class="nome">
+                                                    Leandro
+                                                </div>
+                                                <div class="sobrenome">
+                                                    Nunes
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+
+                                    <td class="border-right border-top-0 border-danger dado">
+                                        <div class="row dados">
+                                            <div class="col-3 coluna">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">location_on</i>
+                                                            <div class="media-body">
+                                                                <span id="distancia">0m</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Distancia
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">directions_run</i>
+                                                            <div class="media-body">
+                                                                <span id="velocidade">0.00</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Velocidade
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">whatshot</i>
+                                                            <div class="media-body">
+                                                                <span id="pace4">0kcal</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Calorias
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-3 proximas">
+                                                <div class="media dados">
+                                                    <ul class="lista">
+                                                        <li class="media ritmo">
+                                                            <i
+                                                                class="align-self-center mr-2 material-icons icone">timer</i>
+                                                            <div class="media-body">
+                                                                <span id="pace4">00:00</span>
+                                                            </div>
+                                                        </li>
+                                                        <li class="descricao">
+                                                            Ritmo
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="border-0">
+                                        <div class="bar">
+                                            <canvas id="graphBar" style="width: 100%; height: 100%"></canvas>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script>
+
+    var map
+
+    $(document).ready(() => {
+        plottarGrafico('graphBar')
+    })
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -23.5911131, lng: -46.6475914 },
+            zoom: 12,
+            styles: [{
+                "featureType": "poi",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            }],
+            scrollwheel: false,
+            disableDefaultUI: true
+        });
+    }
+
+    function plottarGrafico(id) {
+
+        new Chart(document.getElementById(id).getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ["1900", "1950", "1999", "2050"],
+                datasets: [
+                    {
+                        label: "Africa",
+                        backgroundColor: 'blue',
+                        data: [133, 221, 783, 2478]
+                    }, {
+                        label: "Europe",
+                        backgroundColor: "orange",
+                        data: [408, 547, 675, 734]
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Population growth (millions)',
+                    fontColor: '#fff'
+
+                },
+                legend: {
+                    labels: {
+                        fontColor: '#fff'
+                    },
+                    fontColor: '#fff'
+                }
+            }
+        });
+    }
+
+    // Variaveis Globais
+    var pace = 0
+    var Velocidade = 0
+
+    function iniciarMarcacao(infos) {
+
+        var unique = infos.slice().reverse()
+
+        var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
+        var marker = new google.maps.Marker({
+            position: ponto,
+            map: map,
+            title: 'oioio'
+        })
+
+    }
+
+    function iniciar() {
+        setInterval(carregar, 1000)
+    }
+
+    function carregar() {
+        $.ajax({
+            cache: false,
+            url: '/dados/info',
+            success: (dados) => {
+
+                var todasInfosCompetidor = []
+
+                let { participantes, infos, gps } = dados
+
+                for (dado in participantes) {
+                    for (info in infos) {
+                        if (participantes[dado].nome == infos[info].nomeCompetidor) {
+                            var gpsFiltered = gps.filter((value) => {
+                                return value.devAdress === participantes[dado].devAdress
+                            })
+
+                            todasInfosCompetidor.push({ participante: participantes[dado], information: infos[info], gps: gpsFiltered })
+                        }
+                    }
+                }
+
+                definirColocacao(todasInfosCompetidor)
+                plottarDados(todasInfosCompetidor)
+
+                // Marcador no mapa
+                // console.log(todasInfosCompetidor)
+
+            },
+            error: (e) => {
+                console.error('Error', e)
+            }
+        })
+    }
+
+    function calcularMomento(momento1, momento2) {
+        return momento2 - momento1
+    }
+
+    function tranformarMomentoSegundos(momento) {
+        var tempo = momento.split(':')
+        var horas = tempo[0]
+        var minutos = tempo[1]
+
+        segundos = (Number(horas) * 3600) + (Number(minutos) * 60) + Number(tempo[2])
+        return segundos
+    }
+
+    function filtrarHorario(momento) {
+        var horas = momento.split('T')
+        horas = horas[1].split('.')
+        return horas[0]
+    }
+
+    function calcularVelocidade(distancia, tempo) {
+        if (distancia <= 0 || tempo <= 0) {
+            return (0).toFixed(2)
+        } else {
+            var velocidade = distancia / tempo
+            return (velocidade * 3.6).toFixed(2)
+        }
+    }
+
+    function calcularPace(distancia, tempo) {
+        if (distancia <= 0 || tempo <= 0) {
+            return `00:00`
+        } else {
+            var minutos = Number(tempo) / 60
+            var quilometros = Number(distancia) / 1000
+
+            var pace = minutos / quilometros
+
+            return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+        }
+    }
+
+    function calcularCalorias() {
+
+    }
+
+    function definirColocacao(info) {
+
+        function comparer(a, b) {
+            if (a.information.distanciaTotal < b.information.distanciaTotal)
+                return 1;
+
+            if (a.information.distanciaTotal > b.information.distanciaTotal)
+                return -1;
+
+            return 0;
+        }
+
+        info.sort(comparer);
+
+    }
+
+    function plottarDados(infos) {
+        for (info in infos) {
+
+            if (info < 5) {
+                // if (infos[info].gps.length != 0) {
+                //     iniciarMarcacao(infos[info].gps)
+                // }
+
+                // document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
+                // document.getElementById(`distancia${Number(info) + 1}`).innerHTML = infos[info].information.distanciaTotal
+
+                // var dnow = new Date()
+                // var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio)
+                // var momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual)
+
+                // var momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                //     tranformarMomentoSegundos(momentoAtualInicio))
+
+
+                // document.getElementById(`velocidade${Number(info) + 1}`).innerHTML = calcularVelocidade(
+                //     Number(infos[info].information.distanciaTotal),
+                //     momentoDiferenca
+                // )
+
+                // document.getElementById(`img${Number(info) + 1}`).src = `/img/competidores/${infos[info].participante.foto}`
+
+                // document.getElementById(`pace${Number(info) + 1}`).innerHTML = calcularPace(
+                //     Number(infos[info].information.distanciaTotal),
+                //     momentoDiferenca
+                // )
+
+            } else {
+                console.log('Ultrapassada')
+            }
+        }
+    }
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap" async
+    defer></script>
+
+</html>

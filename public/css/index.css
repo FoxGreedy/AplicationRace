@@ -1,12 +1,12 @@
 ::-webkit-scrollbar-track {
-    background-color: #F4F4F4;
+    background-color: #ef5350;
 }
 ::-webkit-scrollbar {
     width: 4px;
-    background: #F4F4F4;
+    background: #ef5350;
 }
 ::-webkit-scrollbar-thumb {
-    background: #dad7d7;
+    background: #ef5350;
 }
 
 *{
@@ -53,6 +53,10 @@ body {
     z-index: 1;
 }
 
+#map{
+    height: 100%
+}
+
 #title{
     padding-top: 5px
 }
@@ -70,7 +74,7 @@ body {
 .fileira{
     width: 100%;
     position: absolute;
-    bottom: 2%
+    bottom: 0%
 }
 
 #linha{
@@ -78,21 +82,26 @@ body {
     padding: 0%;
 }
 
-#img1, #img2, #img3, #img4, #img5{
+#img1, #img2, #img3, #img4, #img5,
+#img6, #img7, #img8, #img9, #img10 {
     width: 80px;
     height: 80px;
-    margin-top: -60px;
+    margin-left: 10px;
+    top: -22px;
+    left: -15px;
     margin-bottom: 5px;
+    position: absolute;
 }
 
 #body1, #body2, #body3, #body4, #body5{
-    padding: 4%;
-    background-color: #eb0702
+    padding: 3%;
+    background-color:#424242;
+    margin-top: 1%;
 }
 
 #head1, #head2, #head3, #head4, #head5{
     padding: 0%;
-    background-color: #ba100b
+    background-color: #212121 
 } 
 
 #expectador{
@@ -110,6 +119,18 @@ body {
     height: 100%
 }
 
-/* .info-competidor:hover{
-    background: #ccc;
-} */
+#conteudo-mobile{
+    display: none
+}
+
+@media (max-width: 576px) { 
+    #conteudo, #logo{
+        display: none
+    }
+    #content{
+        height: 35%
+    }
+    #conteudo-mobile{
+        display: block
+    }
+}

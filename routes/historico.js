@@ -86,6 +86,4 @@ router.get('/:devAdress', (req, res) => {
 
 })
 
-
-
 module.exports = router

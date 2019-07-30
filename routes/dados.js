@@ -3,6 +3,7 @@ const router = express.Router()
 
 const competidor = require('../model/competidor')
 const dados = require('../model/dados')
+const gps = require('../model/gps')
 
 router.get('/', (req, res) => {
     dados.find({})
@@ -19,7 +20,8 @@ router.get('/info', (req, res) => {
 
     dado = {
         participantes: [],
-        infos: []
+        infos: [],
+        gps: []
     }
 
     competidor.find({})
@@ -34,11 +36,30 @@ router.get('/info', (req, res) => {
                             console.error('Erro', err)
                         } else {
                             dado.infos = data
-                            res.send(dado)
+                            gps.find()
+                                .exec((err, data) => {
+                                    if (err) {
+                                        console.error('Erro', err)
+                                    } else {
+                                        dado.gps = data
+                                        res.send(dado)
+                                    }
+                                })
                         }
                     })
             }
         })
+})
+
+router.get('/zerar', (req, res) => {
+    dados.updateMany(
+        {},
+        { $set: { distanciaTotal: 0, distanciaAtual: 0, } }, 
+        { upsert: true },
+        (err, data) =>{
+            res.send(data)
+        }
+    )
 })
 
 router.get('/:nomeCompetidor', (req, res) => {
@@ -53,6 +74,8 @@ router.get('/:nomeCompetidor', (req, res) => {
             }
         })
 })
+
+
 
 router.put('/:nomeCompetidor', (req, res) => {
 
@@ -79,6 +102,8 @@ router.put('/:nomeCompetidor', (req, res) => {
             }
         })
 })
+
+
 
 
 

@@ -1,0 +1,179 @@
+::-webkit-scrollbar-track {
+    background-color: #424242 ;
+}
+::-webkit-scrollbar {
+    width: 4px;
+    background: #212121;
+}
+::-webkit-scrollbar-thumb {
+    background: #212121;
+}
+
+#dashboard{
+    background: #757575;
+    font-family: 'Trebuchet MS', 'Helvetica', sans-serif;
+    height: 100%
+}
+
+.logo{
+    margin: 1%;
+    padding: 0%;
+    text-align: center
+}
+
+.pessoa{
+    width: 18%
+}
+
+.nome{
+    font-size: 16px; 
+    margin-top: -10px;
+}
+
+.numero{
+    font-size: 40px;
+    line-height: 55px
+}
+
+.sobrenome{
+    line-height: 5px
+}
+
+.dado{
+    width: 50%
+}
+
+.dados{
+    margin: 0%;
+}
+
+.index{
+    margin: 0%;
+    margin-left: 25px;
+    text-align: center    
+}
+
+.lista{
+    margin: 0%;
+    padding: 0%;
+    text-align: center;
+}
+
+.coluna{
+    margin: 0%
+}
+
+.proximas{
+    padding-left: 0
+}
+
+.indice{
+    margin: 0%;
+    padding: 0%;
+}
+
+.descricao{
+    margin: 0%;
+    padding: 0%;
+    margin-top: -10px;
+    font-size: 18px;
+    text-align: center
+}
+
+.numero, .nome, .sobrenome{
+    text-align: center
+}
+
+.header{
+    background: #212121;
+}
+
+#All{
+    height: 100%;
+    position: absolute
+}
+
+#items{
+    height: 30%;
+    margin: 0%;
+}
+
+#graph{
+    height: 70%;
+    margin: 0%;
+}
+
+#cont-dash{
+    height: 100%;
+}
+
+#map{
+    height: 100%;
+    width: 100%
+}
+
+#body-map{
+    padding: 1%
+}
+
+#body-dash{
+    overflow: auto;
+    padding: 0%;
+}
+
+.bar{
+    width: 38%
+}
+
+.imagem{
+    position: relative;
+}
+
+.colocacao{
+    position: absolute;
+    bottom: 0;
+    padding: 1px;
+    background: #d9534f;
+    font-size: 16px
+}
+
+#tabela{
+    color:#fafafa;
+}
+
+#tabela img{
+    height: 85px;
+    width: 85px;
+}
+
+#tabela i{
+    font-size: 35px;
+}
+
+#tabela span{
+    font-size: 40px;
+    margin-left: -2px
+}
+
+#tabela b{
+    font-size: 16px;
+}
+
+#tabela b, #tabela span{
+    text-align: center;
+    vertical-align: -10%;
+}
+
+#tabela, #tabela tr, #tabela td, #tabela img{
+    padding: 0;
+    margin: 0;
+}
+
+#card-map, #card-twitter, #card-dash{
+    color: #fafafa;
+    height: 95%;
+}
+
+#body-map, #body-twitter, #body-dash{
+    background: #424242 
+}

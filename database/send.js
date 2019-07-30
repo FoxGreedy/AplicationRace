@@ -13,7 +13,6 @@ function sendOficialDataSource(model, send) {
             let NewCoordinate = new model()
 
             // GPS
-
             let payload = dadosJSON.params.payload
 
             //Contruindo as informações em base 64
@@ -27,19 +26,28 @@ function sendOficialDataSource(model, send) {
             let latitude = coordenadas[1].replace(/[ ]+/g, '');
             let longitude = coordenadas[2].replace(/[ ]+/g, '');
 
-            NewCoordinate.devAdress = dadosJSON.meta.device
-            NewCoordinate.gps.alt = altidude
-            NewCoordinate.gps.lat = latitude
-            NewCoordinate.gps.lng = longitude
+            if (Number(latitude) == 0 || Number(longitude) == 0) {
 
-            NewCoordinate.save((err, Uplink) => {
-                if (err) {
-                    console.error('erro', err)
-                } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
-                    console.log("Coordenadas salvas com sucesso", Uplink)
-                }
-            })
+                console.log(coordenadas, 'Latitude e Longitude Não Definida')
+                
+            } else {
+
+                NewCoordinate.devAdress = dadosJSON.meta.device
+                NewCoordinate.gps.alt = altidude
+                NewCoordinate.gps.lat = latitude
+                NewCoordinate.gps.lng = longitude
+
+                NewCoordinate.save((err, Uplink) => {
+                    if (err) {
+                        console.error('erro', err)
+                    } else {
+                        pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                        console.log("Coordenadas salvas com sucesso", Uplink)
+                    }
+                })
+
+            }
+
         }
     })
 }
@@ -81,7 +89,7 @@ function pegarUltimasCoordenadas(id, fuso) {
         } else {
             if (data.length >= 2) {
                 data = data.reverse()
-                console.log(fuso)
+                console.log('Não da para fazer o calculo de ditancia')
                 atualizarDistancia(id, pegarDistancia(data[0].gps, data[1].gps), fuso)
             } else {
                 iniciarCalculoDistancia(id, fuso)
@@ -101,6 +109,7 @@ function pegarDistancia(ultima, penultima) {
             * Math.cos(deg2rad(ultima.lat))
             * Math.sin(dLng / 2) * Math.sin(dLng / 2),
         c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    console.log('DADOOOOOOOOOOOOOOOOOOOO', ((R * c * 1000).toFixed()))
     return ((R * c * 1000).toFixed());
 }
 
@@ -116,23 +125,28 @@ function atualizarDistancia(id, distancia, fuso) {
             if (err) {
                 console.error('Error', err)
             } else {
-                distanciaTotal = distancia + data[0].distanciaTotal
-                dadosCompetidor.findOneAndUpdate({ devAdress: id },
-                    {
-                        $set: {
-                            distanciaTotal: distanciaTotal,
-                            distanciaAtual: distancia,
-                            momentoAtual: calcularData(new Date(), fuso)
-                        }
-                    },
-                    { upsert: true },
-                    (err, data) => {
-                        if (err) {
-                            console.log('Error', err)
-                        } else {
-                            console.log('Dados atualizados com sucesso', data)
-                        }
-                    })
+                if (data.length !== 0) {
+
+                    console.log('Distancia percorrida', distancia, 'Distancia Total', data[0].distanciaTotal)
+
+                    distanciaTotal = Number(distancia) + Number(data[0].distanciaTotal)
+                    dadosCompetidor.findOneAndUpdate({ devAdress: id },
+                        {
+                            $set: {
+                                distanciaTotal: distanciaTotal,
+                                distanciaAtual: distancia,
+                                momentoAtual: calcularData(new Date(), fuso)
+                            }
+                        },
+                        { upsert: true },
+                        (err, data) => {
+                            if (err) {
+                                console.log('Error', err)
+                            } else {
+                                console.log('Dados atualizados com sucesso')
+                            }
+                        })
+                }
             }
         })
 }

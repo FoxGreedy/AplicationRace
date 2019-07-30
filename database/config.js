@@ -4,20 +4,20 @@ const config = () => {
     switch (env) {
         case 'dev':
             return {
-                bd_string: 'mongodb+srv://master:EWYHrNjWQT8VMxSD@cluster0-lpicg.mongodb.net/test?retryWrites=true&w=majority'
+                bd_string: 'mongodb://master:tower2019@cluster0-shard-00-00-lpicg.mongodb.net:27017,cluster0-shard-00-01-lpicg.mongodb.net:27017,cluster0-shard-00-02-lpicg.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
             }
         case 'hml':
             return {
-                bd_string: 'mongodb+srv://master:EWYHrNjWQT8VMxSD@cluster0-lpicg.mongodb.net/test?retryWrites=true&w=majority'
+                bd_string: 'mongodb://master:tower2019@cluster0-shard-00-00-lpicg.mongodb.net:27017,cluster0-shard-00-01-lpicg.mongodb.net:27017,cluster0-shard-00-02-lpicg.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
             }
         case 'prod':
             return {
-                bd_string: 'mongodb+srv://master:EWYHrNjWQT8VMxSD@cluster0-lpicg.mongodb.net/test?retryWrites=true&w=majority'
+                bd_string: 'mongodb://master:tower2019@cluster0-shard-00-00-lpicg.mongodb.net:27017,cluster0-shard-00-01-lpicg.mongodb.net:27017,cluster0-shard-00-02-lpicg.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
             }
             // Padrão Database
         default:
             return {
-                bd_string: 'mongodb+srv://master:EWYHrNjWQT8VMxSD@cluster0-lpicg.mongodb.net/test?retryWrites=true&w=majority'
+                bd_string: 'mongodb://master:tower2019@cluster0-shard-00-00-lpicg.mongodb.net:27017,cluster0-shard-00-01-lpicg.mongodb.net:27017,cluster0-shard-00-02-lpicg.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority'
             }
     }
 }

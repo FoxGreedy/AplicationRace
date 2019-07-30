@@ -1,4 +1,5 @@
-const router = require('express').Router()
+const express = require('express')
+const router = express.Router()
 
 const competidor = require('../model/competidor')
 
@@ -8,7 +9,7 @@ router.get('/', (req, res) => {
             if (err) {
                 res.send(err)
             } else {
-                res.render('dashboard', { competidores: data })
+                res.render('index2', { competidores: data })
             }
         })
 })

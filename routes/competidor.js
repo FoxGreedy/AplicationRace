@@ -27,8 +27,6 @@ router.get('/:nome', (req, res) => {
             }
         })
 })
-
-
 // POST
 
 router.post('/', (req, res) => {

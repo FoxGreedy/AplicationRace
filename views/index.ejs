@@ -28,7 +28,7 @@
 
 </head>
 
-<body id="home" onload="carregar()">
+<body id="home" onload="iniciar()">
 
     <div id="container" style="height: 100%; position: absolute;">
 
@@ -288,6 +288,14 @@
 
 <script>
 
+    $(document).ready(() => {
+        carregar()
+    })
+
+    function iniciar() {
+        setInterval(carregar, 10000)
+    }
+
     var map
 
     function initMap() {
@@ -355,10 +363,6 @@
             title: 'oioio'
         })
 
-    }
-
-    function iniciar() {
-        setInterval(carregar, 1000)
     }
 
     function carregar() {

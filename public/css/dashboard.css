@@ -40,7 +40,7 @@
 }
 
 .dado{
-    width: 50%
+    width: 50%;
 }
 
 .dados{
@@ -122,7 +122,7 @@
 }
 
 .bar{
-    width: 38%
+    width: 25%
 }
 
 .imagem{
@@ -131,10 +131,9 @@
 
 .colocacao{
     position: absolute;
-    bottom: 0;
-    padding: 1px;
+    bottom: 2px;
     background: #d9534f;
-    font-size: 16px
+    font-size: 15px
 }
 
 #tabela{
@@ -147,17 +146,17 @@
 }
 
 #tabela i{
-    font-size: 35px;
+    font-size: 200%
 }
 
 #tabela span{
-    font-size: 40px;
-    margin-left: -2px
+    font-size: 220%;
 }
 
 #tabela b{
     font-size: 16px;
 }
+
 
 #tabela b, #tabela span{
     text-align: center;

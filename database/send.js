@@ -1,6 +1,5 @@
 const gps = require('../model/gps')
 const dadosCompetidor = require('../model/dados')
-const competidor = require('../model/competidor')
 
 function sendOficialDataSource(model, send) {
 
@@ -10,46 +9,71 @@ function sendOficialDataSource(model, send) {
 
         if (dadosJSON.type === "uplink") {
 
-            let NewCoordinate = new model()
+            let applicationEUI = dadosJSON.meta.application,
+                payload = dadosJSON.params.payload
 
-            // GPS
-            let payload = dadosJSON.params.payload
-
-            //Contruindo as informações em base 64
-            let payload64 = new Buffer(payload, 'base64')
-
-            //Decodificando as informações
-            let payloadAscii = payload64.toString('ascii')
-
-            let coordenadas = payloadAscii.split(',')
-            let altidude = coordenadas[0]
-            let latitude = coordenadas[1].replace(/[ ]+/g, '');
-            let longitude = coordenadas[2].replace(/[ ]+/g, '');
-
-            if (Number(latitude) == 0 || Number(longitude) == 0) {
-
-                console.log(coordenadas, 'Latitude e Longitude Não Definida')
-                
-            } else {
-
-                NewCoordinate.devAdress = dadosJSON.meta.device
-                NewCoordinate.gps.alt = altidude
-                NewCoordinate.gps.lat = latitude
-                NewCoordinate.gps.lng = longitude
-
-                NewCoordinate.save((err, Uplink) => {
-                    if (err) {
-                        console.error('erro', err)
-                    } else {
-                        pegarUltimasCoordenadas(Uplink.devAdress, -6)
-                        console.log("Coordenadas salvas com sucesso", Uplink)
-                    }
-                })
-
-            }
+            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model)
+            if (applicationEUI === '64a7087a66259f75') enviarPayloadWelligton(payload)
 
         }
     })
+}
+
+function enviarPayloadWelligton(payload) {
+    console.log('Payload', payload)
+
+    //Contruindo as informações em base 64
+    let payload16 = Buffer.from(payload, 'base64')
+    var output = [];
+
+    for (var i = 0; i < payload16.length; i++) {
+        var char = payload16.toString('hex', i, i + 1); // i is byte index of hex
+        output.push(char);
+    };
+
+    console.log(output)
+}
+
+function enviarPayloadVagoon(payload, model) {
+
+    let NewCoordinate = new model()
+    //Contruindo as informações em base 64
+    let payload64 = new Buffer(payload, 'base64')
+
+    //Decodificando as informações
+    let payloadAscii = payload64.toString('ascii')
+
+    let coordenadas = payloadAscii.split(',')
+    console.log(coordenadas)
+
+    if (coordenadas.length > 1) {
+        let altidude = coordenadas[0]
+        let latitude = coordenadas[1].replace(/[ ]+/g, '');
+        let longitude = coordenadas[2].replace(/[ ]+/g, '');
+
+        if (Number(latitude) == 0 || Number(longitude) == 0) {
+
+            console.log( 'Latitude e Longitude Não Definida')
+
+        } else {
+
+            NewCoordinate.devAdress = dadosJSON.meta.device
+            NewCoordinate.gps.alt = altidude
+            NewCoordinate.gps.lat = latitude
+            NewCoordinate.gps.lng = longitude
+
+            NewCoordinate.save((err, Uplink) => {
+                if (err) {
+                    console.error('erro', err)
+                } else {
+                    pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                    console.log("Coordenadas salvas com sucesso", Uplink)
+                }
+            })
+            
+        }
+    }
+
 }
 
 function sendTesteDataSource(model, send) {
@@ -61,12 +85,13 @@ function sendTesteDataSource(model, send) {
         if (dadosJSON.type === "uplink") {
 
             let id = dadosJSON.meta.device
-            let NewCoordinate = new model()
+            let gps = dadosJSON.params.radio.hardware.gps
 
+            let NewCoordinate = new model()
             NewCoordinate.devAdress = id
-            NewCoordinate.gps.lat = dadosJSON.params.radio.hardware.gps.lat
-            NewCoordinate.gps.lng = dadosJSON.params.radio.hardware.gps.lng
-            NewCoordinate.gps.alt = dadosJSON.params.radio.hardware.gps.alt
+            NewCoordinate.gps.lat = gps.lat
+            NewCoordinate.gps.lng = gps.lng
+            NewCoordinate.gps.alt = gps.alt
 
             NewCoordinate.save((err, Uplink) => {
                 if (err) {
@@ -109,7 +134,6 @@ function pegarDistancia(ultima, penultima) {
             * Math.cos(deg2rad(ultima.lat))
             * Math.sin(dLng / 2) * Math.sin(dLng / 2),
         c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    console.log('DADOOOOOOOOOOOOOOOOOOOO', ((R * c * 1000).toFixed()))
     return ((R * c * 1000).toFixed());
 }
 
@@ -165,7 +189,6 @@ function iniciarCalculoDistancia(id, fuso) {
         })
 
 }
-
 
 module.exports.Oficial = sendOficialDataSource
 module.exports.Teste = sendTesteDataSource

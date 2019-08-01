@@ -28,7 +28,7 @@
 
 </head>
 
-<body id="dashboard" onload="carregar()">
+<body id="dashboard" onload="iniciar()">
 
     <div id="All" class="container-fluid">
         <div id="items" class="row">
@@ -53,6 +53,8 @@
                     <!-- <div id="header-dash" class="card-header rounded-0 border-danger">
                         <h5 class="card-title">Competidores</h5>
                     </div> -->
+
+                    <!-- head -->
                     <div id="body-dash" class="card-body">
                         <table id="tabela" class="table">
                             <thead class="border-0 header">
@@ -60,10 +62,11 @@
                                     <th scope="col" class="border-0" style="margin: 0; padding: 0;">
                                         <ul class="indice">
                                             <li class="media">
-                                                <i class="align-self-center mr-0 material-icons"
+                                                <i class="align-self-center mr-1 material-icons"
                                                     style="font-size: 25px; padding-left:37%">supervisor_account</i>
                                                 <div class="media-body">
-                                                    <span style="font-size: 25px">32</span>
+                                                    <span id="contador-pessoas"
+                                                        style="font-size: 25px"><%- competidores.length %></span>
                                                 </div>
                                             </li>
                                             <li class="descricao" style="padding-left: 37%; text-align: left">
@@ -145,41 +148,47 @@
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody class="border-top border-danger">
+                            <!-- body -->
+                            <tbody style=" border-top: 2px solid #d9534f;">
                                 <tr class="border-0">
+
+                                    <% for(competidor in competidores) {  %>
+
                                     <td class="border-right border-top-0 border-danger pessoa">
                                         <div class="media">
                                             <div class="imagem">
-                                                <img src="img/competidores/matheus.jpg"
+                                                <img id="img<%- Number(competidor) + 1%>"
+                                                    src="img/competidores/generic.png"
                                                     class="figure-img img-fluid mr-0">
                                                 <div class="colocacao">
-                                                    1°
+                                                    <%- Number(competidor)+1 %>°
                                                 </div>
                                             </div>
                                             <div class="media-body">
-                                                <div class="numero">
+                                                <div id="numero<%- Number(competidor) + 1%>" class="numero">
                                                     16
                                                 </div>
-                                                <div class="nome">
+                                                <div id="nome<%- Number(competidor) + 1%>" class="nome">
                                                     Matheus
                                                 </div>
-                                                <div class="sobrenome">
+                                                <div id="sobrenome<%- Number(competidor) + 1%>" class="sobrenome">
                                                     Gomes
                                                 </div>
                                             </div>
                                         </div>
                                     </td>
 
-                                    <td class="border-right border-top-0 border-danger dado">
+                                    <td class="dado border-right border-top-0 border-danger">
                                         <div class="row dados">
                                             <div class="col-3 coluna">
-                                                <div class="media">
+                                                <div class="media mt-2">
                                                     <ul class="lista">
                                                         <li class="media">
                                                             <i
                                                                 class="align-self-center mr-2 material-icons icone">location_on</i>
                                                             <div class="media-body">
-                                                                <span id="distancia">0m</span>
+                                                                <span
+                                                                    id="distancia<%- Number(competidor) + 1%>">0m</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -189,14 +198,15 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-3 proximas">
-                                                <div class="media">
+                                            <div class="col-3">
+                                                <div class="media mt-2" style="margin-right: 200px">
                                                     <ul class="lista">
                                                         <li class="media">
                                                             <i
                                                                 class="align-self-center mr-2 material-icons icone">directions_run</i>
                                                             <div class="media-body">
-                                                                <span id="velocidade">0.00</span>
+                                                                <span
+                                                                    id="velocidade<%- Number(competidor) + 1%>">0.00</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -207,30 +217,32 @@
                                             </div>
 
                                             <div class="col-3 proximas">
-                                                <div class="media">
+                                                <div class="media mt-2">
                                                     <ul class="lista">
                                                         <li class="media ritmo">
                                                             <i
                                                                 class="align-self-center mr-2 material-icons icone">whatshot</i>
                                                             <div class="media-body">
-                                                                <span id="pace4">0kcal</span>
+                                                                <span
+                                                                    id="calorias<%- Number(competidor) + 1%>">0kcal</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
-                                                            Calorias
+                                                            Calorias / Min
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
 
                                             <div class="col-3 proximas">
-                                                <div class="media dados">
+                                                <div class="media dados mt-2">
                                                     <ul class="lista">
                                                         <li class="media ritmo">
                                                             <i
                                                                 class="align-self-center mr-2 material-icons icone">timer</i>
                                                             <div class="media-body">
-                                                                <span id="pace4">00:00</span>
+                                                                <span
+                                                                    id="ritmo<%- Number(competidor) + 1%>">00:00</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -247,107 +259,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                <tr class="border-0">
-                                    <td class="border-right border-top-0 border-danger pessoa">
-                                        <div class="media">
-                                            <div class="imagem">
-                                                <img src="img/competidores/leandro.jpg"
-                                                    class="figure-img img-fluid mr-0">
-                                                <div class="colocacao">
-                                                    2°
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <div class="numero">
-                                                    18
-                                                </div>
-                                                <div class="nome">
-                                                    Leandro
-                                                </div>
-                                                <div class="sobrenome">
-                                                    Nunes
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-
-                                    <td class="border-right border-top-0 border-danger dado">
-                                        <div class="row dados">
-                                            <div class="col-3 coluna">
-                                                <div class="media">
-                                                    <ul class="lista">
-                                                        <li class="media">
-                                                            <i
-                                                                class="align-self-center mr-2 material-icons icone">location_on</i>
-                                                            <div class="media-body">
-                                                                <span id="distancia">0m</span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="descricao">
-                                                            Distancia
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-3 proximas">
-                                                <div class="media">
-                                                    <ul class="lista">
-                                                        <li class="media">
-                                                            <i
-                                                                class="align-self-center mr-2 material-icons icone">directions_run</i>
-                                                            <div class="media-body">
-                                                                <span id="velocidade">0.00</span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="descricao">
-                                                            Velocidade
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-3 proximas">
-                                                <div class="media">
-                                                    <ul class="lista">
-                                                        <li class="media ritmo">
-                                                            <i
-                                                                class="align-self-center mr-2 material-icons icone">whatshot</i>
-                                                            <div class="media-body">
-                                                                <span id="pace4">0kcal</span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="descricao">
-                                                            Calorias
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-3 proximas">
-                                                <div class="media dados">
-                                                    <ul class="lista">
-                                                        <li class="media ritmo">
-                                                            <i
-                                                                class="align-self-center mr-2 material-icons icone">timer</i>
-                                                            <div class="media-body">
-                                                                <span id="pace4">00:00</span>
-                                                            </div>
-                                                        </li>
-                                                        <li class="descricao">
-                                                            Ritmo
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="border-0">
-                                        <div class="bar">
-                                            <canvas id="graphBar" style="width: 100%; height: 100%"></canvas>
-                                        </div>
-                                    </td>
-                                </tr>
+                                <%}%>
                             </tbody>
                         </table>
                     </div>
@@ -363,8 +275,12 @@
     var map
 
     $(document).ready(() => {
-        plottarGrafico('graphBar')
+        carregar()
     })
+
+    function iniciar() {
+        setInterval(carregar, 10000)
+    }
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -379,6 +295,7 @@
             scrollwheel: false,
             disableDefaultUI: true
         });
+
     }
 
     function plottarGrafico(id) {
@@ -427,15 +344,11 @@
         var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
         var marker = new google.maps.Marker({
             position: ponto,
-            map: map,
-            title: 'oioio'
+            map: map
         })
 
     }
 
-    function iniciar() {
-        setInterval(carregar, 1000)
-    }
 
     function carregar() {
         $.ajax({
@@ -491,6 +404,21 @@
         return horas[0]
     }
 
+    function formatarDistancia(distancia) {
+
+        if (distancia < 0) {
+            return `${distancia}m`
+        } else if (distancia < 1000) {
+            return `${distancia}m`
+        } else if (distancia % 1000 == 0) {
+            return `${distancia / 1000}km`
+        } else {
+            console.log(`${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`)
+            return `${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`
+        }
+
+    }
+
     function calcularVelocidade(distancia, tempo) {
         if (distancia <= 0 || tempo <= 0) {
             return (0).toFixed(2)
@@ -509,12 +437,20 @@
 
             var pace = minutos / quilometros
 
-            return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            if (pace < 10) {
+                if (((pace * 60) % 60) < 10) {
+                    return `0${parseInt(pace)}:0${parseInt(((pace * 60) % 60))}`
+                } else {
+                    return `0${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+                }
+            } else {
+                return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            }
         }
     }
 
-    function calcularCalorias() {
-
+    function calcularCalorias(velocidade, peso) {
+        return `${(parseInt(Number(velocidade) * Number(peso)) * 0.0175)}cal`
     }
 
     function definirColocacao(info) {
@@ -534,39 +470,47 @@
     }
 
     function plottarDados(infos) {
+
         for (info in infos) {
 
-            if (info < 5) {
-                // if (infos[info].gps.length != 0) {
-                //     iniciarMarcacao(infos[info].gps)
-                // }
-
-                // document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
-                // document.getElementById(`distancia${Number(info) + 1}`).innerHTML = infos[info].information.distanciaTotal
-
-                // var dnow = new Date()
-                // var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio)
-                // var momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual)
-
-                // var momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
-                //     tranformarMomentoSegundos(momentoAtualInicio))
-
-
-                // document.getElementById(`velocidade${Number(info) + 1}`).innerHTML = calcularVelocidade(
-                //     Number(infos[info].information.distanciaTotal),
-                //     momentoDiferenca
-                // )
-
-                // document.getElementById(`img${Number(info) + 1}`).src = `/img/competidores/${infos[info].participante.foto}`
-
-                // document.getElementById(`pace${Number(info) + 1}`).innerHTML = calcularPace(
-                //     Number(infos[info].information.distanciaTotal),
-                //     momentoDiferenca
-                // )
-
-            } else {
-                console.log('Ultrapassada')
+            if (infos[info].gps.length != 0) {
+                iniciarMarcacao(infos[info].gps)
             }
+
+            console.log(infos[info].participante)
+
+            let velocidade = calcularVelocidade(
+                Number(infos[info].information.distanciaTotal),
+                momentoDiferenca
+            )
+
+            document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
+            document.getElementById(`sobrenome${Number(info) + 1}`).innerHTML = infos[info].participante.sobrenome
+            document.getElementById(`distancia${Number(info) + 1}`).innerHTML = formatarDistancia(infos[info].information.distanciaTotal)
+
+            
+            var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio)
+            var momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual)
+            
+            var momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+            tranformarMomentoSegundos(momentoAtualInicio))
+            
+            document.getElementById(`calorias${Number(info) + 1}`).innerHTML = calcularCalorias( calcularVelocidade(
+                Number(infos[info].information.distanciaTotal),
+                momentoDiferenca
+            ),  infos[info].participante.peso)
+            
+            document.getElementById(`velocidade${Number(info) + 1}`).innerHTML = calcularVelocidade(
+                Number(infos[info].information.distanciaTotal),
+                momentoDiferenca
+            )
+
+            document.getElementById(`img${Number(info) + 1}`).src = `/img/competidores/${infos[info].participante.foto}`
+
+            document.getElementById(`ritmo${Number(info) + 1}`).innerHTML = calcularPace(
+                Number(infos[info].information.distanciaTotal),
+                momentoDiferenca
+            )
         }
     }
 

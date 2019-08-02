@@ -83,7 +83,8 @@
                                                             <i style="font-size: 25px;"
                                                                 class="align-self-center mr-2 material-icons icone">location_on</i>
                                                             <div class="media-body">
-                                                                <span style="font-size: 25px">0m</span>
+                                                                <span id="distancia-total"
+                                                                    style="font-size: 25px">0m</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -100,7 +101,8 @@
                                                             <i style="font-size: 25px;"
                                                                 class="align-self-center mr-2 material-icons icone">directions_run</i>
                                                             <div class="media-body">
-                                                                <span style="font-size: 25px">0.00k</span>
+                                                                <span id="velocidade-media"
+                                                                    style="font-size: 25px">0.00</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -116,7 +118,8 @@
                                                             <i style="font-size: 25px;"
                                                                 class="align-self-center mr-2 material-icons icone">whatshot</i>
                                                             <div class="media-body">
-                                                                <span style="font-size: 25px">0kcal</span>
+                                                                <span id="caloria-total"
+                                                                    style="font-size: 25px">0kcal</span>
                                                             </div>
                                                         </li>
                                                         <li class="descricao">
@@ -375,9 +378,6 @@
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
 
-                // Marcador no mapa
-                // console.log(todasInfosCompetidor)
-
             },
             error: (e) => {
                 console.error('Error', e)
@@ -434,9 +434,7 @@
         } else {
             var minutos = Number(tempo) / 60
             var quilometros = Number(distancia) / 1000
-
             var pace = minutos / quilometros
-
             if (pace < 10) {
                 if (((pace * 60) % 60) < 10) {
                     return `0${parseInt(pace)}:0${parseInt(((pace * 60) % 60))}`
@@ -450,7 +448,9 @@
     }
 
     function calcularCalorias(velocidade, peso) {
-        return `${(parseInt(Number(velocidade) * Number(peso)) * 0.0175)}cal`
+        var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
+        if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
+        else return `${parseInt(caloria)}cal`
     }
 
     function definirColocacao(info) {
@@ -469,50 +469,48 @@
 
     }
 
+    function conectar(id, value, type = 'inner') {
+        if (type == 'inner') document.getElementById(id).innerHTML = value
+        if (type == 'src') document.getElementById(id).src = value
+    }
+
     function plottarDados(infos) {
 
-        for (info in infos) {
+        var velocidadeTotal = 0, caloriaTotal = 0, distanciaTotal = 0
 
+        for (info in infos) {
             if (infos[info].gps.length != 0) {
                 iniciarMarcacao(infos[info].gps)
             }
+            // Number(infos[info].information.distanciaTotal)
+            var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
+                momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
+                distancia = 1000,
+                momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                    tranformarMomentoSegundos(momentoAtualInicio))
+            let velocidade = Number(calcularVelocidade(distancia, momentoDiferenca)),
+                calorias = calcularCalorias(velocidade, infos[info].participante.peso),
+                ritmo = calcularPace(distancia, momentoDiferenca)
 
-            console.log(infos[info].participante)
+            conectar(`img${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
+            conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
+            conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
+            conectar(`distancia${Number(info) + 1}`, formatarDistancia(infos[info].information.distanciaTotal))
+            conectar(`calorias${Number(info) + 1}`, calorias)
+            conectar(`velocidade${Number(info) + 1}`, (velocidade).toFixed(2))
+            conectar(`ritmo${Number(info) + 1}`, ritmo)
 
-            let velocidade = calcularVelocidade(
-                Number(infos[info].information.distanciaTotal),
-                momentoDiferenca
-            )
-
-            document.getElementById(`nome${Number(info) + 1}`).innerHTML = infos[info].participante.nome
-            document.getElementById(`sobrenome${Number(info) + 1}`).innerHTML = infos[info].participante.sobrenome
-            document.getElementById(`distancia${Number(info) + 1}`).innerHTML = formatarDistancia(infos[info].information.distanciaTotal)
-
-            
-            var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio)
-            var momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual)
-            
-            var momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
-            tranformarMomentoSegundos(momentoAtualInicio))
-            
-            document.getElementById(`calorias${Number(info) + 1}`).innerHTML = calcularCalorias( calcularVelocidade(
-                Number(infos[info].information.distanciaTotal),
-                momentoDiferenca
-            ),  infos[info].participante.peso)
-            
-            document.getElementById(`velocidade${Number(info) + 1}`).innerHTML = calcularVelocidade(
-                Number(infos[info].information.distanciaTotal),
-                momentoDiferenca
-            )
-
-            document.getElementById(`img${Number(info) + 1}`).src = `/img/competidores/${infos[info].participante.foto}`
-
-            document.getElementById(`ritmo${Number(info) + 1}`).innerHTML = calcularPace(
-                Number(infos[info].information.distanciaTotal),
-                momentoDiferenca
-            )
+            let calor = calorias.split('cal')
+            velocidadeTotal += velocidade
+            distanciaTotal += distancia
+            caloriaTotal += Number(calor[0])
         }
+        conectar('velocidade-media', `${parseInt(velocidadeTotal) / infos.length}Km`)
+        conectar('distancia-total', formatarDistancia(distanciaTotal))
+        conectar('caloria-total', `${caloriaTotal}cal` )
     }
+
+
 
 </script>
 

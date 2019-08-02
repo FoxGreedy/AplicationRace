@@ -115,12 +115,56 @@ body {
     opacity: 1;
 }
 
+#conteudo-mobile{
+    background-color:#424242;
+    display: none;
+    padding: 0%;
+    margin: 0%;
+}
+
+.lista{
+    padding: 0%;
+    margin: 0%
+}
+
+.pessoa{
+    margin: 0%;
+    padding: 0%
+}
+
 .carton{
     height: 100%
 }
 
-#conteudo-mobile{
-    display: none
+.imagem{
+    padding: 0;
+    margin: 0%
+}
+
+.imagem img{
+    height: 80px;
+    width: 160px;
+}
+
+.imagem{
+    position: relative;
+}
+
+.numero, .nome, .sobrenome{
+    text-align: center
+}
+
+.colocacao{
+    position: absolute;
+    bottom: 2px;
+    background: #d9534f;
+    font-size: 15px
+}
+
+#tabela, #tabela tr, #tabela td, #tabela img{
+    padding: 0;
+    margin: 0;
+    color: #e2e2e2;
 }
 
 @media (max-width: 576px) { 

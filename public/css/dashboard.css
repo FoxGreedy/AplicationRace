@@ -136,8 +136,9 @@
     font-size: 15px
 }
 
-#tabela{
+#tabela th{
     color:#fafafa;
+    background: #424242 ;
 }
 
 #tabela img{

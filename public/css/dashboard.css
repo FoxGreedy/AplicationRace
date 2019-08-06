@@ -122,7 +122,9 @@
 }
 
 .bar{
-    width: 25%
+    margin: 0%;
+    padding:0;
+    margin-top: 5px
 }
 
 .imagem{
@@ -165,6 +167,7 @@
 }
 
 #tabela, #tabela tr, #tabela td, #tabela img{
+    color: #fafafa;
     padding: 0;
     margin: 0;
 }

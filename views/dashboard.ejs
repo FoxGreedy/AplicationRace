@@ -15,8 +15,6 @@
     <!-- Javascript  -->
     <script src="js/jquery.js" type="text/javascript"></script>
     <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
-    <script src="js/bootstrap-dash.js"></script>
-    <script src="js/scrollbarEffect.js"></script>
     <script src="js/materialize.min.js"></script>
 
     <!-- Grafico -->
@@ -169,13 +167,13 @@
                                             </div>
                                             <div class="media-body">
                                                 <div id="numero<%- Number(competidor) + 1%>" class="numero">
-                                                    16
+                                                    0
                                                 </div>
                                                 <div id="nome<%- Number(competidor) + 1%>" class="nome">
-                                                    Matheus
+                                                    Unknown
                                                 </div>
                                                 <div id="sobrenome<%- Number(competidor) + 1%>" class="sobrenome">
-                                                    Gomes
+                                                    Unknown
                                                 </div>
                                             </div>
                                         </div>
@@ -187,7 +185,8 @@
                                                 <div class="media mt-2">
                                                     <ul class="lista">
                                                         <li class="media">
-                                                            <i
+                                                            <!-- "", "", "", "" -->
+                                                            <i style="color:#673ab7"
                                                                 class="align-self-center mr-2 material-icons icone">location_on</i>
                                                             <div class="media-body">
                                                                 <span
@@ -205,7 +204,7 @@
                                                 <div class="media mt-2" style="margin-right: 200px">
                                                     <ul class="lista">
                                                         <li class="media">
-                                                            <i
+                                                            <i style="color:#f4511e"
                                                                 class="align-self-center mr-2 material-icons icone">directions_run</i>
                                                             <div class="media-body">
                                                                 <span
@@ -223,7 +222,7 @@
                                                 <div class="media mt-2">
                                                     <ul class="lista">
                                                         <li class="media ritmo">
-                                                            <i
+                                                            <i style="color:#eeff41"
                                                                 class="align-self-center mr-2 material-icons icone">whatshot</i>
                                                             <div class="media-body">
                                                                 <span
@@ -241,7 +240,7 @@
                                                 <div class="media dados mt-2">
                                                     <ul class="lista">
                                                         <li class="media ritmo">
-                                                            <i
+                                                            <i style="color:#4caf50"
                                                                 class="align-self-center mr-2 material-icons icone">timer</i>
                                                             <div class="media-body">
                                                                 <span
@@ -258,7 +257,7 @@
                                     </td>
                                     <td class="border-0">
                                         <div class="bar">
-                                            <div id="graphBar" style="width: 100%; height: 100%"></div>
+                                            <canvas id="graphBar<%- Number(competidor) + 1%>" height=55></canvas>
                                         </div>
                                     </td>
                                 </tr>
@@ -301,37 +300,44 @@
 
     }
 
-    function plottarGrafico(id) {
+    function plottarGrafico(id, data) {
 
         new Chart(document.getElementById(id).getContext('2d'), {
-            type: 'bar',
+
+            type: 'horizontalBar',
             data: {
-                labels: ["1900", "1950", "1999", "2050"],
+                labels: ["Distancia (Km)", "Velocidade (Km/h)", "Calorias (cal)", "Ritmo (min)"],
                 datasets: [
                     {
-                        label: "Africa",
-                        backgroundColor: 'blue',
-                        data: [133, 221, 783, 2478]
-                    }, {
-                        label: "Europe",
-                        backgroundColor: "orange",
-                        data: [408, 547, 675, 734]
+                        backgroundColor: ["#673ab7", "#f4511e", "#eeff41", "#4caf50"],
+                        data: data,
                     }
                 ]
             },
             options: {
+                legend: { display: false },
                 title: {
-                    display: true,
-                    text: 'Population growth (millions)',
-                    fontColor: '#fff'
-
+                    display: false,
                 },
-                legend: {
-                    labels: {
-                        fontColor: '#fff'
-                    },
-                    fontColor: '#fff'
-                }
+                scales: {
+                    yAxes: [{
+                        display: false,
+                        barThickness: 15,
+                        stacked: true,
+                        minBarLength: 200
+                    }],
+                    xAxes: [{
+                        display: false,
+                        stacked: true
+                    }],
+                },
+                animation: {
+                    duration: 0 // general animation time
+                },
+                hover: {
+                    animationDuration: 0 // duration of animations when hovering an item
+                },
+                responsiveAnimationDuration: 0
             }
         });
     }
@@ -454,7 +460,6 @@
     }
 
     function definirColocacao(info) {
-
         function comparer(a, b) {
             if (a.information.distanciaTotal < b.information.distanciaTotal)
                 return 1;
@@ -464,14 +469,22 @@
 
             return 0;
         }
-
         info.sort(comparer);
-
     }
 
     function conectar(id, value, type = 'inner') {
         if (type == 'inner') document.getElementById(id).innerHTML = value
         if (type == 'src') document.getElementById(id).src = value
+    }
+
+    function converterRitmo(ritmo) {
+
+        var momento = ritmo.split(':')
+        var minutos = Number(momento[0])
+        var segundos = Number(momento[1])
+
+        return minutos * 60 + segundos
+
     }
 
     function plottarDados(infos) {
@@ -482,10 +495,10 @@
             if (infos[info].gps.length != 0) {
                 iniciarMarcacao(infos[info].gps)
             }
-            // Number(infos[info].information.distanciaTotal)
+
             var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
                 momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
-                distancia = 1000,
+                distancia = infos[info].information.distanciaTotal,
                 momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
                     tranformarMomentoSegundos(momentoAtualInicio))
             let velocidade = Number(calcularVelocidade(distancia, momentoDiferenca)),
@@ -495,7 +508,8 @@
             conectar(`img${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
             conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
             conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
-            conectar(`distancia${Number(info) + 1}`, formatarDistancia(infos[info].information.distanciaTotal))
+            conectar(`numero${Number(info) + 1}`, infos[info].participante.numero)
+            conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
             conectar(`calorias${Number(info) + 1}`, calorias)
             conectar(`velocidade${Number(info) + 1}`, (velocidade).toFixed(2))
             conectar(`ritmo${Number(info) + 1}`, ritmo)
@@ -504,10 +518,14 @@
             velocidadeTotal += velocidade
             distanciaTotal += distancia
             caloriaTotal += Number(calor[0])
+
+            let segundosRitmo = converterRitmo(ritmo)
+
+            plottarGrafico(`graphBar${Number(info) + 1}`, [distancia / 1000, velocidade, Number(calor[0]), (segundosRitmo / 60).toFixed(2)])
         }
         conectar('velocidade-media', `${parseInt(velocidadeTotal) / infos.length}Km`)
         conectar('distancia-total', formatarDistancia(distanciaTotal))
-        conectar('caloria-total', `${caloriaTotal}cal` )
+        conectar('caloria-total', `${caloriaTotal}cal`)
     }
 
 

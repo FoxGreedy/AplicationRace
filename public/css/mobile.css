@@ -1,0 +1,53 @@
+::-webkit-scrollbar-track {
+    background-color: #f5f5f5 ;
+}
+::-webkit-scrollbar {
+    width: 4px;
+    background: #f5f5f5;
+}
+::-webkit-scrollbar-thumb {
+    background: #f5f5f5;
+}
+
+#mobile{
+    background: #f5f5f5 ;
+    font-family: 'Trebuchet MS', 'Helvetica', sans-serif;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+#mapa{
+    height: 30%;
+    margin: 0%
+}
+
+#competidores{
+    overflow: auto;
+    height: 55%
+}
+
+.map{
+    height: 100%;
+}
+
+.colecao{
+    cursor: pointer
+}
+
+.marcacao{
+    background: #424242;
+    color: #f5f5f5;
+    padding: 0.5px 4px;
+    position: absolute;
+    bottom: 3%;
+    left: 1%
+}
+
+.imagem{
+    position: relative;
+}
+
+.imagem img{
+    border: #424242 solid 2px
+}

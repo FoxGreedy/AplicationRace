@@ -5,6 +5,7 @@ function sendOficialDataSource(model, send) {
 
     send.on('message', (dados) => {
         let dadosJSON = JSON.parse(dados)
+        let id = dadosJSON.meta.device
         timestamp = new Date()
 
         if (dadosJSON.type === "uplink") {
@@ -12,14 +13,14 @@ function sendOficialDataSource(model, send) {
             let applicationEUI = dadosJSON.meta.application,
                 payload = dadosJSON.params.payload
 
-            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model)
-            if (applicationEUI === '64a7087a66259f75') enviarPayloadWelligton(payload)
+            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
+            if (applicationEUI === '64a7087a66259f75') enviarPayloadWelligton(payload, model, id)
 
         }
     })
 }
 
-function enviarPayloadWelligton(payload) {
+function enviarPayloadWelligton(payload, model, id) {
     console.log('Payload', payload)
 
     //Contruindo as informações em base 64
@@ -31,10 +32,33 @@ function enviarPayloadWelligton(payload) {
         output.push(char);
     };
 
-    console.log(output)
+    let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}`
+    let longitude = `${hexToInt(output[7])}.${parseInt(output[8],16)}${parseInt(output[9], 16)}`
+
+    if (Number(latitude) == 0 || Number(longitude) == 0) {
+
+        console.log('Latitude e Longitude Não Definida')
+
+    } else {
+
+        NewCoordinate.devAdress = id
+        NewCoordinate.gps.lat = latitude
+        NewCoordinate.gps.lng = longitude
+
+        NewCoordinate.save((err, Uplink) => {
+            if (err) {
+                console.error('erro', err)
+            } else {
+                pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                console.log("Coordenadas salvas com sucesso", Uplink)
+            }
+        })
+
+    }
+
 }
 
-function enviarPayloadVagoon(payload, model) {
+function enviarPayloadVagoon(payload, model, id) {
 
     let NewCoordinate = new model()
     //Contruindo as informações em base 64
@@ -53,11 +77,11 @@ function enviarPayloadVagoon(payload, model) {
 
         if (Number(latitude) == 0 || Number(longitude) == 0) {
 
-            console.log( 'Latitude e Longitude Não Definida')
+            console.log('Latitude e Longitude Não Definida')
 
         } else {
 
-            NewCoordinate.devAdress = dadosJSON.meta.device
+            NewCoordinate.devAdress = id
             NewCoordinate.gps.alt = altidude
             NewCoordinate.gps.lat = latitude
             NewCoordinate.gps.lng = longitude
@@ -70,10 +94,22 @@ function enviarPayloadVagoon(payload, model) {
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
-            
+
         }
     }
 
+}
+
+function hexToInt(hex) {
+    if (hex.length % 2 != 0) {
+        hex = "0" + hex;
+    }
+    var num = parseInt(hex, 16);
+    var maxVal = Math.pow(2, hex.length / 2 * 8);
+    if (num > maxVal / 2 - 1) {
+        num = num - maxVal
+    }
+    return num;
 }
 
 function sendTesteDataSource(model, send) {

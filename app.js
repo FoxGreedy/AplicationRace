@@ -49,20 +49,26 @@ app.use((req, res, next) => {
 })
 
 
-//Definindo as totas do servidor
+//Definindo as rotas do servidor
+// TELAS
 const indexRouter = require('./routes/index')
-const index2Router = require('./routes/index2')
-
+const inforRouter = require('./routes/information')
+const tela1Router = require('./routes/tela1')
+const tela2Router = require('./routes/tela2')
+const dashRouter = require('./routes/dashboard')
 const formsRouter = require('./routes/forms')
+
+// BACKEND
 const historicRouter = require('./routes/historico')
 const competidorRouter = require('./routes/competidor')
 const dadosRouter = require('./routes/dados')
 const localRouter = require('./routes/gps')
-const dashRouter = require('./routes/dashboard')
 
 // Usando as rotas do servidor
 app.use('/', indexRouter)
-app.use('/2', index2Router)
+app.use('/details', inforRouter)
+app.use('/tela-mapa1', tela1Router)
+app.use('/tela-mapa2', tela2Router)
 app.use('/formulario', formsRouter)
 app.use('/historico', historicRouter)
 app.use('/competidor', competidorRouter)

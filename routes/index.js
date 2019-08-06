@@ -1,21 +1,15 @@
-const express = require('express')
-const router = express.Router()
-
+const router = require('express').Router()
 const competidor = require('../model/competidor')
 
 router.get('/', (req, res) => {
-
     competidor.find({})
         .exec((err, data) => {
-            if(err){
-                res.send(err)
-            } else{
+            if (err) {
+                res.send('Erro', err)
+            } else {
                 res.render('index', { competidores: data })
             }
         })
-
 })
-
-
 
 module.exports = router

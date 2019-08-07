@@ -62,7 +62,7 @@ function enviarPayloadVagoon(payload, model, id) {
 
     let NewCoordinate = new model()
     //Contruindo as informações em base 64
-    let payload64 = new Buffer(payload, 'base64')
+    let payload64 = Buffer.from(payload, 'base64')
 
     //Decodificando as informações
     let payloadAscii = payload64.toString('ascii')

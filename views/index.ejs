@@ -17,62 +17,72 @@
     <script src="js/materialize.min.js"></script>
 
     <!-- Grafico -->
-    <script src="id=" competidores"js/Chart.bundle.min.js"> </script> <!-- Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link rel="shortcut icon" href="#">
 </head>
 
-<body id="mobile" onload="carregar()">
+<body id="mobile" onload="iniciar()">
 
     <nav class="grey darken-3">
         <div class="nav-wrapper">
             <a href="/" class="brand-logo">CorporateRun</a>
         </div>
     </nav>
-    <div id="mapa" class="row" >
+    <!-- <div id="mapa" class="row" >
         <div class="s12 map">
             <div class="map" id="map"></div>
         </div>
-    </div>
+    </div> -->
     <div id="competidores" class="row">
         <div class="col s12 m2">
             <%competidores.forEach((c, i) => {%>
-                <div class="col s12 m8 offset-m2 l6 offset-l3">
-                    <div class="card-panel grey lighten-5 z-depth-2" style="padding: 4%">
-                      <div class="row valign-wrapper" style="margin: 0%;">
+            <div class="col s12 m8 offset-m2 l6 offset-l3">
+                <div class="card-panel grey lighten-5 z-depth-2" style="padding: 4%">
+                    <div class="row valign-wrapper" style="margin: 0%;">
                         <div class="col s3" style="padding: 0%">
                             <div class="imagem">
-                                <img src="img/competidores/bretas.jpg" alt="" class="circle responsive-img"  >
+                                <img id="image<%- Number(i) + 1%>" src="img/competidores/bretas.jpg"
+                                    class="circle responsive-img">
                                 <span class="marcacao circle"><%- Number(i) + 1%>°</span>
                             </div>
                         </div>
-                        <div class="col s9" >
+                        <div class="col s9">
+                            <div class="dados">
+                                <span id="number<%- Number(i) + 1%>">
+
+                                </span> -
+                                <span id="nome<%- Number(i) + 1%>">
+                                    unknown
+                                </span>
+                                <span id="sobrenome<%- Number(i) + 1%>">
+
+                                </span>
+                            </div>
                             <div class="row valign-wrapper" style="padding: 10px 0 0 0">
-                                <div class="col s3" style="text-align: center">
+                                <div class="col s3 centered">
                                     <i style="font-size: 30px;"
-                                    class="align-self-center mr-2 material-icons icone">location_on</i>
-                                    20km
+                                        class="align-self-center mr-2 material-icons icone">location_on</i>
+                                    <span id="distancia<%- Number(i) + 1%>">0m</span>
                                 </div>
-                                <div class="col s3" style="text-align: center">
+                                <div class="col s3 centered">
                                     <i style="font-size: 30px;"
-                                    class="align-self-center mr-2 material-icons icone">directions_run</i>
-                                    40/h
+                                        class="align-self-center mr-2 material-icons icone">directions_run</i>
+                                    <span id="velocidade<%- Number(i) + 1%>">0/h</span>
                                 </div>
-                                <div class="col s3" style="text-align: center">
+                                <div class="col s3 centered">
                                     <i style="font-size: 30px;"
-                                    class="align-self-center mr-2 material-icons icone">whatshot</i>
-                                    60kcal
+                                        class="align-self-center mr-2 material-icons icone">whatshot</i>
+                                    <span id="calorias<%- Number(i) + 1%>">0cal</span>
                                 </div>
-                                <div class="col s3" style="text-align: center">
+                                <div class="col s3 centered">
                                     <i style="font-size: 30px;"
-                                    class="align-self-center mr-2 material-icons icone">timer</i>
-                                    00:00
+                                        class="align-self-center mr-2 material-icons icone">timer</i>
+                                    <span id="ritmo<%- Number(i) + 1%>">00:00</span>
                                 </div>
                             </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
+                </div>
+            </div>
             <%})%>
         </div>
     </div>
@@ -80,20 +90,29 @@
 <script>
 
     var map
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
-            zoom: 12,
-            styles: [{
-                "featureType": "poi",
-                "stylers": [{
-                    "visibility": "off"
-                }]
-            }],
-            scrollwheel: false,
-            disableDefaultUI: true
-        });
+
+    $(document).ready(() => {
+        carregar()
+    })
+
+    function iniciar() {
+        setInterval(carregar, 10000)
     }
+
+    // function initMap() {
+    //     map = new google.maps.Map(document.getElementById('map'), {
+    //         center: { lat: -23.5911131, lng: -46.6475914 },
+    //         zoom: 12,
+    //         styles: [{
+    //             "featureType": "poi",
+    //             "stylers": [{
+    //                 "visibility": "off"
+    //             }]
+    //         }],
+    //         scrollwheel: false,
+    //         disableDefaultUI: true
+    //     });
+    // }
 
     function carregar() {
         $.ajax({
@@ -102,19 +121,134 @@
             success: (data) => {
 
                 var { infos, gps, participantes } = data
+                let todasInfosCompetidor = []
 
+                for (i in infos) {
+                    for (p in participantes) {
+                        if (infos[i].devAdress === participantes[p].devAdress) {
+                            todasInfosCompetidor.push({ participante: participantes[p], information: infos[i], gps: gps.filter((v) => v.devAdress == participantes[p].devAdress) })
+                        }
+                    }
+                }
+
+                definirColocacao(todasInfosCompetidor)
+                plottarDados(todasInfosCompetidor)
 
             },
             error: (e) => {
-
+                console.error('Error', e)
             }
         })
     }
 
+    function calcularMomento(momento1, momento2) {
+        return momento2 - momento1
+    }
+    function tranformarMomentoSegundos(momento) {
+        var tempo = momento.split(':')
+        var horas = tempo[0]
+        var minutos = tempo[1]
+
+        segundos = (Number(horas) * 3600) + (Number(minutos) * 60) + Number(tempo[2])
+        return segundos
+    }
+    function filtrarHorario(momento) {
+        var horas = momento.split('T')
+        horas = horas[1].split('.')
+        return horas[0]
+    }
+    function calcularVelocidade(distancia, tempo) {
+        if (distancia <= 0 || tempo <= 0) {
+            return (0).toFixed(2)
+        } else {
+            var velocidade = distancia / tempo
+            return (velocidade * 3.6).toFixed(2)
+        }
+    }
+    function calcularPace(distancia, tempo) {
+        if (distancia <= 0 || tempo <= 0) {
+            return `00:00`
+        } else {
+            var minutos = Number(tempo) / 60
+            var quilometros = Number(distancia) / 1000
+
+            var pace = minutos / quilometros
+
+            return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+        }
+    }
+    function definirColocacao(info) {
+        function comparer(a, b) {
+            if (a.information.distanciaTotal < b.information.distanciaTotal)
+                return 1;
+
+            if (a.information.distanciaTotal > b.information.distanciaTotal)
+                return -1;
+
+            return 0;
+        }
+
+        info.sort(comparer);
+
+    }
+    function formatarDistancia(distancia) {
+
+        if (distancia < 0) {
+            return `${distancia}m`
+        } else if (distancia < 1000) {
+            return `${distancia}m`
+        } else if (distancia % 1000 == 0) {
+            return `${distancia / 1000}km`
+        } else {
+            console.log(`${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`)
+            return `${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`
+        }
+
+    }
+    function calcularCalorias(velocidade, peso) {
+        var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
+        if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
+        else return `${parseInt(caloria)}cal`
+    }
+    function conectar(id, value, type = 'inner') {
+        if (type == 'inner') document.getElementById(id).innerHTML = value
+        if (type == 'src') document.getElementById(id).src = value
+    }
+    function plottarDadosMobile(infos) {
+        if (infos[info].gps.length != 0) {
+            iniciarMarcacao(infos[info].gps)
+        }
+
+        let distancia = infos[info].information.distanciaTotal
+
+        var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
+            momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
+            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                tranformarMomentoSegundos(momentoAtualInicio))
+
+        conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
+        conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
+        conectar(`number${Number(info) + 1}`, infos[info].participante.numero)
+        conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
+        conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
+        conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}/h`)
+        conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
+        conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
+
+    }
+    function plottarDados(infos) {
+        for (info in infos) {
+
+            plottarDadosMobile(infos)
+
+        }
+    }
+
+
 </script>
 
 
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap"
-        async defer></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap"
+        async defer></script> -->
 
 </html>

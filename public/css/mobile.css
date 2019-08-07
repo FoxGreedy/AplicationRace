@@ -24,7 +24,7 @@
 
 #competidores{
     overflow: auto;
-    height: 55%
+    height: 85%
 }
 
 .map{
@@ -50,4 +50,13 @@
 
 .imagem img{
     border: #424242 solid 2px
+}
+
+.centered{
+    text-align: center;
+}
+
+.dados{
+    text-align: center;
+    font-size: 18px
 }

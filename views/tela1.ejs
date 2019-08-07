@@ -464,30 +464,10 @@
             console.log('Ultrapassada')
         }
     }
-    function plottarDadosMobile(infos) {
-        if (infos[info].gps.length != 0) {
-            iniciarMarcacao(infos[info].gps)
-        }
-
-        let distancia = infos[info].information.distanciaTotal
-
-        var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
-            momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
-            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
-                tranformarMomentoSegundos(momentoAtualInicio))
-
-        conectar(`nomeMob${Number(info) + 1}`, infos[info].participante.nome)
-        conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
-        conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
-        conectar(`velocidadeMob${Number(info) + 1}`, calcularVelocidade(distancia, momentoDiferenca))
-        conectar(`ritmoMob${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
-        conectar(`caloriasMob${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
-    }
     function plottarDados(infos) {
         for (info in infos) {
 
             plottarDadosTelona(infos)
-            // plottarDadosMobile(infos)
 
         }
     }

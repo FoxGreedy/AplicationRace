@@ -268,7 +268,7 @@
             </div>
         </div>
 
- 
+
 
 </body>
 
@@ -413,10 +413,16 @@
         } else {
             var minutos = Number(tempo) / 60
             var quilometros = Number(distancia) / 1000
-
             var pace = minutos / quilometros
-
-            return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            if (pace < 10) {
+                if (((pace * 60) % 60) < 10) {
+                    return `0${parseInt(pace)}:0${parseInt(((pace * 60) % 60))}`
+                } else {
+                    return `0${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+                }
+            } else {
+                return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            }
         }
     }
     function definirColocacao(info) {

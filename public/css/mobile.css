@@ -24,7 +24,51 @@
 
 #competidores{
     overflow: auto;
-    height: 85%
+    height: 85%;
+}
+
+.alinhado{
+    padding-bottom: 0%; 
+    padding-top: 2%;
+}
+
+#informacoes-individuais{
+    display: none;
+    overflow: auto;
+    height: 85%;
+}
+
+#back{
+    margin-left: 1em;
+    display: none
+}
+
+#cardao, #revelado{
+    padding: 2% 4%;
+    margin: 0%;
+}
+
+#revelado{
+    cursor: pointer;
+}
+
+#detalhesdado{
+    position: relative;
+}
+
+#trophy{
+    position: absolute;
+    left: 3%
+}
+
+#body td{
+    text-align: center;
+    margin: 0%;
+    font-size: 16px
+}
+
+#body h5{
+    margin: 0
 }
 
 .map{

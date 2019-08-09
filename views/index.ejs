@@ -8,11 +8,13 @@
     <title>Document</title>
 
     <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.css">
     <link rel="stylesheet" href="css/materialize.min.css">
     <link href="css/mobile.css" rel="stylesheet" />
 
     <!-- Javascript  -->
     <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <script src="js/bootstrap.bundle.min.js" type="text/javascript"></script>
     <script src="js/materialize.min.js"></script>
 
@@ -25,6 +27,9 @@
     <nav class="grey darken-3">
         <div class="nav-wrapper">
             <a href="/" class="brand-logo">CorporateRun</a>
+            <ul class="left">
+                <li><i id="back" class="large material-icons">arrow_back</i></li>
+            </ul>
         </div>
     </nav>
     <!-- <div id="mapa" class="row" >
@@ -35,12 +40,12 @@
     <div id="competidores" class="row">
         <div class="col s12 m2">
             <%competidores.forEach((c, i) => {%>
-            <div class="col s12 m8 offset-m2 l6 offset-l3">
-                <div class="card-panel grey lighten-5 z-depth-2" style="padding: 4%">
-                    <div class="row valign-wrapper" style="margin: 0%;">
-                        <div class="col s3" style="padding: 0%">
+            <div id="estrutura<%- Number(i) + 1%>" class="col s12 m8 offset-m2 l6 offset-l3">
+                <div class="card-panel grey lighten-5 z-depth-2 alinhado">
+                    <div class="row valign-wrapper">
+                        <div class="col s3 " style="padding: 1%">
                             <div class="imagem">
-                                <img id="image<%- Number(i) + 1%>" src="img/competidores/bretas.jpg"
+                                <img id="image<%- Number(i) + 1%>" src="img/competidores/generic.png"
                                     class="circle responsive-img">
                                 <span class="marcacao circle"><%- Number(i) + 1%>°</span>
                             </div>
@@ -86,6 +91,71 @@
             <%})%>
         </div>
     </div>
+
+    <div id="informacoes-individuais" class="row">
+        <div class="col s12 m6">
+            <div class="card">
+                <div class="card-image">
+                    <div id="map" style="height: 150px"></div>
+                </div>
+                <div class="card-content" style="padding: 0% 5%; margin: 0% ">
+                    <div class="row valign-wrapper" style="padding: 0%;">
+                        <div class="col s3" style="padding: 0%; ">
+                            <div class="imagem ">
+                                <img id="image" src="img/competidores/generic.png" class="circle responsive-img">
+                            </div>
+                        </div>
+                        <div id="detalhesdado" class="col s9" style="padding: 0%;">
+                            <h5 style="margin: 0%; text-align:center"><i id="trophy" class="icon-trophy"></i>
+                                <span id="nome">unknown</span>
+                                <span id="sobrenome"></span>
+                            </h5>
+                            <h6 style="margin: 2% 0%; text-align:center"> <span id="position"></span> ° colocado</h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col s12 m6" style="margin-top: 0%">
+            <div class="card" style="margin-top: 0%">
+                <div id="cardao" class="card-content">
+                    <table class="bordered highlight" style="margin-bottom: 2% ">
+                        <tbody id="body">
+                            <tr>
+                                <td>
+                                    Distancia
+                                    <h5><b id="distancia">0m</b></h5>
+                                </td>
+                                <td>
+                                    Ritmo
+                                    <h5><b id="ritmo">00:00</b></h5>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Tempo Total
+                                    <h5><b id="tempototal">0:00:00</b></h5>
+                                </td>
+                                <td>
+                                    Calorias
+                                    <h5 id="calorias"><b>0cal</b></h5>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="card-title activator grey-text text-darken-4">Informações gerais<i
+                            class="material-icons right">arrow_upward</i></span>
+                </div>
+                <div id="revelado" class="card-reveal">
+                    <span class="card-title grey-text text-darken-4">Detalhes<i
+                            class="material-icons right">close</i></span>
+                    <canvas></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 <script>
 
@@ -99,20 +169,45 @@
         setInterval(carregar, 10000)
     }
 
-    // function initMap() {
-    //     map = new google.maps.Map(document.getElementById('map'), {
-    //         center: { lat: -23.5911131, lng: -46.6475914 },
-    //         zoom: 12,
-    //         styles: [{
-    //             "featureType": "poi",
-    //             "stylers": [{
-    //                 "visibility": "off"
-    //             }]
-    //         }],
-    //         scrollwheel: false,
-    //         disableDefaultUI: true
-    //     });
-    // }
+    $('.card-panel').click(() => {
+        $('#competidores')
+            .fadeOut()
+
+        $('#informacoes-individuais')
+            .css('display', 'block')
+            .fadeIn()
+
+        $('#back')
+            .css('display', 'block')
+
+    })
+
+    $('#back').click(() => {
+        $('#competidores')
+            .fadeIn()
+
+        $('#informacoes-individuais')
+            .css('display', 'none')
+            .fadeOut()
+
+        $('#back')
+            .css('display', 'none')
+    })
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: { lat: -23.5911131, lng: -46.6475914 },
+            zoom: 12,
+            styles: [{
+                "featureType": "poi",
+                "stylers": [{
+                    "visibility": "off"
+                }]
+            }],
+            scrollwheel: false,
+            disableDefaultUI: true
+        });
+    }
 
     function carregar() {
         $.ajax({
@@ -171,10 +266,16 @@
         } else {
             var minutos = Number(tempo) / 60
             var quilometros = Number(distancia) / 1000
-
             var pace = minutos / quilometros
-
-            return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            if (pace < 10) {
+                if (((pace * 60) % 60) < 10) {
+                    return `0${parseInt(pace)}:0${parseInt(((pace * 60) % 60))}`
+                } else {
+                    return `0${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+                }
+            } else {
+                return `${parseInt(pace)}:${parseInt(((pace * 60) % 60))}`
+            }
         }
     }
     function definirColocacao(info) {
@@ -205,6 +306,20 @@
         }
 
     }
+    function reverterTempo(tempo) {
+        if (tempo < 0) return `0:00:00`
+        function duas_casas(numero) {
+            if (numero <= 9) {
+                numero = "0" + numero;
+            }
+            return numero;
+        }
+        hora = (Math.round(tempo / 3600));
+        minuto = duas_casas(Math.floor((tempo % 3600) / 60));
+        segundo = duas_casas((tempo % 3600) % 60);
+        formatado = hora + ":" + minuto + ":" + segundo;
+        return formatado;
+    }
     function calcularCalorias(velocidade, peso) {
         var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
         if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
@@ -214,7 +329,57 @@
         if (type == 'inner') document.getElementById(id).innerHTML = value
         if (type == 'src') document.getElementById(id).src = value
     }
+    function detalharInformacao(posicao, infos) {
+
+        var colocacao = Number(posicao) + 1
+        var idEstructure = document.getElementById(`estrutura${colocacao}`)
+        var cadaInfo = infos[posicao]
+
+        let distancia = cadaInfo.information.distanciaTotal
+        var momentoInicialInicio = filtrarHorario(cadaInfo.information.momentoInicio),
+            momentoAtualInicio = filtrarHorario(cadaInfo.information.momentoAtual),
+            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                tranformarMomentoSegundos(momentoAtualInicio))
+
+
+        idEstructure.addEventListener('click', () => {
+            definirTrofeu(colocacao)
+            conectar(`nome`, cadaInfo.participante.nome)
+            conectar(`sobrenome`, cadaInfo.participante.sobrenome)
+            conectar(`position`, colocacao)
+            conectar(`image`, `/img/competidores/${cadaInfo.participante.foto}`, 'src')
+
+            conectar(`distancia`, formatarDistancia(distancia))
+            conectar(`tempototal`, reverterTempo(momentoDiferenca))
+            conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
+            conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
+        })
+
+    }
+    function definirTrofeu(colocation) {
+        switch (colocation) {
+            case 1:
+                $('#trophy')
+                    .css('display', 'flex')
+                    .css('color', '#c0ca33');
+                break;
+            case 2:
+                $('#trophy')
+                    .css('display', 'flex')
+                    .css('color', '#bdbdbd');
+                break;
+            case 3:
+                $('#trophy')
+                    .css('display', 'flex')
+                    .css('color', '#a1887f');
+                break;
+            default:
+                $('#trophy')
+                    .css('display', 'none');
+        }
+    }
     function plottarDadosMobile(infos) {
+
         if (infos[info].gps.length != 0) {
             iniciarMarcacao(infos[info].gps)
         }
@@ -231,7 +396,7 @@
         conectar(`number${Number(info) + 1}`, infos[info].participante.numero)
         conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
         conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
-        conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}/h`)
+        conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)
         conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
         conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
 
@@ -240,6 +405,7 @@
         for (info in infos) {
 
             plottarDadosMobile(infos)
+            detalharInformacao(info, infos)
 
         }
     }
@@ -247,8 +413,7 @@
 
 </script>
 
-
-<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap"
-        async defer></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap" async
+    defer></script>
 
 </html>

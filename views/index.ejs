@@ -106,7 +106,8 @@
                             </div>
                         </div>
                         <div id="detalhesdado" class="col s9" style="padding: 0%;">
-                            <h5 style="margin: 0%; text-align:center"><i id="trophy" class="icon-trophy"></i>
+                            <h5 style="margin: 0%; text-align:center">
+                                <!-- <i id="trophy" class="icon-trophy"></i> -->
                                 <span id="nome">unknown</span>
                                 <span id="sobrenome"></span>
                             </h5>
@@ -139,7 +140,7 @@
                                 </td>
                                 <td>
                                     Calorias
-                                    <h5 id="calorias"><b>0cal</b></h5>
+                                    <h5 ><b id="calorias">0cal</b></h5>
                                 </td>
                             </tr>
                         </tbody>
@@ -343,7 +344,7 @@
 
 
         idEstructure.addEventListener('click', () => {
-            definirTrofeu(colocacao)
+            // definirTrofeu(colocacao)
             conectar(`nome`, cadaInfo.participante.nome)
             conectar(`sobrenome`, cadaInfo.participante.sobrenome)
             conectar(`position`, colocacao)
@@ -356,28 +357,28 @@
         })
 
     }
-    function definirTrofeu(colocation) {
-        switch (colocation) {
-            case 1:
-                $('#trophy')
-                    .css('display', 'flex')
-                    .css('color', '#c0ca33');
-                break;
-            case 2:
-                $('#trophy')
-                    .css('display', 'flex')
-                    .css('color', '#bdbdbd');
-                break;
-            case 3:
-                $('#trophy')
-                    .css('display', 'flex')
-                    .css('color', '#a1887f');
-                break;
-            default:
-                $('#trophy')
-                    .css('display', 'none');
-        }
-    }
+    // function definirTrofeu(colocation) {
+    //     switch (colocation) {
+    //         case 1:
+    //             $('#trophy')
+    //                 .css('display', 'flex')
+    //                 .css('color', '#c0ca33');
+    //             break;
+    //         case 2:
+    //             $('#trophy')
+    //                 .css('display', 'flex')
+    //                 .css('color', '#bdbdbd');
+    //             break;
+    //         case 3:
+    //             $('#trophy')
+    //                 .css('display', 'flex')
+    //                 .css('color', '#a1887f');
+    //             break;
+    //         default:
+    //             $('#trophy')
+    //                 .css('display', 'none');
+    //     }
+    // }
     function plottarDadosMobile(infos) {
 
         if (infos[info].gps.length != 0) {

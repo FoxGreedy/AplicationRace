@@ -34,8 +34,10 @@
 
         <!-- Logo -->
         <div>
-            <div id="logo">
-                <img src="img/AmericanTowerLogo.png">
+            <div class="logo">
+                <img id="atc" src="img/AmericanTowerLogo.png">
+                <img id="lora" src="img/lora.png">
+                <img id="vagoon" src="img/vagoon.png">
             </div>
         </div>
 
@@ -374,9 +376,6 @@
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
 
-                // Marcador no mapa
-                // console.log(todasInfosCompetidor)
-
             },
             error: (e) => {
                 console.error('Error', e)
@@ -438,11 +437,6 @@
 
         info.sort(comparer);
 
-    }
-    function calcularCalorias(velocidade, peso) {
-        var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
-        if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
-        else return `${parseInt(caloria)}cal`
     }
     function conectar(id, value, type = 'inner') {
         if (type == 'inner') document.getElementById(id).innerHTML = value

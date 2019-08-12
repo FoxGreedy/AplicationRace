@@ -68,12 +68,14 @@ function enviarPayloadVagoon(payload, model, id) {
     let payloadAscii = payload64.toString('ascii')
 
     let coordenadas = payloadAscii.split(',')
-    console.log(coordenadas)
+
 
     if (coordenadas.length > 1) {
-        let altidude = coordenadas[0]
+        let altitude = coordenadas[0]
         let latitude = coordenadas[1].replace(/[ ]+/g, '');
         let longitude = coordenadas[2].replace(/[ ]+/g, '');
+
+        console.log(altitude, latitude, longitude)
 
         if (Number(latitude) == 0 || Number(longitude) == 0) {
 
@@ -82,7 +84,7 @@ function enviarPayloadVagoon(payload, model, id) {
         } else {
 
             NewCoordinate.devAdress = id
-            NewCoordinate.gps.alt = altidude
+            NewCoordinate.gps.alt = altitude
             NewCoordinate.gps.lat = latitude
             NewCoordinate.gps.lng = longitude
 

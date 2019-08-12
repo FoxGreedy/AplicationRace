@@ -17,6 +17,10 @@
     position: absolute;
 }
 
+#logo{
+    text-align: center
+}
+
 #mapa{
     height: 30%;
     margin: 0%
@@ -94,6 +98,21 @@
 
 .imagem img{
     border: #424242 solid 2px
+}
+
+#image{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+#oferecimento{
+    text-align: center;
+    margin: 0%;
+    padding-top: 10px
+}
+
+#oferecimento img{
+    height: 35px
 }
 
 .centered{

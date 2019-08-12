@@ -26,17 +26,19 @@
 
     <nav class="grey darken-3">
         <div class="nav-wrapper">
-            <a href="/" class="brand-logo">CorporateRun</a>
+            <a href="/" class="brand-logo">ATC LoRaRUN</a>
             <ul class="left">
                 <li><i id="back" class="large material-icons">arrow_back</i></li>
             </ul>
         </div>
     </nav>
-    <!-- <div id="mapa" class="row" >
-        <div class="s12 map">
-            <div class="map" id="map"></div>
-        </div>
-    </div> -->
+
+    <div id="oferecimento" class="row">
+        <img src="img/vagoon.png">
+        <img src="img/lora.png">
+        <img src="img/AmericanTowerLogo.png">
+    </div>
+
     <div id="competidores" class="row">
         <div class="col s12 m2">
             <%competidores.forEach((c, i) => {%>
@@ -107,7 +109,6 @@
                         </div>
                         <div id="detalhesdado" class="col s9" style="padding: 0%;">
                             <h5 style="margin: 0%; text-align:center">
-                                <!-- <i id="trophy" class="icon-trophy"></i> -->
                                 <span id="nome">unknown</span>
                                 <span id="sobrenome"></span>
                             </h5>
@@ -140,7 +141,7 @@
                                 </td>
                                 <td>
                                     Calorias
-                                    <h5 ><b id="calorias">0cal</b></h5>
+                                    <h5><b id="calorias">0cal</b></h5>
                                 </td>
                             </tr>
                         </tbody>
@@ -174,13 +175,15 @@
         $('#competidores')
             .fadeOut()
 
+        $('#oferecimento')
+            .css('display', 'none')
+
         $('#informacoes-individuais')
             .css('display', 'block')
             .fadeIn()
 
         $('#back')
             .css('display', 'block')
-
     })
 
     $('#back').click(() => {
@@ -193,6 +196,9 @@
 
         $('#back')
             .css('display', 'none')
+
+        $('#oferecimento')
+            .css('display', 'block')
     })
 
     function initMap() {
@@ -209,7 +215,17 @@
             disableDefaultUI: true
         });
     }
+    function iniciarMarcacao(infos) {
+        var unique = infos.slice().reverse()
 
+        var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
+        var marker = new google.maps.Marker({
+            position: ponto,
+            map: map,
+            title: 'oioio'
+        })
+
+    }
     function carregar() {
         $.ajax({
             cache: false,
@@ -226,10 +242,8 @@
                         }
                     }
                 }
-
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
-
             },
             error: (e) => {
                 console.error('Error', e)
@@ -302,7 +316,6 @@
         } else if (distancia % 1000 == 0) {
             return `${distancia / 1000}km`
         } else {
-            console.log(`${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`)
             return `${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`
         }
 
@@ -321,9 +334,10 @@
         formatado = hora + ":" + minuto + ":" + segundo;
         return formatado;
     }
-    function calcularCalorias(velocidade, peso) {
-        var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
+    function calcularCalorias(velocidade, peso, tempo) {
+        var caloria = (parseInt(Number(velocidade) * Number(peso)) * 0.0175) * parseInt(tempo / 60)
         if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
+        else if(caloria < 0) return `0cal`
         else return `${parseInt(caloria)}cal`
     }
     function conectar(id, value, type = 'inner') {
@@ -336,54 +350,30 @@
         var idEstructure = document.getElementById(`estrutura${colocacao}`)
         var cadaInfo = infos[posicao]
 
-        let distancia = cadaInfo.information.distanciaTotal
+        let distancia = cadaInfo.information.distanciaTotal,
+            peso = infos[info].participante.peso
+
         var momentoInicialInicio = filtrarHorario(cadaInfo.information.momentoInicio),
             momentoAtualInicio = filtrarHorario(cadaInfo.information.momentoAtual),
             momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
                 tranformarMomentoSegundos(momentoAtualInicio))
 
-
         idEstructure.addEventListener('click', () => {
-            // definirTrofeu(colocacao)
+            if (cadaInfo.gps.length != 0) {
+                iniciarMarcacao(cadaInfo.gps)
+            }
             conectar(`nome`, cadaInfo.participante.nome)
             conectar(`sobrenome`, cadaInfo.participante.sobrenome)
             conectar(`position`, colocacao)
             conectar(`image`, `/img/competidores/${cadaInfo.participante.foto}`, 'src')
-
             conectar(`distancia`, formatarDistancia(distancia))
             conectar(`tempototal`, reverterTempo(momentoDiferenca))
-            conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
+            conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), peso, momentoDiferenca))
             conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
         })
 
     }
-    // function definirTrofeu(colocation) {
-    //     switch (colocation) {
-    //         case 1:
-    //             $('#trophy')
-    //                 .css('display', 'flex')
-    //                 .css('color', '#c0ca33');
-    //             break;
-    //         case 2:
-    //             $('#trophy')
-    //                 .css('display', 'flex')
-    //                 .css('color', '#bdbdbd');
-    //             break;
-    //         case 3:
-    //             $('#trophy')
-    //                 .css('display', 'flex')
-    //                 .css('color', '#a1887f');
-    //             break;
-    //         default:
-    //             $('#trophy')
-    //                 .css('display', 'none');
-    //     }
-    // }
     function plottarDadosMobile(infos) {
-
-        if (infos[info].gps.length != 0) {
-            iniciarMarcacao(infos[info].gps)
-        }
 
         let distancia = infos[info].information.distanciaTotal
 
@@ -398,16 +388,14 @@
         conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
         conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
         conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)
-        conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso))
+        conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso, momentoDiferenca))
         conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
 
     }
     function plottarDados(infos) {
         for (info in infos) {
-
             plottarDadosMobile(infos)
             detalharInformacao(info, infos)
-
         }
     }
 

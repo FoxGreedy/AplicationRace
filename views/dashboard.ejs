@@ -353,6 +353,18 @@
         var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
         var marker = new google.maps.Marker({
             position: ponto,
+            map: map,
+            title: 'oioio'
+        })
+    }
+
+    function iniciarMarcacao(infos) {
+
+        var unique = infos.slice().reverse()
+
+        var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
+        var marker = new google.maps.Marker({
+            position: ponto,
             map: map
         })
 
@@ -419,7 +431,6 @@
         } else if (distancia % 1000 == 0) {
             return `${distancia / 1000}km`
         } else {
-            console.log(`${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`)
             return `${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 100)}km`
         }
 
@@ -452,13 +463,12 @@
             }
         }
     }
-
-    function calcularCalorias(velocidade, peso) {
-        var caloria = parseInt(Number(velocidade) * Number(peso)) * 0.0175
+    function calcularCalorias(velocidade, peso, tempo) {
+        var caloria = (parseInt(Number(velocidade) * Number(peso)) * 0.0175) * parseInt(tempo / 60)
         if (caloria >= 1000) return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}Kcal`
+        else if (caloria < 0) return `0cal`
         else return `${parseInt(caloria)}cal`
     }
-
     function definirColocacao(info) {
         function comparer(a, b) {
             if (a.information.distanciaTotal < b.information.distanciaTotal)
@@ -501,8 +511,9 @@
                 distancia = infos[info].information.distanciaTotal,
                 momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
                     tranformarMomentoSegundos(momentoAtualInicio))
+
             let velocidade = Number(calcularVelocidade(distancia, momentoDiferenca)),
-                calorias = calcularCalorias(velocidade, infos[info].participante.peso),
+                calorias = calcularCalorias(velocidade, infos[info].participante.peso, momentoDiferenca),
                 ritmo = calcularPace(distancia, momentoDiferenca)
 
             conectar(`img${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')

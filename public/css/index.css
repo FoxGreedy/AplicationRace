@@ -14,19 +14,34 @@
 	padding:0;
 }
 
-#logo > img{
+.logo{
+    text-align: center
+}
+
+.logo > img{
     position: absolute;
-    width: 15%;
-    top: 5px;
-    right: 5px;
     z-index: 2;
 }
 
+.logo > #atc{
+    top: 5px;
+    right: 5px;
+    width: 15%;
+}
+.logo > #lora{
+    top: 20%;
+    right: 5px;
+    width: 15%;
+}
+.logo > #vagoon{
+    top: 32%;
+    right: 10px;
+    width: 15%;
+}
 body {
     font-family: 'Trebuchet MS', 'Helvetica', sans-serif;
     background:#e2e2e2;
 }
-
 #container{
     position: absolute;
     height: 100%;

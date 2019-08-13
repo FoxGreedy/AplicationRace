@@ -59,10 +59,7 @@ const dashRouter = require('./routes/dashboard')
 const formsRouter = require('./routes/forms')
 
 // BACKEND
-const historicRouter = require('./routes/historico')
-const competidorRouter = require('./routes/competidor')
 const dadosRouter = require('./routes/dados')
-const localRouter = require('./routes/gps')
 
 // Usando as rotas do servidor
 app.use('/', indexRouter)
@@ -70,10 +67,7 @@ app.use('/details', inforRouter)
 app.use('/tela-mapa1', tela1Router)
 app.use('/tela-mapa2', tela2Router)
 app.use('/formulario', formsRouter)
-app.use('/historico', historicRouter)
-app.use('/competidor', competidorRouter)
 app.use('/dados', dadosRouter)
-app.use('/local', localRouter)
 app.use('/dashboard', dashRouter)
 
 app.use(function (req, res, next) {

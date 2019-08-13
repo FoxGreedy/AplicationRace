@@ -34,6 +34,30 @@
 .alinhado{
     padding-bottom: 0%; 
     padding-top: 2%;
+    position: relative;
+}
+
+.date{
+    padding: 10px 0 0 0;
+    text-align: center;
+    align-items: center
+}
+
+.date strong{
+    font-size: 17px;
+}
+
+.date span{
+    font-size: 12px;
+    text-align: center;
+}
+
+.medicao{
+    line-height: 14px
+}
+
+.date i{
+    font-size: 30px
 }
 
 #informacoes-individuais{
@@ -122,4 +146,8 @@
 .dados{
     text-align: center;
     font-size: 18px
+}
+
+.botao{
+    margin-left: auto
 }

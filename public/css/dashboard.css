@@ -16,9 +16,9 @@
 }
 
 .logo{
-    margin: 1%;
-    padding: 0%;
-    text-align: center
+    padding: auto;
+    text-align: center;
+    vertical-align: top;
 }
 
 .pessoa{
@@ -50,7 +50,10 @@
 .index{
     margin: 0%;
     margin-left: 25px;
-    text-align: center    
+}
+
+.index img{
+    width: 10%
 }
 
 .lista{

@@ -63,7 +63,8 @@
 #informacoes-individuais{
     display: none;
     overflow: auto;
-    height: 85%;
+    margin: 0%;
+    height: 90%;
 }
 
 #back{
@@ -135,8 +136,11 @@
     padding-top: 10px
 }
 
-#oferecimento img{
-    height: 35px
+.title{
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+    position: absolute;
 }
 
 .centered{

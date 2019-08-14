@@ -51,47 +51,26 @@ router.get('/info', (req, res) => {
         })
 })
 
-router.get('/zerar', (req, res) => {
-    dados.updateMany(
-        {},
-        { $set: { distanciaTotal: 0, distanciaAtual: 0, momentoInicio: new Date(), momentoAtual: new Date() } },
-        { upsert: true },
-        (err, data) => {
-            if (err) {
-                console.error('Deu ruim meu consagrado')
-            } else {
-                gps.deleteMany({},
-                    (err, data) => {
-                        if (err) {
-                            console.error('Deu ruim meu consagrado')
-                        } else {
-                            res.redirect('/')
-                        }
-                    })
-            }
-        }
-    )
-})
+router.put('/iniciar/:devAdress', (req, res) => {
+    let { params: { devAdress } } = req
 
-router.put('/iniciar/:nomeCompetidor', (req, res) => {
-    let { params: { nomeCompetidor } } = req
-    let agora = calcularData(new Date(), -6)
-
-    function calcularData(data, offset) {
-        var milisegundos_com_utc = data.getTime() + (data.getTimezoneOffset() * 60000);
-        return new Date(milisegundos_com_utc + (3600000 * offset));
-    }
-
-    dados.findOneAndUpdate({ nomeCompetidor: nomeCompetidor },
-        { $set: { distanciaTotal: 0, distanciaAtual: 0, momentoInicio: agora, momentoAtual: agora } },
+    dados.findOneAndUpdate({ devAdress },
+        { $set: { distanciaTotal: 0, distanciaAtual: 0 } },
         { upsert: true },
         (err, data1) => {
-            if (err) {
-                console.log('Error', err)
-            } else {
-                res.status(200).send(data1)
-            }
+            gps.deleteMany({ devAdress },
+                (err, data2) => {
+                    if (err) {
+                        console.error('Deu ruim meu consagrado')
+                    } else {
+                        res.send({ data: { data1, data2 } })
+                    }
+                })
         })
+})
+
+router.put('/finalizar/:devAdress', (req, res) => {
+
 })
 
 router.get('/:nomeCompetidor', (req, res) => {

@@ -18,13 +18,14 @@
 
     <!-- Grafico -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
 <body id="mobile" onload="iniciar()">
 
     <nav class="grey darken-3">
         <div class="nav">
-            <a href="/" class="brand-logo">LoRaRUN</a>
+            <a href="/" class="title">ATC LoRa RUN</a>
             <ul class="left">
                 <li><i id="back" class="large material-icons">arrow_back</i></li>
             </ul>
@@ -32,9 +33,11 @@
     </nav>
 
     <div id="oferecimento" class="row">
-        <img src="img/vagoon.png">
-        <img src="img/lora.png">
-        <img src="img/AmericanTowerLogo.png">
+        <img src="img/logo-mobile/ATC.png" style="width: 10%">
+        <img src="img/logo-mobile/ENET.png" style="width: 6%">
+        <img src="img/logo-mobile/lora.png" style="width: 20%">
+        <img src="img/logo-mobile/tctec.png" style="width: 20%">
+        <img src="img/logo-mobile/BUP.png" style="width: 8%">
     </div>
 
     <div id="competidores" class="row">
@@ -104,7 +107,7 @@
         <div class="col s12 m6">
             <div class="card">
                 <div class="card-image">
-                    <div id="map" style="height: 150px"></div>
+                    <div id="map" style="height: 120px"></div>
                 </div>
                 <div class="card-content" style="padding: 0% 5%; margin: 0% ">
                     <div class="row valign-wrapper" style="padding: 0%;">
@@ -156,8 +159,7 @@
             </div>
         </div>
         <div class="center-align">
-            <a id="botaoIniciar" class="btn-floating btn-large waves-effect waves-light"><i
-                    class="material-icons">play_arrow</i></a>
+                <a id="botaoIniciar" class="waves-effect waves-light btn-large"><i class="material-icons left">play_arrow</i>Começar</a>
         </div>
     </div>
 
@@ -312,9 +314,10 @@
         info.sort(comparer);
 
     }
-    function formatarDistancia(distancia) {
+    function formatarDistancia(distancia, index) {
 
         if (distancia < 0) {
+            conectar(`medicao-dis${Number(index) + 1}`, 'm')
             return `${distancia}`
         } else if (distancia < 1000) {
             return `${distancia}`
@@ -339,11 +342,11 @@
         formatado = hora + ":" + minuto + ":" + segundo;
         return formatado;
     }
-    function calcularCalorias(velocidade, peso, tempo, index) {
+    function calcularCalorias(velocidade, peso, tempo, index = null) {
         var caloria = (parseInt(Number(velocidade) * Number(peso)) * 0.0175) * parseInt(tempo / 60)
         if (caloria >= 1000) {
-            conectar(`medicao-cal${Number(index) + 1}`, 'Kcal')
-            return `${parseInt(caloria / 1000)},${parseInt(caloria % 1000) / 100}`
+            if(index) conectar(`medicao-cal${Number(index) + 1}`, 'Kcal')
+            return `${parseInt(caloria / 1000)}.${parseInt((caloria % 1000) / 100)}`
         }
         else if (caloria < 0) {
             conectar(`medicao-cal${Number(index) + 1}`, 'cal')
@@ -381,31 +384,30 @@
             conectar(`sobrenome`, cadaInfo.participante.sobrenome)
             conectar(`position`, colocacao)
             conectar(`image`, `/img/competidores/${cadaInfo.participante.foto}`, 'src')
-            conectar(`distancia`, formatarDistancia(distancia))
+            conectar(`distancia`, formatarDistancia(distancia, info))
             conectar(`tempototal`, reverterTempo(momentoDiferenca))
             conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), peso, momentoDiferenca, posicao))
             conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
 
             botaoIniciar.addEventListener('click', () => {
-
                 $.ajax({
                     cache: false,
                     type: 'PUT',
-                    url: `/dados/iniciar/${cadaInfo.participante.nome}`,
+                    url: `/dados/iniciar/${cadaInfo.participante.devAdress}`,
                     success: (data) => {
-
                         conectar(`distancia`, 0)
                         conectar(`tempototal`, `0:00:00`)
                         conectar(`calorias`, 0)
                         conectar(`ritmo`, 0)
                         console.log(data)
-                        
                     }, error: (e) => {
                         console.error(e)
                     }
                 })
             })
         })
+        
+
 
     }
     function plottarDadosMobile(infos) {
@@ -421,7 +423,7 @@
         conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
         conectar(`number${Number(info) + 1}`, infos[info].participante.numero)
         conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
-        conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
+        conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia, info))
         conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)
         conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso, momentoDiferenca, info))
         conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))

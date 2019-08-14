@@ -51,7 +51,6 @@
                     <!-- <div id="header-dash" class="card-header rounded-0 border-danger">
                         <h5 class="card-title">Competidores</h5>
                     </div> -->
-
                     <!-- head -->
                     <div id="body-dash" class="card-body">
                         <table id="tabela" class="table">
@@ -90,7 +89,7 @@
 
                                     <% for(competidor in competidores) {  %>
 
-                                    <td class="border-right border-top-0 border-danger pessoa">
+                                    <td class="border border-left-0 border-danger pessoa">
                                         <div class="media">
                                             <div class="imagem">
                                                 <img id="img<%- Number(competidor) + 1%>"
@@ -101,9 +100,6 @@
                                                 </div>
                                             </div>
                                             <div class="media-body">
-                                                <div id="numero<%- Number(competidor) + 1%>" class="numero">
-                                                    0
-                                                </div>
                                                 <div id="nome<%- Number(competidor) + 1%>" class="nome">
                                                     Unknown
                                                 </div>
@@ -114,7 +110,7 @@
                                         </div>
                                     </td>
 
-                                    <td class="dado border-right border-top-0 border-danger">
+                                    <td class="dado border border-danger">
                                         <div class="row dados">
                                             <div class="col-3 coluna">
                                                 <div class="media mt-2">
@@ -189,7 +185,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="border-0">
+                                    <td class="border border-danger">
                                         <div class="bar">
                                             <canvas id="graphBar<%- Number(competidor) + 1%>" height=55></canvas>
                                         </div>
@@ -453,7 +449,6 @@
             conectar(`img${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
             conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
             conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
-            conectar(`numero${Number(info) + 1}`, infos[info].participante.numero)
             conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia))
             conectar(`calorias${Number(info) + 1}`, calorias)
             conectar(`velocidade${Number(info) + 1}`, (velocidade).toFixed(2))

@@ -26,17 +26,15 @@
 }
 
 .nome{
-    font-size: 16px; 
-    margin-top: -10px;
-}
-
-.numero{
-    font-size: 40px;
-    line-height: 55px
+    margin-top: 15px
 }
 
 .sobrenome{
     line-height: 5px
+}
+
+.nome, .sobrenome{
+    font-size: 22px;
 }
 
 .dado{

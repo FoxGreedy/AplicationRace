@@ -52,24 +52,34 @@ router.get('/info', (req, res) => {
 })
 
 router.put('/iniciar/:devAdress', (req, res) => {
+
     let { params: { devAdress } } = req
 
     dados.findOneAndUpdate({ devAdress },
-        { $set: { distanciaTotal: 0, distanciaAtual: 0 } },
+        { distanciaAtual: 0, distanciaTotal: 0 },
         { upsert: true },
         (err, data1) => {
-            gps.deleteMany({ devAdress },
-                (err, data2) => {
-                    if (err) {
-                        console.error('Deu ruim meu consagrado')
-                    } else {
-                        res.send({ data: { data1, data2 } })
-                    }
+            if (err) {
+                console.log('Error', err)
+            } else {
+                gps.deleteMany({ devAdress }, (err, data2) => {
+                    if (err) console.log(err)
+                    else return res.send({ data: { data1, data2 } })
                 })
+            }
         })
+
 })
 
 router.put('/finalizar/:devAdress', (req, res) => {
+    let { params: { devAdress } } = req;
+
+    dados.findOneAndUpdate({ devAdress },
+        { $set: { distanciaTotal: 10000 } },
+        { upsert: true }, (err, data1) => {
+            if (err) console.log(err)
+            else return res.send(data1)
+        })
 
 })
 

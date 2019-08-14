@@ -25,7 +25,9 @@
 
     <nav class="grey darken-3">
         <div class="nav">
-            <a href="/" class="title">ATC LoRa RUN</a>
+            <div class="title">
+                <a href="/">ATC LoRa RUN</a>
+            </div>
             <ul class="left">
                 <li><i id="back" class="large material-icons">arrow_back</i></li>
             </ul>
@@ -55,9 +57,6 @@
                         </div>
                         <div class="col s9">
                             <div class="dados">
-                                <span id="number<%- Number(i) + 1%>">
-
-                                </span> -
                                 <span id="nome<%- Number(i) + 1%>">
                                     unknown
                                 </span>
@@ -159,7 +158,10 @@
             </div>
         </div>
         <div class="center-align">
-                <a id="botaoIniciar" class="waves-effect waves-light btn-large"><i class="material-icons left">play_arrow</i>Começar</a>
+            <a id="botaoIniciar" class="waves-effect waves-light btn-large"><i
+                    class="material-icons left">play_arrow</i>Começar</a>
+            <a id="botaoFinalizar" class="waves-effect waves-light btn-large red lighten-2"><i
+                    class="material-icons left" style="display: none">pause</i>Finalizar</a>
         </div>
     </div>
 
@@ -207,6 +209,8 @@
         $('#oferecimento')
             .css('display', 'block')
     })
+
+
 
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
@@ -320,10 +324,13 @@
             conectar(`medicao-dis${Number(index) + 1}`, 'm')
             return `${distancia}`
         } else if (distancia < 1000) {
+            conectar(`medicao-dis${Number(index) + 1}`, 'm')
             return `${distancia}`
         } else if (distancia % 1000 == 0) {
+            conectar(`medicao-dis${Number(index) + 1}`, 'km')
             return `${distancia / 1000}`
         } else {
+            conectar(`medicao-dis${Number(index) + 1}`, 'km')
             return `${parseInt(distancia / 1000)}.${parseInt((distancia % 1000) / 10)}`
         }
 
@@ -345,7 +352,7 @@
     function calcularCalorias(velocidade, peso, tempo, index = null) {
         var caloria = (parseInt(Number(velocidade) * Number(peso)) * 0.0175) * parseInt(tempo / 60)
         if (caloria >= 1000) {
-            if(index) conectar(`medicao-cal${Number(index) + 1}`, 'Kcal')
+            if (index) conectar(`medicao-cal${Number(index) + 1}`, 'Kcal')
             return `${parseInt(caloria / 1000)}.${parseInt((caloria % 1000) / 100)}`
         }
         else if (caloria < 0) {
@@ -366,6 +373,7 @@
         var colocacao = Number(posicao) + 1
         var idEstructure = document.getElementById(`estrutura${colocacao}`)
         var botaoIniciar = document.getElementById(`botaoIniciar`)
+        var botaoFinalizar = document.getElementById('botaoFinalizar')
         var cadaInfo = infos[posicao]
 
         let distancia = cadaInfo.information.distanciaTotal,
@@ -399,14 +407,42 @@
                         conectar(`tempototal`, `0:00:00`)
                         conectar(`calorias`, 0)
                         conectar(`ritmo`, 0)
-                        console.log(data)
+
+                        $('#botaoIniciar')
+                            .css('display', 'none')
+
+                        $('#botaoFinalizar')
+                            .css('display', 'inline-block')
+
                     }, error: (e) => {
                         console.error(e)
                     }
                 })
             })
+
+            botaoFinalizar.addEventListener('click', () => {
+                if (distancia < 9000) {
+                    alert('Voce não terminou o percurso ainda')
+                } else {
+                    $.ajax({
+                        cache: false,
+                        type: 'PUT',
+                        data: { distancia: distancia },
+                        url: `/dados/finalizar/${cadaInfo.participante.devAdress}`,
+                        success: (data) => {
+                            $('#botaoIniciar')
+                                .css('display', 'inline-block')
+
+                            $('#botaoFinalizar')
+                                .css('display', 'none')
+                        }, error: (e) => {
+                            console.error(e)
+                        }
+                    })
+                }
+            })
         })
-        
+
 
 
     }
@@ -421,7 +457,6 @@
 
         conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
         conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
-        conectar(`number${Number(info) + 1}`, infos[info].participante.numero)
         conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
         conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia, info))
         conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)

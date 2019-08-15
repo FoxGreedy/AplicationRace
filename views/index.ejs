@@ -175,7 +175,7 @@
     <div id="modal1" class="modal">
         <div class="modal-content">
             <h4>Cuidado!</h4>
-            <p>Você ainda não terminou a corrida, tem certeza que deseja encerrar?</p>
+            <p>Você tem certeza que deseja encerrar a corrida?</p>
         </div>
         <div class="modal-footer">
             <a href="#!" class="modal-close waves-effect waves-light btn red lighten-2"><i
@@ -398,7 +398,6 @@
             success: (data) => {
                 $('#botaoIniciar')
                     .css('display', 'inline-block')
-                    .toggleClass('disabled')
 
                 $('#botaoFinalizar')
                     .css('display', 'none')
@@ -416,7 +415,6 @@
             success: (data) => {
                 $('#botaoIniciar')
                     .css('display', 'inline-block')
-                    .toggleClass('disabled')
 
                 $('#botaoFinalizar')
                     .css('display', 'none')

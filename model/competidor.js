@@ -7,8 +7,7 @@ const SchemaCompetidor = new Schema({
     sobrenome: { type: String, require: true },
     equipe: { type: String, required: true },
     peso: { type: Number, required: true },
-    foto: { type: String, required: true },
-    numero: { type: String, required: true }
+    foto: { type: String, required: true }    
 })
 
 module.exports = mongoose.model('Competidor', SchemaCompetidor)

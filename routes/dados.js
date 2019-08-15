@@ -56,7 +56,7 @@ router.put('/iniciar/:devAdress', (req, res) => {
     let { params: { devAdress } } = req
 
     dados.findOneAndUpdate({ devAdress },
-        { distanciaAtual: 0, distanciaTotal: 0 },
+        { distanciaAtual: 0, distanciaTotal: 0, status: 'Iniciado' },
         { upsert: true },
         (err, data1) => {
             if (err) {
@@ -72,15 +72,25 @@ router.put('/iniciar/:devAdress', (req, res) => {
 })
 
 router.put('/finalizar/:devAdress', (req, res) => {
-    let { params: { devAdress } } = req;
+    let { params: { devAdress }, body: { status } } = req;
 
     dados.findOneAndUpdate({ devAdress },
-        { $set: { distanciaTotal: 10000 } },
+        { $set: { distanciaTotal: 10000, status } },
         { upsert: true }, (err, data1) => {
             if (err) console.log(err)
             else return res.send(data1)
         })
+})
 
+router.put('/desclassificar/:devAdress', (req, res) => {
+    let { params: { devAdress } } = req
+
+    dados.findOneAndUpdate({ devAdress },
+        { $set: { status: 'desistiu' } },
+        { upsert: true }, (err, data1) => {
+            if (err) return res.send(err)
+            else return res.send(data1)
+        })
 })
 
 router.get('/:nomeCompetidor', (req, res) => {

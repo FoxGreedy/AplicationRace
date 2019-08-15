@@ -34,6 +34,10 @@
         </div>
     </nav>
 
+    <div id="progress" class="progress grey darken-1">
+        <div class="indeterminate grey lighten-4"></div>
+    </div>
+
     <div id="oferecimento" class="row">
         <img src="img/logo-mobile/ATC.png" style="width: 10%">
         <img src="img/logo-mobile/ENET.png" style="width: 6%">
@@ -158,10 +162,26 @@
             </div>
         </div>
         <div class="center-align">
-            <a id="botaoIniciar" class="waves-effect waves-light btn-large"><i
-                    class="material-icons left">play_arrow</i>Começar</a>
-            <a id="botaoFinalizar" class="waves-effect waves-light btn-large red lighten-2"><i
-                    class="material-icons left" style="display: none">pause</i>Finalizar</a>
+
+            <a id="botaoIniciar" class="waves-effect waves-light btn-large">
+                <i class="material-icons left">play_arrow</i>
+                Começar
+            </a>
+            <a id="botaoFinalizar" class="waves-effect waves-light btn-large red lighten-2">
+                <i class="material-icons left">pause</i>Finalizar</a>
+        </div>
+    </div>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Cuidado!</h4>
+            <p>Você ainda não terminou a corrida, tem certeza que deseja encerrar?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-close waves-effect waves-light btn red lighten-2"><i
+                    class="material-icons left">close</i>Não</a>
+            <a id="sim" href="#!" class="modal-close waves-effect waves-light btn"><i
+                    class="material-icons left">check</i>Sim</a>
         </div>
     </div>
 
@@ -172,6 +192,7 @@
 
     $(document).ready(() => {
         carregar()
+        $('.modal').modal();
     })
 
     function iniciar() {
@@ -368,6 +389,43 @@
         if (type == 'inner') document.getElementById(id).innerHTML = value
         if (type == 'src') document.getElementById(id).src = value
     }
+    function finalizarCompetição(id, status) {
+        $.ajax({
+            cache: false,
+            type: 'PUT',
+            url: `/dados/finalizar/${id}`,
+            data: { status: status },
+            success: (data) => {
+                $('#botaoIniciar')
+                    .css('display', 'inline-block')
+                    .toggleClass('disabled')
+
+                $('#botaoFinalizar')
+                    .css('display', 'none')
+
+            }, error: (e) => {
+                console.error(e)
+            }
+        })
+    }
+    function desclassificar(id) {
+        $.ajax({
+            cache: false,
+            type: 'PUT',
+            url: `/dados/desclassificar/${id}`,
+            success: (data) => {
+                $('#botaoIniciar')
+                    .css('display', 'inline-block')
+                    .toggleClass('disabled')
+
+                $('#botaoFinalizar')
+                    .css('display', 'none')
+
+            }, error: (e) => {
+                console.error(e)
+            }
+        })
+    }
     function detalharInformacao(posicao, infos) {
 
         var colocacao = Number(posicao) + 1
@@ -398,6 +456,12 @@
             conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
 
             botaoIniciar.addEventListener('click', () => {
+                $('#progress')
+                    .css('display', 'block')
+
+                $('#botaoIniciar')
+                    .toggleClass('disabled')
+
                 $.ajax({
                     cache: false,
                     type: 'PUT',
@@ -410,35 +474,28 @@
 
                         $('#botaoIniciar')
                             .css('display', 'none')
-
+                            .removeClass('disabled')
                         $('#botaoFinalizar')
                             .css('display', 'inline-block')
+                        $('#progress')
+                            .css('display', 'none')
 
                     }, error: (e) => {
-                        console.error(e)
+                        $('#botaoIniciar')
+                            .removeClass('disabled')
                     }
                 })
             })
 
             botaoFinalizar.addEventListener('click', () => {
+                var sim = document.getElementById('sim')
+                sim.addEventListener('click', () => {
+                    desclassificar(cadaInfo.participante.devAdress)
+                })
                 if (distancia < 9000) {
-                    alert('Voce não terminou o percurso ainda')
+                    $('#modal1').modal('open');
                 } else {
-                    $.ajax({
-                        cache: false,
-                        type: 'PUT',
-                        data: { distancia: distancia },
-                        url: `/dados/finalizar/${cadaInfo.participante.devAdress}`,
-                        success: (data) => {
-                            $('#botaoIniciar')
-                                .css('display', 'inline-block')
-
-                            $('#botaoFinalizar')
-                                .css('display', 'none')
-                        }, error: (e) => {
-                            console.error(e)
-                        }
-                    })
+                    finalizarCompetição(cadaInfo.participante.devAdress, colocacao)
                 }
             })
         })

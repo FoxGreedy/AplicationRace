@@ -137,7 +137,8 @@ body {
     position: absolute; 
     top: -30px;
     right: 0; 
-    font-size: 40px
+    font-size: 40px;
+    color: #9e9e9e;
 } 
 
 #expectador{

@@ -313,15 +313,16 @@
 
                 for (dado in participantes) {
                     for (info in infos) {
-                        if (participantes[dado].nome == infos[info].nomeCompetidor) {
+                        if (participantes[dado].devAdress == infos[info].devAdress) {
                             var gpsFiltered = gps.filter((value) => {
                                 return value.devAdress === participantes[dado].devAdress
                             })
-
                             todasInfosCompetidor.push({ participante: participantes[dado], information: infos[info], gps: gpsFiltered })
                         }
                     }
                 }
+
+                console.log(todasInfosCompetidor)
 
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)

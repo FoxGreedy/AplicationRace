@@ -5,34 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+    <link rel="stylesheet" href="css/materialize.min.css">
+    <link rel="stylesheet" href="css/formulario.css">
 
     <script src="js/jquery.js" type="text/javascript"></script>
+    <script src="js/materialize.min.js"></script>
+
+    <!-- Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 
 <body>
 
-    <form>
-        <div>
-            <label for="nome">Nome</label>
-            <input type="text" id="nome">
+    <div class="container">
+        <div class="row ">
+            <form class="col s8 offset-s2 center-align">
+                <div class="row">
+                    <div class="input-field col s6">
+                        <!-- <i class="material-icons prefix">account_circle</i> -->
+                        <input id="nome" type="text" class="validate">
+                        <label for="nome">Nome</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <!-- <i class="material-icons prefix">account_circle</i> -->
+                        <input id="sobrenome" type="text" class="validate">
+                        <label for="sobrenome">Sobrenome</label>
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="input-field col s9">
+                        <input id="devAdress" type="text" class="validate">
+                        <label for="devAdress">devAdress</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <label for="peso">Peso</label>
+                        <input id="peso" type="number" class="validate">
+                        <!-- <div id="test-slider"></div> -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="foto" type="text" class="validate">
+                        <label for="foto">Foto</label>
+                    </div>
+                </div>
+                <button onclick="enviarDadosCompetidor()" class="btn-large align-left">Cadastrar</button>
+            </form>
         </div>
-        <div>
-            <label for="devAdress">devAdress</label>
-            <input type="text" id="devAdress">
-        </div>
-        <div>
-            <label for="equipe">Equipe</label>
-            <input type="text" id="equipe">
-        </div>
-        <div>
-            <label for="foto">Foto</label>
-            <input type="text" id="foto">
-        </div>
-        <div>
-            <input onclick="enviarDadosCompetidor()" type="submit" value="Enviar">
-        </div>
-    </form>
+    </div>
 
     <hr>
 </body>
@@ -41,24 +64,27 @@
 
     function enviarDadosCompetidor() {
 
-        var devAdress = document.getElementById('devAdress').value
         var nome = document.getElementById('nome').value
+        var sobrenome = document.getElementById('sobrenome').value
+        var devAdress = document.getElementById('devAdress').value
+        var peso = document.getElementById('peso').value
         var foto = document.getElementById('foto').value
-        var equipe = document.getElementById('equipe').value
 
-        var dados = {
-            devAdress: devAdress, 
-            nome: nome, 
+
+        var usuario = {
+            nome: nome,
+            sobrenome: sobrenome,
+            devAdress: devAdress,
+            peso: peso,
             foto: foto,
-            equipe: equipe
         }
 
         $.ajax({
-            url: '/competidor',
+            url: '/dados/competidor/cadastrar',
             type: 'post',
-            data: dados,
+            data: usuario,
             success: (dados) => {
-                
+                console.log('Sucesso!!')
             },
             error: (e) => {
                 console.error('Erro', e)

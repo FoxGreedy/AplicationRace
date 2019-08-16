@@ -66,8 +66,8 @@
                                         <h5
                                             style="text-align: center; margin-top: 10px; margin-left: 65px; font-size: 20px; text-align: center">
                                             1° <span id="nome1"></span>
-                                            <i class="align-self-center mr-2 small material-icons"
-                                                style="color: red">location_on</i>
+                                            <i id="icone1"
+                                                class="align-self-center mr-2 small material-icons">location_on</i>
                                         </h5>
                                     </div>
                                 </div>
@@ -109,8 +109,8 @@
                                     <h5
                                         style="text-align: center; margin-top: 10px; margin-left: 65px; font-size: 20px; text-align: center">
                                         2° <span id="nome2"></span>
-                                        <i class="align-self-center mr-2 small material-icons"
-                                            style="color: blue;">location_on</i>
+                                        <i id="icone2"
+                                            class="align-self-center mr-2 small material-icons">location_on</i>
                                     </h5>
                                 </div>
                             </div>
@@ -151,8 +151,8 @@
                                     <h5
                                         style="text-align: center; margin-top: 10px; margin-left: 65px; font-size: 20px; text-align: center">
                                         3° <span id="nome3"></span>
-                                        <i class="align-self-center mr-2 small material-icons"
-                                            style="color: yellow">location_on</i>
+                                        <i id="icone3"
+                                            class="align-self-center mr-2 small material-icons">location_on</i>
                                     </h5>
                                 </div>
                             </div>
@@ -193,8 +193,8 @@
                                     <h5
                                         style="text-align: center; margin-top: 10px; margin-left: 65px; font-size: 20px; text-align: center">
                                         4° <span id="nome4"></span>
-                                        <i class="align-self-center mr-2 small material-icons"
-                                            style="color: green">location_on</i>
+                                        <i id="icone4"
+                                            class="align-self-center mr-2 small material-icons">location_on</i>
                                     </h5>
                                 </div>
                             </div>
@@ -235,8 +235,8 @@
                                     <h5
                                         style="text-align: center; margin-top: 10px; margin-left: 65px; font-size: 20px; text-align: center">
                                         5° <span id="nome5"></span>
-                                        <i class="align-self-center mr-2 small material-icons"
-                                            style="color: goldenrod">location_on</i>
+                                        <i id="icone5"
+                                            class="align-self-center mr-2 small material-icons">location_on</i>
                                     </h5>
                                 </div>
                             </div>
@@ -340,23 +340,51 @@
     // Variaveis Globais
     var pace = 0
     var Velocidade = 0
-    function iniciarMarcacao(infos) {
+    var markers = [];
+    // Cores
+    var cores = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF', '#FF7F00', '#99CC32', '#D8D8BF', '#00009C', '#871F78', '#007FFF', '#FF1493', '#DC143C', '#2F4F4F', '#1E90FF', '#836FFF', '#BA55D3', '#FF7F50', '#B0E0E6', '#8B0000', '#50C878', '#831D1C', '#78866B', '#6B8E23', '#8FBC8F', '#FF00FF', '#FBEC5D', '#E9967A', '#008080']
 
+    function iniciarMarcacao(infos) {
         var unique = infos.slice().reverse()
 
+        var balao = {
+            path: 'M10,1.375c-3.17,0-5.75,2.548-5.75,5.682c0,6.685,5.259,11.276,5.483,11.469c0.152,0.132,0.382,0.132,0.534,0c0.224-0.193,5.481-4.784,5.483-11.469C15.75,3.923,13.171,1.375,10,1.375 M10,17.653c-1.064-1.024-4.929-5.127-4.929-10.596c0-2.68,2.212-4.861,4.929-4.861s4.929,2.181,4.929,4.861C14.927,12.518,11.063,16.627,10,17.653 M10,3.839c-1.815,0-3.286,1.47-3.286,3.286s1.47,3.286,3.286,3.286s3.286-1.47,3.286-3.286S11.815,3.839,10,3.839 M10,9.589c-1.359,0-2.464-1.105-2.464-2.464S8.641,4.661,10,4.661s2.464,1.105,2.464,2.464S11.359,9.589,10,9.589',
+            fillColor: 'yellow',
+            fillOpacity: 0.8,
+            scale: 1,
+            strokeColor: 'gold',
+            strokeWeight: 14
+        }
+
         var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
+
         var marker = new google.maps.Marker({
             position: ponto,
-            map: map,
-            title: 'oioio'
+            icon: balao,
+            map: map
         })
-
     }
+    function setMapOnAll(map) {
+        console.log(markers)
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(map);
+        }
+    }
+    function clearMarkers() {
+        setMapOnAll(null);
+    }
+    function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+    }
+
     function carregar() {
         $.ajax({
             cache: false,
             url: '/dados/info',
             success: (dados) => {
+
+                deleteMarkers()
 
                 var todasInfosCompetidor = []
 
@@ -364,11 +392,10 @@
 
                 for (dado in participantes) {
                     for (info in infos) {
-                        if (participantes[dado].nome == infos[info].nomeCompetidor) {
+                        if (participantes[dado].devAdress == infos[info].devAdress) {
                             var gpsFiltered = gps.filter((value) => {
                                 return value.devAdress === participantes[dado].devAdress
                             })
-
                             todasInfosCompetidor.push({ participante: participantes[dado], information: infos[info], gps: gpsFiltered })
                         }
                     }
@@ -461,6 +488,9 @@
             conectar(`velocidade${Number(info) + 1}`, calcularVelocidade(Number(distancia), momentoDiferenca))
             conectar(`pace${Number(info) + 1}`, calcularPace(Number(distancia), momentoDiferenca))
 
+            $(`#icone${Number(info) + 1}`)
+                .css('color', `${cores[Number(infos[info].participante.corPin) - 1]}`)
+
         } else {
             console.log('Ultrapassada')
         }
@@ -477,4 +507,5 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap" async
     defer></script>
+
 </html>

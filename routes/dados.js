@@ -51,6 +51,44 @@ router.get('/info', (req, res) => {
         })
 })
 
+router.post('/competidor/cadastrar',
+    async function sign(req, res) {
+
+        let { devAdress, nome, sobrenome, foto, peso } = req.body
+
+        let deviceExists = await competidor.findOne({ devAdress })
+        let competidorExists = await competidor.findOne({ nome, sobrenome })
+
+        if (deviceExists) {
+            console.log('Device já existe')
+            return res.status(404).send({ message: "Device já cadastrado em alguem!" })
+        }
+
+        if (competidorExists) {
+            console.log('Competidor já existe')
+            return res.status(404).send({ message: "Competidor já foi cadastrado" })
+        }
+
+        competidores = await competidor.find()
+
+        await competidor.create({
+            nome,
+            devAdress,
+            sobrenome,
+            peso,
+            foto,
+            corPin: competidores.length + 1,
+        })
+
+        await dados.create({
+            nomeCompetidor: nome,
+            devAdress
+        })
+
+        res.status(201)
+
+    })
+
 router.put('/iniciar/:devAdress', (req, res) => {
 
     let { params: { devAdress } } = req

@@ -5,6 +5,11 @@ const competidor = require('../model/competidor')
 const dados = require('../model/dados')
 const gps = require('../model/gps')
 
+function calcularData(data, offset) {
+    var milisegundos_com_utc = data.getTime() + (data.getTimezoneOffset() * 60000);
+    return new Date(milisegundos_com_utc + (3600000 * offset));
+}
+
 router.get('/', (req, res) => {
     dados.find({})
         .exec((err, data) => {
@@ -94,7 +99,13 @@ router.put('/iniciar/:devAdress', (req, res) => {
     let { params: { devAdress } } = req
 
     dados.findOneAndUpdate({ devAdress },
-        { distanciaAtual: 0, distanciaTotal: 0, status: 'Iniciado' },
+        {
+            distanciaAtual: 0,
+            distanciaTotal: 0,
+            status: 'Iniciado',
+            momentoAtual: calcularData(new Date(), -6),
+            momentoInicio: calcularData(new Date(), -6)
+        },
         { upsert: true },
         (err, data1) => {
             if (err) {
@@ -113,7 +124,13 @@ router.put('/finalizar/:devAdress', (req, res) => {
     let { params: { devAdress }, body: { status } } = req;
 
     dados.findOneAndUpdate({ devAdress },
-        { $set: { distanciaTotal: 10000, status } },
+        {
+            $set: {
+                distanciaTotal: 10000,
+                status,
+                momentoAtual: calcularData(new Date(), -6)
+            }
+        },
         { upsert: true }, (err, data1) => {
             if (err) console.log(err)
             else return res.send(data1)

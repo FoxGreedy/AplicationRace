@@ -14,26 +14,29 @@ function sendOficialDataSource(model, send) {
                 payload = dadosJSON.params.payload
 
             if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
-            if (applicationEUI === '64a7087a66259f75') enviarPayloadWelligton(payload, model, id)
+            if (applicationEUI === '972a3d8621f7825a') enviarPayloadWelligton(payload, model, id)
 
         }
     })
 }
 
 function enviarPayloadWelligton(payload, model, id) {
-    console.log('Payload', payload)
 
+    let NewCoordinate = new model()
+    
     //Contruindo as informações em base 64
     let payload16 = Buffer.from(payload, 'base64')
     var output = [];
+
+    console.log('Payload', payload)
 
     for (var i = 0; i < payload16.length; i++) {
         var char = payload16.toString('hex', i, i + 1); // i is byte index of hex
         output.push(char);
     };
 
-    let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}`
-    let longitude = `${hexToInt(output[7])}.${parseInt(output[8],16)}${parseInt(output[9], 16)}`
+    let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
+    let longitude = `${hexToInt(output[8])}.${parseInt(output[9],16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
 
     if (Number(latitude) == 0 || Number(longitude) == 0) {
 
@@ -152,11 +155,15 @@ function pegarUltimasCoordenadas(id, fuso) {
         } else {
             if (data.length >= 2) {
                 data = data.reverse()
-                console.log('Não da para fazer o calculo de ditancia')
+                // console.log('Não da para fazer o calculo de ditancia')
                 atualizarDistancia(id, pegarDistancia(data[0].gps, data[1].gps), fuso)
-            } else {
-                iniciarCalculoDistancia(id, fuso)
-            }
+            } 
+
+            // Calculo do tempo no backEnd
+
+            // else {
+            //     iniciarCalculoDistancia(id, fuso)
+            // }
         }
     })
 }

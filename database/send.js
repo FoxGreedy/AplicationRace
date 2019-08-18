@@ -52,7 +52,7 @@ function enviarPayloadWelligton(payload, model, id) {
             if (err) {
                 console.error('erro', err)
             } else {
-                pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                pegarUltimasCoordenadas(Uplink.devAdress, -3)
                 console.log("Coordenadas salvas com sucesso", Uplink)
             }
         })
@@ -95,7 +95,7 @@ function enviarPayloadVagoon(payload, model, id) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
@@ -138,7 +138,7 @@ function sendTesteDataSource(model, send) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress, -6)
+                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
@@ -220,20 +220,20 @@ function atualizarDistancia(id, distancia, fuso) {
         })
 }
 
-function iniciarCalculoDistancia(id, fuso) {
+// function iniciarCalculoDistancia(id, fuso) {
 
-    dadosCompetidor.findOneAndUpdate({ devAdress: id },
-        { $set: { momentoInicio: calcularData(new Date(), fuso) } },
-        { upsert: true },
-        (err, data1) => {
-            if (err) {
-                console.log('Error', err)
-            } else {
-                console.log('Os dados foram atualizados para a atualização', data1)
-            }
-        })
+//     dadosCompetidor.findOneAndUpdate({ devAdress: id },
+//         { $set: { momentoInicio: calcularData(new Date(), fuso) } },
+//         { upsert: true },
+//         (err, data1) => {
+//             if (err) {
+//                 console.log('Error', err)
+//             } else {
+//                 console.log('Os dados foram atualizados para a atualização', data1)
+//             }
+//         })
 
-}
+// }
 
 module.exports.Oficial = sendOficialDataSource
 module.exports.Teste = sendTesteDataSource

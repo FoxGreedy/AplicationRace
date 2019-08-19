@@ -21,7 +21,7 @@
 
 </head>
 
-<body id="mobile" onload="iniciar()">
+<body id="mobile">
 
     <nav class="grey darken-3">
         <div class="nav">
@@ -29,7 +29,7 @@
                 <a href="/">ATC LoRa RUN</a>
             </div>
             <ul class="left">
-                <li><i id="back" class="large material-icons">arrow_back</i></li>
+                <li> <a href="/"><i id="back" class="large material-icons">arrow_back</i></a> </li>
             </ul>
         </div>
     </nav>
@@ -194,45 +194,17 @@
         carregar()
         $('.modal').modal();
     })
-
-    function iniciar() {
-        setInterval(carregar, 10000)
-    }
-
     $('.card-panel').click(() => {
         $('#competidores')
             .fadeOut()
-
-
         $('#oferecimento')
             .css('display', 'none')
-
-
         $('#informacoes-individuais')
             .fadeIn(1500)
             .css('display', 'block')
-
         $('#back')
             .css('display', 'block')
     })
-
-    $('#back').click(() => {
-        $('#competidores')
-            .fadeIn()
-
-        $('#informacoes-individuais')
-            .css('display', 'none')
-            .fadeOut()
-
-        $('#back')
-            .css('display', 'none')
-
-        $('#oferecimento')
-            .css('display', 'block')
-    })
-
-
-
     function initMap() {
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -23.5911131, lng: -46.6475914 },
@@ -258,31 +230,6 @@
         })
 
     }
-    function carregar() {
-        $.ajax({
-            cache: false,
-            url: '/dados/info',
-            success: (data) => {
-
-                var { infos, gps, participantes } = data
-                let todasInfosCompetidor = []
-
-                for (i in infos) {
-                    for (p in participantes) {
-                        if (infos[i].devAdress === participantes[p].devAdress) {
-                            todasInfosCompetidor.push({ participante: participantes[p], information: infos[i], gps: gps.filter((v) => v.devAdress == participantes[p].devAdress) })
-                        }
-                    }
-                }
-                definirColocacao(todasInfosCompetidor)
-                plottarDados(todasInfosCompetidor)
-            },
-            error: (e) => {
-                console.error('Error', e)
-            }
-        })
-    }
-
     function calcularMomento(momento1, momento2) {
         return momento2 - momento1
     }
@@ -423,36 +370,82 @@
             }
         })
     }
-    function detalharInformacao(posicao, infos) {
+    function plottarDados(infos) {
+        for (info in infos) {
+            plottarDadosMobile(infos)
+            abrirEstrutura(info, infos)
+        }
+    }
+    function carregar() {
+        $.ajax({
+            cache: false,
+            url: '/dados/info',
+            success: (data) => {
 
+                var { infos, gps, participantes } = data
+                let todasInfosCompetidor = []
+
+                for (i in infos) {
+                    for (p in participantes) {
+                        if (infos[i].devAdress === participantes[p].devAdress) {
+                            todasInfosCompetidor.push({ participante: participantes[p], information: infos[i], gps: gps.filter((v) => v.devAdress == participantes[p].devAdress) })
+                        }
+                    }
+                }
+                definirColocacao(todasInfosCompetidor)
+                plottarDados(todasInfosCompetidor)
+            },
+            error: (e) => {
+                console.error('Error', e)
+            }
+        })
+    }
+    function plottarDadosMobile(infos) {
+
+        let distancia = infos[info].information.distanciaTotal
+
+        var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
+            momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
+            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                tranformarMomentoSegundos(momentoAtualInicio))
+
+        conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
+        conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
+        conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
+        conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia, info))
+        conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)
+        conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso, momentoDiferenca, info))
+        conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
+
+    }
+    function abrirEstrutura(posicao, infos) {
+
+        var cadaInfo = infos[posicao]
         var colocacao = Number(posicao) + 1
         var idEstructure = document.getElementById(`estrutura${colocacao}`)
         var botaoIniciar = document.getElementById(`botaoIniciar`)
         var botaoFinalizar = document.getElementById('botaoFinalizar')
-        var cadaInfo = infos[posicao]
-
-        let distancia = cadaInfo.information.distanciaTotal,
-            peso = infos[info].participante.peso
-
-        var momentoInicialInicio = filtrarHorario(cadaInfo.information.momentoInicio),
-            momentoAtualInicio = filtrarHorario(cadaInfo.information.momentoAtual),
-            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
-                tranformarMomentoSegundos(momentoAtualInicio))
+        let distancia = cadaInfo.information.distanciaTotal
 
         idEstructure.addEventListener('click', () => {
             if (cadaInfo.gps.length != 0) {
                 iniciarMarcacao(cadaInfo.gps)
             }
-            conectar(`nome`, cadaInfo.participante.nome)
-            conectar(`sobrenome`, cadaInfo.participante.sobrenome)
-            conectar(`position`, colocacao)
-            conectar(`image`, `/img/competidores/${cadaInfo.participante.foto}`, 'src')
-            conectar(`distancia`, formatarDistancia(distancia, info))
-            conectar(`tempototal`, reverterTempo(momentoDiferenca))
-            conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), peso, momentoDiferenca, posicao))
-            conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
+
+            console.log(cadaInfo.information.status)
+
+            if (cadaInfo.information.status === 'Iniciado') {
+                $('#botaoIniciar')
+                    .css('display', 'none')
+
+                $('#botaoFinalizar')
+                    .css('display', 'inline-block')
+            }
+
+            detalharInformacao(cadaInfo.participante.devAdress)
 
             botaoIniciar.addEventListener('click', () => {
+
                 $('#progress')
                     .css('display', 'block')
 
@@ -495,35 +488,58 @@
                     finalizarCompetição(cadaInfo.participante.devAdress, colocacao)
                 }
             })
+
+            setInterval(() => {
+                detalharInformacao(cadaInfo.participante.devAdress)
+            }, 10000)
         })
-
-
-
     }
-    function plottarDadosMobile(infos) {
+    function detalharInformacao(id) {
 
-        let distancia = infos[info].information.distanciaTotal
+        $.ajax({
+            url: `/dados/info`,
+            cache: false,
+            success: (data) => {
 
-        var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
-            momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
-            momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
-                tranformarMomentoSegundos(momentoAtualInicio))
+                var { infos, gps, participantes } = data
+                let todasInfosCompetidores = []
 
-        conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
-        conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)
-        conectar(`image${Number(info) + 1}`, `/img/competidores/${infos[info].participante.foto}`, 'src')
-        conectar(`distancia${Number(info) + 1}`, formatarDistancia(distancia, info))
-        conectar(`velocidade${Number(info) + 1}`, `${calcularVelocidade(distancia, momentoDiferenca)}`)
-        conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso, momentoDiferenca, info))
-        conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
+                for (i in infos) {
+                    for (p in participantes) {
+                        if (infos[i].devAdress === participantes[p].devAdress) {
+                            todasInfosCompetidores.push({ participante: participantes[p], information: infos[i], gps: gps.filter((v) => v.devAdress == participantes[p].devAdress) })
+                        }
+                    }
+                }
+                definirColocacao(todasInfosCompetidores)
 
+                let competidorIndividual = todasInfosCompetidores.filter((l) => l.participante.devAdress === id)
+                let { information: infosInd, gps: gpsInd, participante: participanteInd } = competidorIndividual[0]
+
+                let colocacao = Number(todasInfosCompetidores.indexOf(competidorIndividual[0])) + 1
+
+                let distancia = infosInd.distanciaTotal,
+                    peso = participanteInd.peso
+
+                var momentoInicialInicio = filtrarHorario(infosInd.momentoInicio),
+                    momentoAtualInicio = filtrarHorario(infosInd.momentoAtual),
+                    momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
+                        tranformarMomentoSegundos(momentoAtualInicio))
+
+                conectar(`nome`, participanteInd.nome)
+                conectar(`sobrenome`, participanteInd.sobrenome)
+                conectar(`position`, colocacao)
+                conectar(`image`, `/img/competidores/${participanteInd.foto}`, 'src')
+                conectar(`distancia`, formatarDistancia(distancia, info))
+                conectar(`tempototal`, reverterTempo(momentoDiferenca))
+                conectar(`calorias`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), peso, momentoDiferenca))
+                conectar(`ritmo`, calcularPace(distancia, momentoDiferenca))
+
+            }
+        })
     }
-    function plottarDados(infos) {
-        for (info in infos) {
-            plottarDadosMobile(infos)
-            detalharInformacao(info, infos)
-        }
-    }
+
+
 
 
 </script>

@@ -13,8 +13,8 @@ function sendOficialDataSource(model, send) {
             let applicationEUI = dadosJSON.meta.application,
                 payload = dadosJSON.params.payload
 
-            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
             if (applicationEUI === '972a3d8621f7825a') enviarPayloadWelligton(payload, model, id)
+            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
 
         }
     })
@@ -23,7 +23,7 @@ function sendOficialDataSource(model, send) {
 function enviarPayloadWelligton(payload, model, id) {
 
     let NewCoordinate = new model()
-    
+
     //Contruindo as informações em base 64
     let payload16 = Buffer.from(payload, 'base64')
     var output = [];
@@ -36,7 +36,9 @@ function enviarPayloadWelligton(payload, model, id) {
     };
 
     let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
-    let longitude = `${hexToInt(output[8])}.${parseInt(output[9],16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
+    let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
+
+    console.log('Latitude', latitude, 'Longitude', longitude)
 
     if (Number(latitude) == 0 || Number(longitude) == 0) {
 
@@ -157,7 +159,7 @@ function pegarUltimasCoordenadas(id, fuso) {
                 data = data.reverse()
                 // console.log('Não da para fazer o calculo de ditancia')
                 atualizarDistancia(id, pegarDistancia(data[0].gps, data[1].gps), fuso)
-            } 
+            }
 
             // Calculo do tempo no backEnd
 

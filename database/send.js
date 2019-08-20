@@ -25,52 +25,67 @@ function sendOficialDataSource(model, send) {
     })
 }
 
-function enviarPayloadWelligton(payload, model, id) {
-    console.log('oi')
+async function enviarPayloadWelligton(payload, model, id) {
+
     let payload16 = Buffer.from(payload, 'base64')
     var output = [];
-    
+
     for (var i = 0; i < payload16.length; i++) {
         var char = payload16.toString('hex', i, i + 1); // i is byte index of hex
         output.push(char);
     };
-    
+
     let NewCoordinate = new model()
- 
+
     let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
     let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
 
     console.log('Latitude', latitude, 'Longitude', longitude)
 
-    if (Number(latitude) == 0 || Number(longitude) == 0) {
-        console.log('Latitude e Longitude Não Definida')
-    } else {
+    let dadoDuplicado = await model.findOne({
+        devAdress: id,
+        gps: {
+            lat: latitude,
+            lng: longitude
+        }
+    })
 
-        NewCoordinate.devAdress = id
-        NewCoordinate.gps.lat = latitude
-        NewCoordinate.gps.lng = longitude
+    console.log(dadoDuplicado)
 
-        NewCoordinate.save((err, Uplink) => {
-            if (err) {
-                console.error('erro', err)
-            } else {
-                pegarUltimasCoordenadas(Uplink.devAdress, -3)
-                console.log("Coordenadas salvas com sucesso", Uplink)
-            }
-        })
+    if (!dadoDuplicado) {
 
+        if (Number(latitude) == 0 || Number(longitude) == 0) {
+            console.log('Latitude e Longitude Não Definida')
+        } else {
+
+            NewCoordinate.devAdress = id
+            NewCoordinate.gps.lat = latitude
+            NewCoordinate.gps.lng = longitude
+            NewCoordinate.momento = calcularData(new Date(), -3)
+
+            await NewCoordinate.save((err, Uplink) => {
+                if (err) {
+                    console.error('erro', err)
+                } else {
+                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
+                    console.log("Coordenadas salvas com sucesso", Uplink)
+                }
+            })
+
+        }
     }
+
 
 }
 
 function enviarPayloadVagoon(payload, model, id) {
 
-    
+
     let payload64 = Buffer.from(payload, 'base64')
     let payloadAscii = payload64.toString('ascii')
-    
+
     let coordenadas = payloadAscii.split(',')
-    
+
     let NewCoordinate = new model()
 
     if (coordenadas.length > 1) {

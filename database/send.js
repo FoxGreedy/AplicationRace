@@ -3,7 +3,7 @@ const dadosCompetidor = require('../model/dados')
 
 function sendOficialDataSource(model, send) {
 
-    send.on('message', (dados) => {
+    send.on('message', async (dados) => {
         let dadosJSON = JSON.parse(dados)
         let id = dadosJSON.meta.device
         timestamp = new Date()
@@ -13,37 +13,37 @@ function sendOficialDataSource(model, send) {
             let applicationEUI = dadosJSON.meta.application,
                 payload = dadosJSON.params.payload
 
-            if (applicationEUI === '972a3d8621f7825a') enviarPayloadWelligton(payload, model, id)
-            if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
+            let competidor = await dadosCompetidor.findOne({ devAdress: id })
+            let { status } = competidor
+
+            if (status === 99) {
+                if (applicationEUI === '972a3d8621f7825a') enviarPayloadWelligton(payload, model, id)
+                if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
+            }
 
         }
     })
 }
 
 function enviarPayloadWelligton(payload, model, id) {
-
-    let NewCoordinate = new model()
-
-    //Contruindo as informações em base 64
+    console.log('oi')
     let payload16 = Buffer.from(payload, 'base64')
     var output = [];
-
-    console.log('Payload', payload)
-
+    
     for (var i = 0; i < payload16.length; i++) {
         var char = payload16.toString('hex', i, i + 1); // i is byte index of hex
         output.push(char);
     };
-
+    
+    let NewCoordinate = new model()
+ 
     let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
     let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
 
     console.log('Latitude', latitude, 'Longitude', longitude)
 
     if (Number(latitude) == 0 || Number(longitude) == 0) {
-
         console.log('Latitude e Longitude Não Definida')
-
     } else {
 
         NewCoordinate.devAdress = id
@@ -65,15 +65,13 @@ function enviarPayloadWelligton(payload, model, id) {
 
 function enviarPayloadVagoon(payload, model, id) {
 
-    let NewCoordinate = new model()
-    //Contruindo as informações em base 64
+    
     let payload64 = Buffer.from(payload, 'base64')
-
-    //Decodificando as informações
     let payloadAscii = payload64.toString('ascii')
-
+    
     let coordenadas = payloadAscii.split(',')
-
+    
+    let NewCoordinate = new model()
 
     if (coordenadas.length > 1) {
         let altitude = coordenadas[0]

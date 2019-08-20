@@ -40,6 +40,33 @@
             <div id="cont-twitter" class="col-6">
                 <div id="card-twitter" class="card rounded-0 border-dark">
                     <div id="body-twitter" class="card-body">
+                        <table id="medias">
+                            <tbody>
+                                <tr class="border-danger">
+                                    <td>
+                                        <div class="media mt-2 mediaTotais">
+                                            <ul class="lista">
+                                                <li class="media ">
+                                                    <i
+                                                        class="align-self-center mr-2 material-icons icone">location_on</i>
+                                                    <div class="media-body">
+                                                        <span id="ditanciaTotal">0m</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    Distancia
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
+                                    <td>Eclair</td>
+                                </tr>
+                                <tr class="border-0">
+                                    <td>Alan</td>
+                                    <td>Jellybean</td>
+                                </tr>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
@@ -402,15 +429,36 @@
     }
     function definirColocacao(info) {
         function comparer(a, b) {
-            if (a.information.distanciaTotal < b.information.distanciaTotal)
+            if (a.information.distanciaTotal < b.information.distanciaTotal) {
                 return 1;
-
-            if (a.information.distanciaTotal > b.information.distanciaTotal)
+            }
+            if (a.information.distanciaTotal > b.information.distanciaTotal) {
                 return -1;
-
+            }
+        }
+        function comparerStatus(a, b) {
+            if (a.information.status < b.information.status) {
+                return 1;
+            }
+            if (a.information.status > b.information.status) {
+                return -1;
+            }
+        }
+        function comparerTempo(a, b) {
+            if (a.information.status === 100 && b.information.status === 100) {
+                let diferencaTempoA = calcularMomento(tranformarMomentoSegundos(filtrarHorario(a.information.momentoInicio)), tranformarMomentoSegundos(filtrarHorario(a.information.momentoAtual)))
+                let diferencaTempoB = calcularMomento(tranformarMomentoSegundos(filtrarHorario(b.information.momentoInicio)), tranformarMomentoSegundos(filtrarHorario(b.information.momentoAtual)))
+                if (diferencaTempoB < diferencaTempoA) {
+                    return 1;
+                }
+                if (diferencaTempoB > diferencaTempoA) {
+                    return -1;
+                }
+            }
             return 0;
         }
-        info.sort(comparer);
+
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
 
     function conectar(id, value, type = 'inner') {
@@ -455,6 +503,21 @@
             conectar(`velocidade${Number(info) + 1}`, (velocidade).toFixed(2))
             conectar(`ritmo${Number(info) + 1}`, ritmo)
 
+            let { status } = infos[info].information
+
+            if (status === 0) {
+                $(`#nome${Number(info) + 1}`).css('color', '#ff5252')
+                $(`#sobrenome${Number(info) + 1}`).css('color', '#ff5252')
+            }
+            if (status === 99) {
+                $(`#nome${Number(info) + 1}`).css('color', '#f9a825')
+                $(`#sobrenome${Number(info) + 1}`).css('color', '#f9a825')
+            }
+            if (status === 100) {
+                $(`#nome${Number(info) + 1}`).css('color', '#00c853')
+                $(`#sobrenome${Number(info) + 1}`).css('color', '#00c853')
+            }
+
             let calor = calorias.split('cal')
             velocidadeTotal += velocidade
             distanciaTotal += distancia
@@ -462,8 +525,9 @@
 
             let segundosRitmo = converterRitmo(ritmo)
 
-            plottarGrafico(`graphBar${Number(info) + 1}`, [distancia, velocidade*1000, Number(calor[0]), (segundosRitmo).toFixed(2)])
+            plottarGrafico(`graphBar${Number(info) + 1}`, [distancia, velocidade * 1000, Number(calor[0]), (segundosRitmo).toFixed(2)])
         }
+
         // conectar('velocidade-media', `${parseInt(velocidadeTotal) / infos.length}Km`)
         // conectar('distancia-total', formatarDistancia(distanciaTotal))
         // conectar('caloria-total', `${caloriaTotal}cal`)

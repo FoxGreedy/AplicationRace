@@ -196,17 +196,37 @@
         })
     }
     function definirColocacao(info) {
-
         function comparer(a, b) {
-            if (a.information.distanciaTotal < b.information.distanciaTotal)
+            if (a.information.distanciaTotal < b.information.distanciaTotal) {
                 return 1;
-
-            if (a.information.distanciaTotal > b.information.distanciaTotal)
+            }
+            if (a.information.distanciaTotal > b.information.distanciaTotal) {
                 return -1;
-
+            }
+        }
+        function comparerStatus(a, b) {
+            if (a.information.status < b.information.status) {
+                return 1;
+            }
+            if (a.information.status > b.information.status) {
+                return -1;
+            }
+        }
+        function comparerTempo(a, b) {
+            if (a.information.status === 100 && b.information.status === 100) {
+                let diferencaTempoA = calcularMomento(tranformarMomentoSegundos(filtrarHorario(a.information.momentoInicio)), tranformarMomentoSegundos(filtrarHorario(a.information.momentoAtual)))
+                let diferencaTempoB = calcularMomento(tranformarMomentoSegundos(filtrarHorario(b.information.momentoInicio)), tranformarMomentoSegundos(filtrarHorario(b.information.momentoAtual)))
+                if (diferencaTempoB < diferencaTempoA) {
+                    return 1;
+                }
+                if (diferencaTempoB > diferencaTempoA) {
+                    return -1;
+                }
+            }
             return 0;
         }
-        info.sort(comparer);
+
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
     function conectar(id, value, type = 'inner') {
         if (type == 'inner') document.getElementById(id).innerHTML = value

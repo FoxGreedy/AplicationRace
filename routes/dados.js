@@ -104,7 +104,7 @@ router.put('/iniciar/:devAdress', (req, res) => {
         {
             distanciaAtual: 0,
             distanciaTotal: 0,
-            status: 'Iniciado',
+            status: 99,
             momentoAtual: calcularData(new Date(), -3),
             momentoInicio: calcularData(new Date(), -3)
         },
@@ -123,7 +123,7 @@ router.put('/iniciar/:devAdress', (req, res) => {
 })
 
 router.put('/finalizar/:devAdress', (req, res) => {
-    let { params: { devAdress }, body: { status } } = req;
+    // let { params: { devAdress }, body: { status } } = req;
 
     console.log(devAdress)
 
@@ -131,7 +131,7 @@ router.put('/finalizar/:devAdress', (req, res) => {
         {
             $set: {
                 distanciaTotal: 10000,
-                status,
+                status: 100,
                 momentoAtual: calcularData(new Date(), -3)
             }
         },
@@ -145,7 +145,7 @@ router.put('/desclassificar/:devAdress', (req, res) => {
     let { params: { devAdress } } = req
 
     dados.findOneAndUpdate({ devAdress },
-        { $set: { status: 'desistiu' } },
+        { $set: { status: 0 } },
         { upsert: true }, (err, data1) => {
             if (err) return res.send(err)
             else return res.send(data1)

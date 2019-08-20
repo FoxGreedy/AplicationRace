@@ -8,7 +8,7 @@ const SchemaData = new Schema({
     momentoAtual: { type: Date, default: new Date() },
     nomeCompetidor: { type: String, required: true },
     devAdress: { type: String, required: true, unique: true },
-    status: {type: String, default: "No Initialized"}    
+    status: {type: Number, default: 98}
 })
 
 module.exports = mongoose.model('Dados', SchemaData)

@@ -19,9 +19,17 @@
     text-align: center;
 }
 
-.mediaTotais{
-    text-align: center;
-    padding: 0 auto
+.infoMedia i{
+    font-size: 40px
+}
+
+.infoMedia span{
+    font-size: 40px
+}
+
+.indiceMedia{
+    font-size: 20px;
+    margin-top: -12px
 }
 
 .logo{

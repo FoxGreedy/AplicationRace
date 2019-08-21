@@ -439,15 +439,15 @@
 
         let { status } = infos[info].information
 
-        if(status === 0){
+        if (status === 0) {
             $(`#nome${Number(info) + 1}`).css('color', '#ff5252')
             $(`#sobrenome${Number(info) + 1}`).css('color', '#ff5252')
-        } 
-        if(status === 99 ){
+        }
+        if (status === 99) {
             $(`#nome${Number(info) + 1}`).css('color', '#f9a825')
             $(`#sobrenome${Number(info) + 1}`).css('color', '#f9a825')
         }
-        if(status === 100 ){
+        if (status === 100) {
             $(`#nome${Number(info) + 1}`).css('color', '#00c853')
             $(`#sobrenome${Number(info) + 1}`).css('color', '#00c853')
         }
@@ -463,11 +463,6 @@
         let distancia = cadaInfo.information.distanciaTotal
 
         idEstructure.addEventListener('click', () => {
-            if (cadaInfo.gps.length != 0) {
-                iniciarMarcacao(cadaInfo.gps)
-            }
-
-            console.log(cadaInfo.information.status)
 
             if (cadaInfo.information.status === 99) {
                 $('#botaoIniciar')
@@ -549,6 +544,10 @@
 
                 let competidorIndividual = todasInfosCompetidores.filter((l) => l.participante.devAdress === id)
                 let { information: infosInd, gps: gpsInd, participante: participanteInd } = competidorIndividual[0]
+
+                if (gpsInd.length != 0) {
+                    iniciarMarcacao(gpsInd)
+                }
 
                 let colocacao = Number(todasInfosCompetidores.indexOf(competidorIndividual[0])) + 1
 

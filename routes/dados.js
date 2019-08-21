@@ -68,7 +68,6 @@ router.post('/competidor/cadastrar',
             console.log('Device já existe')
             return res.status(404).send({ message: "Device já cadastrado em alguem!" })
         }
-
         if (competidorExists) {
             console.log('Competidor já existe')
             return res.status(404).send({ message: "Competidor já foi cadastrado" })
@@ -94,8 +93,35 @@ router.post('/competidor/cadastrar',
 
     })
 
-router.put('/iniciar/:devAdress', (req, res) => {
+router.get('/iniciar/todos', (req,res) =>{
+    dados.updateMany({},        {
+        status: 99
+    },
+    { upsert: true },
+    (err, sucesso) =>{
+        if(err){
+            console.error(err)
+        } else {
+            res.redirect('/')
+        }
+    })
+})    
 
+router.get('/finalizar/todos', (req,res) =>{
+    dados.updateMany({},        {
+        status: 100
+    },
+    { upsert: true },
+    (err, sucesso) =>{
+        if(err){
+            console.error(err)
+        } else {
+            res.redirect('/')
+        }
+    })
+})    
+
+router.put('/iniciar/:devAdress', (req, res) => {
     let { params: { devAdress } } = req
 
     console.log(devAdress)
@@ -123,7 +149,7 @@ router.put('/iniciar/:devAdress', (req, res) => {
 })
 
 router.put('/finalizar/:devAdress', (req, res) => {
-    // let { params: { devAdress }, body: { status } } = req;
+    let { params: { devAdress } } = req;
 
     console.log(devAdress)
 

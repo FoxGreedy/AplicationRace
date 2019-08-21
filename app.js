@@ -10,12 +10,6 @@ const config = require('./database/config').bd_string
 const connection = require('./database/connection')
 connection(config)
 
-//Basic data source dos devices para o servidor teste
-// const local = require('./model/gps')
-// const socket = require('./socket/leitura').Teste
-// const sending = require('./database/send').Teste
-// sending(local, socket)
-
 //Basic data source dos devices para o servidor final
 const local = require('./model/gps')
 const socket = require('./socket/leitura').Oficial

@@ -35,13 +35,11 @@ async function enviarPayloadWelligton(payload, model, id) {
         output.push(char);
     };
 
-    let NewCoordinate = new model()
-
     let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
     let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
-
+    
     console.log('Latitude', latitude, 'Longitude', longitude)
-
+    
     let dadoDuplicado = await model.findOne({
         devAdress: id,
         gps: {
@@ -49,7 +47,9 @@ async function enviarPayloadWelligton(payload, model, id) {
             lng: longitude
         }
     })
-
+    
+    let NewCoordinate = new model()
+    
     console.log(dadoDuplicado)
 
     if (!dadoDuplicado) {
@@ -67,7 +67,7 @@ async function enviarPayloadWelligton(payload, model, id) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
+                    pegarUltimasCoordenadas(id, -3)
                     console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
@@ -110,8 +110,7 @@ function enviarPayloadVagoon(payload, model, id) {
                 if (err) {
                     console.error('erro', err)
                 } else {
-                    pegarUltimasCoordenadas(Uplink.devAdress, -3)
-                    console.log("Coordenadas salvas com sucesso", Uplink)
+                    pegarUltimasCoordenadas(id, -3)
                 }
             })
 
@@ -154,7 +153,6 @@ function sendTesteDataSource(model, send) {
                     console.error('erro', err)
                 } else {
                     pegarUltimasCoordenadas(Uplink.devAdress, -3)
-                    console.log("Coordenadas salvas com sucesso", Uplink)
                 }
             })
         }
@@ -213,11 +211,11 @@ function atualizarDistancia(id, distancia, fuso) {
 
                     console.log('Distancia percorrida', distancia, 'Distancia Total', data[0].distanciaTotal)
 
-                    distanciaTotal = Number(distancia) + Number(data[0].distanciaTotal)
+                    let distanciaTotalAtual =  Number(data[0].distanciaTotal) + Number(distancia) 
                     dadosCompetidor.findOneAndUpdate({ devAdress: id },
                         {
                             $set: {
-                                distanciaTotal: distanciaTotal,
+                                distanciaTotal: distanciaTotalAtual,
                                 distanciaAtual: distancia,
                                 momentoAtual: calcularData(new Date(), fuso)
                             }

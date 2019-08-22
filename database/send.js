@@ -15,9 +15,10 @@ function sendOficialDataSource(model, send) {
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor
 
+
             if (status === 99) {
-                if (applicationEUI === '972a3d8621f7825a') enviarPayloadWelligton(payload, id)
-                if (applicationEUI === '1111111111111111') enviarPayloadVagoon(payload, model, id)
+                if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
+                if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
             }
 
         }
@@ -33,16 +34,23 @@ async function enviarPayloadWelligton(payload, id) {
         output.push(char)
     };
 
+    console.log(output)
+
     let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
     let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
 
+    console.log(id, latitude, longitude)
+    
     let dadoDuplicado = await gps.findOne({
         devAdress: id,
         gps: {
+            alt: "1",
             lat: latitude,
             lng: longitude
         }
     })
+
+    console.log('Dados duplicadoooooooooos', dadoDuplicado)
 
     if (!dadoDuplicado) {
         if (Number(latitude) != 0 && Number(longitude) != 0) {
@@ -55,7 +63,6 @@ async function enviarPayloadWelligton(payload, id) {
                     lng: longitude
                 }
             })
-            console.log("Coordenadas salvas com sucesso", Uplink)
             await pegarUltimasCoordenadas(id, -3)
         }
     }
@@ -63,10 +70,11 @@ async function enviarPayloadWelligton(payload, id) {
 
 async function pegarUltimasCoordenadas(id, fuso) {
     let data = await gps.find({ devAdress: id })
-
     if (data) {
         data = data.reverse()
         let distancia = pegarDistancia(data[0].gps, data[1].gps)
+        console.log("Distancia percorrida agora: ", distancia)
+        console.log(data[0].gps, data[1].gps)
         await atualizarDistancia(id, distancia, fuso)
     }
 }
@@ -74,21 +82,29 @@ async function pegarUltimasCoordenadas(id, fuso) {
 async function atualizarDistancia(id, distancia, fuso) {
     let dados = await dadosCompetidor.findOne({ devAdress: id })
 
+    console.log('Dados retornados')
     if (dados) {
         console.log('Distancia percorrida', distancia, 'Distancia Total', dados.distanciaTotal)
 
         let distanciaTotalAtual = Number(dados.distanciaTotal) + Number(distancia)
         console.log(distanciaTotalAtual)
 
-        await dadosCompetidor.findOneAndUpdate({ devAdress: id },
-            {
-                $set: {
-                    distanciaTotal: distanciaTotalAtual,
-                    distanciaAtual: distancia,
-                    momentoAtual: calcularData(new Date(), fuso)
-                }
-            },
-            { upsert: true })
+        dados.distanciaTotal = distanciaTotalAtual
+        dados.distanciaAtual = distancia
+        dados.momentoAtual = calcularData(new Date(), fuso)
+
+        await dados.save()
+
+        console.log(dados)
+        // await dadosCompetidor.findOneAndUpdate({ devAdress: id },
+        //     {
+        //         $set: {
+        //             distanciaTotal: distanciaTotalAtual,
+        //             distanciaAtual: distancia,
+        //             momentoAtual: calcularData(new Date(), fuso)
+        //         }
+        //     },
+        //     { upsert: true })
     }
 }
 
@@ -138,28 +154,28 @@ function enviarPayloadVagoon(payload, model, id) {
 
         console.log(altitude, latitude, longitude)
 
-        if (Number(latitude) == 0 || Number(longitude) == 0) {
+        // if (Number(latitude) == 0 || Number(longitude) == 0) {
 
-            console.log('Latitude e Longitude Não Definida')
+        //     console.log('Latitude e Longitude Não Definida')
 
-        } else {
+        // } else {
 
-            NewCoordinate.devAdress = id
-            NewCoordinate.gps.alt = altitude
-            NewCoordinate.gps.lat = latitude
-            NewCoordinate.gps.lng = longitude
+        NewCoordinate.devAdress = id
+        NewCoordinate.gps.alt = altitude
+        NewCoordinate.gps.lat = latitude
+        NewCoordinate.gps.lng = longitude
 
-            NewCoordinate.save((err, Uplink) => {
-                if (err) {
-                    console.error('erro', err)
-                } else {
-                    pegarUltimasCoordenadas(id, -3)
-                }
-            })
+        NewCoordinate.save((err, Uplink) => {
+            if (err) {
+                console.error('erro', err)
+            } else {
+                pegarUltimasCoordenadas(id, -3)
+            }
+        })
 
-        }
     }
 }
+// }
 
 
 module.exports.Oficial = sendOficialDataSource

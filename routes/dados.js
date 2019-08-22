@@ -93,33 +93,33 @@ router.post('/competidor/cadastrar',
 
     })
 
-router.get('/iniciar/todos', (req,res) =>{
-    dados.updateMany({},        {
+router.get('/iniciar/todos', (req, res) => {
+    dados.updateMany({}, {
         status: 99
     },
-    { upsert: true },
-    (err, sucesso) =>{
-        if(err){
-            console.error(err)
-        } else {
-            res.redirect('/')
-        }
-    })
-})    
+        { upsert: true },
+        (err, sucesso) => {
+            if (err) {
+                console.error(err)
+            } else {
+                res.redirect('/')
+            }
+        })
+})
 
-router.get('/finalizar/todos', (req,res) =>{
-    dados.updateMany({},        {
+router.get('/finalizar/todos', (req, res) => {
+    dados.updateMany({}, {
         status: 100
     },
-    { upsert: true },
-    (err, sucesso) =>{
-        if(err){
-            console.error(err)
-        } else {
-            res.redirect('/')
-        }
-    })
-})    
+        { upsert: true },
+        (err, sucesso) => {
+            if (err) {
+                console.error(err)
+            } else {
+                res.redirect('/')
+            }
+        })
+})
 
 router.put('/iniciar/:devAdress', (req, res) => {
     let { params: { devAdress } } = req
@@ -176,6 +176,24 @@ router.put('/desclassificar/:devAdress', (req, res) => {
             if (err) return res.send(err)
             else return res.send(data1)
         })
+})
+
+router.get('/teste/:devAdress', async (req, res) => {
+    let { params: { devAdress } } = req
+
+    let dadoDuplicado = await gps.findOne({
+        devAdress: devAdress,
+        gps: {
+            alt: "1",
+            lat: "-23.59549",
+            lng: "-46.68280"
+        }
+    })
+
+    if (!dadoDuplicado) {
+        return res.send({ 'Message': 'Batata' })
+    }
+    res.send(dadoDuplicado)
 })
 
 router.get('/:nomeCompetidor', (req, res) => {

@@ -40,7 +40,7 @@ async function enviarPayloadWelligton(payload, id) {
     let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
 
     console.log(id, latitude, longitude)
-    
+
     let dadoDuplicado = await gps.findOne({
         devAdress: id,
         gps: {
@@ -75,7 +75,16 @@ async function pegarUltimasCoordenadas(id, fuso) {
         let distancia = pegarDistancia(data[0].gps, data[1].gps)
         console.log("Distancia percorrida agora: ", distancia)
         console.log(data[0].gps, data[1].gps)
-        await atualizarDistancia(id, distancia, fuso)
+
+        if (distancia <= 250) {
+            await atualizarDistancia(id, distancia, fuso)
+        } else {
+            gps.findOneAndDelete(
+                {
+                    devAdress: id,
+                    gps: data[0].gps 
+                })
+        }
     }
 }
 

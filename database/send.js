@@ -50,8 +50,6 @@ async function enviarPayloadWelligton(payload, id) {
         }
     })
 
-    console.log('Dados duplicadoooooooooos', dadoDuplicado)
-
     if (!dadoDuplicado) {
         if (Number(latitude) != 0 && Number(longitude) != 0) {
             await gps.create({
@@ -76,14 +74,16 @@ async function pegarUltimasCoordenadas(id, fuso) {
         console.log("Distancia percorrida agora: ", distancia)
         console.log(data[0].gps, data[1].gps)
 
-        if (distancia <= 250) {
+        console.log("Distanciaaaaa",distancia)
+        if (distancia <= 300) {
             await atualizarDistancia(id, distancia, fuso)
         } else {
             gps.findOneAndDelete(
                 {
                     devAdress: id,
-                    gps: data[0].gps 
+                    gps: data[0].gps
                 })
+            console.log('Mensagem erro')
         }
     }
 }

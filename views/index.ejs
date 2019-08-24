@@ -226,7 +226,6 @@
         var marker = new google.maps.Marker({
             position: ponto,
             map: map,
-            title: 'oioio'
         })
 
     }
@@ -325,6 +324,7 @@
 
     }
     function reverterTempo(tempo) {
+        console.log(tempo)
         if (tempo < 0) return `0:00:00`
         function duas_casas(numero) {
             if (numero <= 9) {
@@ -332,9 +332,10 @@
             }
             return numero;
         }
-        hora = (Math.round(tempo / 3600));
+        hora = (parseInt(tempo / 3600));
         minuto = duas_casas(Math.floor((tempo % 3600) / 60));
         segundo = duas_casas((tempo % 3600) % 60);
+        console.log(hora, minuto, segundos)
         formatado = hora + ":" + minuto + ":" + segundo;
         return formatado;
     }
@@ -428,6 +429,10 @@
             momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
             momentoDiferenca = calcularMomento(tranformarMomentoSegundos(momentoInicialInicio),
                 tranformarMomentoSegundos(momentoAtualInicio))
+
+        console.log(momentoAtualInicio)
+        console.log(momentoInicialInicio)
+        console.log(momentoDiferenca)
 
         conectar(`nome${Number(info) + 1}`, infos[info].participante.nome)
         conectar(`sobrenome${Number(info) + 1}`, infos[info].participante.sobrenome)

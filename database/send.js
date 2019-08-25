@@ -15,12 +15,13 @@ function sendOficialDataSource(model, send) {
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor
 
-
+            
             if (status === 99) {
-                if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
-                if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
+                // if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
+                // if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
+                await enviarPayloadWelligton(payload, id)
             }
-
+            
         }
     })
 }

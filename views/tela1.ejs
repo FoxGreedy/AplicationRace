@@ -275,6 +275,9 @@
 
 </body>
 
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhS0HbkkKiUf2BV1T_skrfb2Pw63XzPeI&callback=initMap" async
+    defer></script>
+
 <script>
 
     $(document).ready(() => {
@@ -283,14 +286,20 @@
 
     function iniciar() {
         setInterval(carregar, 10000)
+        calcRoute()
     }
 
     var map
+    var directionsDisplay;
+    var directionsService;
 
     function initMap() {
+
+        directionsDisplay = new google.maps.DirectionsRenderer();
+
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -23.5911131, lng: -46.6475914 },
-            zoom: 13,
+            zoom: 12,
             styles: [{
                 "featureType": "poi",
                 "stylers": [{
@@ -298,7 +307,29 @@
                 }]
             }],
             scrollwheel: false,
-            disableDefaultUI: true
+            disableDefaultUI: true,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        });
+
+        directionsDisplay.setMap(map)
+    }
+
+    function calcRoute() {
+
+        directionsService = new google.maps.DirectionsService()
+
+        var Largada = new google.maps.LatLng(-46.664159394359, -23.587313389726);
+        var Final = new google.maps.LatLng(-46.654139245160, -23.609279151291);
+
+        var request = {
+            origin: Largada,
+            destination: Final,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+        directionsService.route(request, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
+                directionsDisplay.setDirections(result); // Renderizamos no mapa o resultado
+            }
         });
     }
 
@@ -367,7 +398,7 @@
         for (var i = 0; i < markers.length; i++) {
             markers[i].setMap(null);
         }
-        markers.splice(0,markers.length)
+        markers.splice(0, markers.length)
     }
     function carregar() {
         $.ajax({
@@ -478,7 +509,7 @@
     }
     function conectar(id, value, type = 'inner') {
         if (type == 'inner') document.getElementById(id).innerHTML = value
-        if (type == 'src'){
+        if (type == 'src') {
             document.getElementById(id).src = value
         }
     }
@@ -517,7 +548,6 @@
 
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap" async
-    defer></script>
+
 
 </html>

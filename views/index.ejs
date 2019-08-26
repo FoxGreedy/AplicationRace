@@ -226,7 +226,6 @@
         var marker = new google.maps.Marker({
             position: ponto,
             map: map,
-            title: 'oioio'
         })
 
     }
@@ -332,7 +331,7 @@
             }
             return numero;
         }
-        hora = (Math.round(tempo / 3600));
+        hora = (parseInt(tempo / 3600));
         minuto = duas_casas(Math.floor((tempo % 3600) / 60));
         segundo = duas_casas((tempo % 3600) % 60);
         formatado = hora + ":" + minuto + ":" + segundo;
@@ -577,7 +576,7 @@
 
 </script>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCER9PMT7J3e41ErfeOyB9MCBCZaELJEQU&callback=initMap" async
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhS0HbkkKiUf2BV1T_skrfb2Pw63XzPeI&callback=initMap" async
     defer></script>
 
 </html>

@@ -17,8 +17,9 @@ function sendOficialDataSource(model, send) {
 
 
             if (status === 99) {
-                if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
-                if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
+                // if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
+                // if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
+                await enviarPayloadWelligton(payload, id)
             }
 
         }
@@ -34,8 +35,8 @@ async function enviarPayloadWelligton(payload, id) {
         output.push(char)
     };
 
-    let latitude = `${hexToInt(output[4])}.${parseInt(output[5], 16)}${parseInt(output[6], 16)}${parseInt(output[7], 16)}`
-    let longitude = `${hexToInt(output[8])}.${parseInt(output[9], 16)}${parseInt(output[10], 16)}${parseInt(output[11], 16)}`
+    let latitude = `${hexToInt(output[4])}.${hexToDec(output[5])}${hexToDec(output[6])}${hexToDec(output[7])}`
+    let longitude = `${hexToInt(output[8])}.${hexToDec(output[9])}${hexToDec(output[10])}${hexToDec(output[11])}`
 
     let dadoDuplicado = await gps.findOne({
         devAdress: id,
@@ -45,6 +46,7 @@ async function enviarPayloadWelligton(payload, id) {
             lng: longitude
         }
     })
+
     if (!dadoDuplicado) {
         if (Number(latitude) != 0 && Number(longitude) != 0) {
             await gps.create({
@@ -69,15 +71,18 @@ async function pegarUltimasCoordenadas(id, fuso) {
         console.log("Distancia percorrida agora: ", distancia)
         console.log(data[0].gps, data[1].gps)
 
-        if (distancia <= 300) {
-            await atualizarDistancia(id, distancia, fuso)
-        } else {
-            await gps.findOneAndDelete(
-                {
-                    devAdress: id,
-                    gps: data[0].gps
-                })
-        }
+        console.log("Distanciaaaaa", distancia)
+        // if (distancia <= 300) {
+        await atualizarDistancia(id, distancia, fuso)
+        // } else {
+        //     gps.findOneAndDelete(
+        //         {
+        //             devAdress: id,
+        //             gps: data[0].gps
+        //         })
+        //     console.log('Mensagem erro')
+        // }
+
     }
 }
 
@@ -98,6 +103,13 @@ async function atualizarDistancia(id, distancia, fuso) {
         await dados.save()
 
     }
+}
+
+function hexToDec(value){
+    let valueInt = parseInt(value, 16)
+
+    if(valueInt < 10) return `0${valueInt}`
+    return `${valueInt}`
 }
 
 function hexToInt(hex) {

@@ -13,8 +13,10 @@ connection(config)
 //Basic data source dos devices para o servidor final
 const local = require('./model/gps')
 const socket = require('./socket/leitura').Oficial
+const welli = require('./socket/leitura').Well
 const sending = require('./database/send').Oficial
 sending(local, socket)
+sending(local, welli)
 
 
 //Configurando a estrutura da aplicação

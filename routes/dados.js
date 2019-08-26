@@ -178,22 +178,19 @@ router.put('/desclassificar/:devAdress', (req, res) => {
         })
 })
 
-router.get('/teste/:devAdress', async (req, res) => {
-    let { params: { devAdress } } = req
+router.get('/teste', async (req, res) => {
 
-    let dadoDuplicado = await gps.findOne({
-        devAdress: devAdress,
-        gps: {
-            alt: "1",
-            lat: "-23.59549",
-            lng: "-46.68280"
-        }
-    })
+    await gps.findOneAndDelete(
+        {
+            devAdress: "ffff3e71bf3683fc",
+            gps: {
+                alt: "1",
+                lat:"-23.602281",
+                lng:"-46.666557"
+            }
+        })
+    res.redirect('/')
 
-    if (!dadoDuplicado) {
-        return res.send({ 'Message': 'Batata' })
-    }
-    res.send(dadoDuplicado)
 })
 
 router.get('/:nomeCompetidor', (req, res) => {

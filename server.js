@@ -2,7 +2,7 @@ const app = require('./app')
 const debug = require('debug')('backend-node:server')
 
 const http = require('http')
-var port = normalizePort(process.env.PORT || '3000')
+var port = normalizePort(process.env.PORT || '3333')
 
 app.set('port', port)
 

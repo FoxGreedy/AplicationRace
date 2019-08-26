@@ -97,15 +97,6 @@ async function atualizarDistancia(id, distancia, fuso) {
 
         await dados.save()
 
-        // await dadosCompetidor.findOneAndUpdate({ devAdress: id },
-        //     {
-        //         $set: {
-        //             distanciaTotal: distanciaTotalAtual,
-        //             distanciaAtual: distancia,
-        //             momentoAtual: calcularData(new Date(), fuso)
-        //         }
-        //     },
-        //     { upsert: true })
     }
 }
 

@@ -68,12 +68,21 @@
     }
 
     var map;
-    var directionsDisplay;
-    var directionsService;
+    var directionsDisplay1;
+    var directionsService1;
+    var directionsDisplay2;
+    var directionsService2;
 
     function initMap() {
 
-        directionsDisplay = new google.maps.DirectionsRenderer({
+        directionsDisplay1 = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "red"
+            }
+        });
+
+        directionsDisplay2 = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
@@ -94,22 +103,23 @@
             disableDefaultUI: true,
         });
 
-        directionsDisplay.setMap(map)
-
+        directionsDisplay1.setMap(map)
+        directionsDisplay2.setMap(map)
 
         setTimeout(calcRoute, 2000)
     }
 
     function calcRoute() {
-        directionsService = new google.maps.DirectionsService()
+        directionsService1 = new google.maps.DirectionsService()
+        directionsService2 = new google.maps.DirectionsService()
 
         var Largada = new google.maps.LatLng(-46.664159394359, -23.587313389726);
         var Final = new google.maps.LatLng(-46.657128420850, -23.582682333561);
 
-        var request = {
+        var request1 = {
             origin: { lat: -23.587313389726, lng: -46.664159394359 },
-            destination: { lat: -23.587313389726, lng: -46.664159394359 },
-            travelMode: google.maps.TravelMode.BICYCLING,
+            destination: { lat: -23.609382553731, lng: -46.654048625895 },
+            travelMode: google.maps.TravelMode.WALKING,
             avoidTolls: true,
             waypoints: [
                 {
@@ -191,14 +201,147 @@
                 {
                     location: { lat: -23.597000369832, lng: -46.650725358893 },
                     stopover: true
-                }
+                },
+                {
+                    location: { lat: -23.605679033179, lng: -46.651525755206 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.606136747793, lng: -46.651599107888 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.606674673964, lng: -46.651804077379 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.607589826245, lng: -46.652398939990 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.609382553731, lng: -46.654048625895 },
+                    stopover: true
+                },
             ],
             optimizeWaypoints: true,
         };
 
-        directionsService.route(request, function (result, status) {
+        var request2 = {
+            origin: { lat: -23.609382553731, lng: -46.654048625895 },
+            destination: { lat: -23.587313389726, lng: -46.664159394359 },
+            travelMode: google.maps.TravelMode.WALKING,
+            avoidTolls: true,
+            waypoints: [
+                {
+                    location: { lat: -23.611073358736, lng: -46.655667713138 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.611004734897, lng: -46.655755287488 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.609279151291, lng: -46.654139245160 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.607487359306, lng: -46.652550607471 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.606596178531, lng: -46.651940813802 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.606043841264, lng: -46.651800558416 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.605606740213, lng: -46.651703757691 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.596943548011, lng: -46.650918752581 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.593371162826, lng: -46.650695571088 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.591524008902, lng: -46.651148026075 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.589509156897, lng: -46.652005759697 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.587292910839, lng: -46.653269087770 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.586097424300, lng: -46.654834170991 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.584842239743, lng: -46.655942491501 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.582682333561, lng: -46.657128420850 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.582069076247, lng: -46.657567671770 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.581130520918, lng: -46.659351207772 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.580408045709, lng: -46.660882460670 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.580279148672, lng: -46.661535220695 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.580440812631, lng: -46.662095564516 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.581060397775, lng: -46.662997509629 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.581250021261, lng: -46.663184826082 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.581355025933, lng: -46.663217747884 },
+                    stopover: true
+                },
+                {
+                    location: { lat: -23.587321149830, lng: -46.664020684390 },
+                    stopover: true
+                },
+            ],
+            optimizeWaypoints: true,
+        };
+
+        directionsService1.route(request1, function (result, status) {
             if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
-                directionsDisplay.setDirections(result); // Renderizamos no mapa o resultado
+                directionsDisplay1.setDirections(result); // Renderizamos no mapa o resultado
+            } else {
+                console.log('Deu ruim')
+            }
+        });
+        directionsService2.route(request2, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
+                directionsDisplay2.setDirections(result); // Renderizamos no mapa o resultado
             } else {
                 console.log('Deu ruim')
             }

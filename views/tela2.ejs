@@ -40,6 +40,7 @@
                 <img id="lora" src="img/logo/lora.png">
                 <img id="tctec" src="img/logo/tctec.png">
                 <img id="bup" src="img/logo/BottomUp.png">
+                <img id="openlabs" src="img/logo/openlab.png">
             </div>
         </div>
 
@@ -74,14 +75,12 @@
     var directionsService2;
 
     function initMap() {
-
         directionsDisplay1 = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
             }
         });
-
         directionsDisplay2 = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             polylineOptions: {
@@ -117,215 +116,26 @@
         var Final = new google.maps.LatLng(-46.657128420850, -23.582682333561);
 
         var request1 = {
-            origin: { lat: -23.587313389726, lng: -46.664159394359 },
-            destination: { lat: -23.609382553731, lng: -46.654048625895 },
-            travelMode: google.maps.TravelMode.WALKING,
+            origin: { lat: -23.58706598, lng: -46.66408002 },
+            destination: { lat: -23.61096654, lng: -46.65575176 },
+            travelMode: google.maps.TravelMode.DRIVING,
             avoidTolls: true,
             waypoints: [
                 {
-                    location: { lat: -23.581261743811, lng: -46.663374169707 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581133585205, lng: -46.663305339764 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580970401791, lng: -46.663158820039 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.579964165128, lng: -46.661738101722 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.579393412990, lng: -46.661404243664 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.579336202326, lng: -46.661138769145 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.579629582661, lng: -46.660650870581 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580294996303, lng: -46.660114303917 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580646496467, lng: -46.659794423652 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580977946602, lng: -46.659278760949 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581832655406, lng: -46.657516367389 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.583419495479, lng: -46.654652373000 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.583876390911, lng: -46.654025186671 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.584459707437, lng: -46.653528795715 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.585580858362, lng: -46.653045740887 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.586624807688, lng: -46.652705410143 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.589530711026, lng: -46.651599991984 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.591366562735, lng: -46.650783187086 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.593364525162, lng: -46.650487728137 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.597000369832, lng: -46.650725358893 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.605679033179, lng: -46.651525755206 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.606136747793, lng: -46.651599107888 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.606674673964, lng: -46.651804077379 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.607589826245, lng: -46.652398939990 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.609382553731, lng: -46.654048625895 },
+                    location: { lat: -23.58128435, lng: -46.66323245 },
                     stopover: true
                 },
             ],
             optimizeWaypoints: true,
         };
-
         var request2 = {
-            origin: { lat: -23.609382553731, lng: -46.654048625895 },
-            destination: { lat: -23.587313389726, lng: -46.664159394359 },
-            travelMode: google.maps.TravelMode.WALKING,
+            origin: { lat:-23.61103536, lng: -46.65561229 },
+            destination: { lat: -23.58706598, lng: -46.66408002 },
+            travelMode: google.maps.TravelMode.DRIVING,
             avoidTolls: true,
             waypoints: [
                 {
-                    location: { lat: -23.611073358736, lng: -46.655667713138 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.611004734897, lng: -46.655755287488 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.609279151291, lng: -46.654139245160 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.607487359306, lng: -46.652550607471 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.606596178531, lng: -46.651940813802 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.606043841264, lng: -46.651800558416 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.605606740213, lng: -46.651703757691 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.596943548011, lng: -46.650918752581 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.593371162826, lng: -46.650695571088 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.591524008902, lng: -46.651148026075 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.589509156897, lng: -46.652005759697 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.587292910839, lng: -46.653269087770 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.586097424300, lng: -46.654834170991 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.584842239743, lng: -46.655942491501 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.582682333561, lng: -46.657128420850 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.582069076247, lng: -46.657567671770 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581130520918, lng: -46.659351207772 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580408045709, lng: -46.660882460670 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580279148672, lng: -46.661535220695 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.580440812631, lng: -46.662095564516 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581060397775, lng: -46.662997509629 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581250021261, lng: -46.663184826082 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.581355025933, lng: -46.663217747884 },
-                    stopover: true
-                },
-                {
-                    location: { lat: -23.587321149830, lng: -46.664020684390 },
+                    location: { lat: -23.60861207, lng: -46.65335387 },
                     stopover: true
                 },
             ],

@@ -40,6 +40,7 @@
                 <img id="lora" src="img/logo/lora.png">
                 <img id="tctec" src="img/logo/tctec.png">
                 <img id="bup" src="img/logo/BottomUp.png">
+                <img id="openlabs" src="img/logo/openlab.png">
             </div>
         </div>
 
@@ -294,12 +295,23 @@
     var directionsService;
 
     function initMap() {
-
-        directionsDisplay = new google.maps.DirectionsRenderer();
+        directionsDisplay1 = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "red"
+            }
+        });
+        directionsDisplay2 = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "red"
+            }
+        });
 
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -23.5911131, lng: -46.6475914 },
-            zoom: 12,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            zoom: 14,
             styles: [{
                 "featureType": "poi",
                 "stylers": [{
@@ -308,27 +320,60 @@
             }],
             scrollwheel: false,
             disableDefaultUI: true,
-            mapTypeId: google.maps.MapTypeId.ROADMAP
         });
 
-        directionsDisplay.setMap(map)
+        directionsDisplay1.setMap(map)
+        directionsDisplay2.setMap(map)
+
+        setTimeout(calcRoute, 2000)
     }
 
     function calcRoute() {
-
-        directionsService = new google.maps.DirectionsService()
+        directionsService1 = new google.maps.DirectionsService()
+        directionsService2 = new google.maps.DirectionsService()
 
         var Largada = new google.maps.LatLng(-46.664159394359, -23.587313389726);
-        var Final = new google.maps.LatLng(-46.654139245160, -23.609279151291);
+        var Final = new google.maps.LatLng(-46.657128420850, -23.582682333561);
 
-        var request = {
-            origin: Largada,
-            destination: Final,
-            travelMode: google.maps.TravelMode.DRIVING
+        var request1 = {
+            origin: { lat: -23.58706598, lng: -46.66408002 },
+            destination: { lat: -23.61096654, lng: -46.65575176 },
+            travelMode: google.maps.TravelMode.DRIVING,
+            avoidTolls: true,
+            waypoints: [
+                {
+                    location: { lat: -23.58128435, lng: -46.66323245 },
+                    stopover: true
+                },
+            ],
+            optimizeWaypoints: true,
         };
-        directionsService.route(request, function (result, status) {
+        var request2 = {
+            origin: { lat:-23.61103536, lng: -46.65561229 },
+            destination: { lat: -23.58706598, lng: -46.66408002 },
+            travelMode: google.maps.TravelMode.DRIVING,
+            avoidTolls: true,
+            waypoints: [
+                {
+                    location: { lat: -23.60861207, lng: -46.65335387 },
+                    stopover: true
+                },
+            ],
+            optimizeWaypoints: true,
+        };
+
+        directionsService1.route(request1, function (result, status) {
             if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
-                directionsDisplay.setDirections(result); // Renderizamos no mapa o resultado
+                directionsDisplay1.setDirections(result); // Renderizamos no mapa o resultado
+            } else {
+                console.log('Deu ruim')
+            }
+        });
+        directionsService2.route(request2, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
+                directionsDisplay2.setDirections(result); // Renderizamos no mapa o resultado
+            } else {
+                console.log('Deu ruim')
             }
         });
     }

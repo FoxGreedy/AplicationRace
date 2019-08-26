@@ -49,6 +49,12 @@
     top: 39%
 }
 
+.logo > #openlabs{
+    width: 10%;
+    top: 46%;
+    right: 0%
+}
+
 
 body {
     font-family: 'Trebuchet MS', 'Helvetica', sans-serif;

@@ -30,68 +30,104 @@
 
     <div id="All" class="container-fluid">
         <div id="items" class="row">
-            <div id="cont-map" class="col-6">
-                <div id="card-map" class="card rounded-0 border-dark">
-                    <div id="body-map" class="card-body">
-                        <div id="map"></div>
-                    </div>
-                </div>
-            </div>
-            <div id="cont-twitter" class="col-6">
-                <div id="card-twitter" class="card rounded-0 border-dark">
-                    <div id="body-twitter" class="card-body" style="padding: 0%">
-                        <table id="medias">
-                            <tbody>
-                                <tr class="border-bottom border-danger">
-                                    <td style="padding: 1%">
-                                        <ul class="lista">
-                                            <li class="infoMedia">
-                                                <i class="align-self-center mr-2 material-icons">location_on</i>
-                                                <span id="distanciaTotal">0m</span>
-                                            </li>
-                                            <li class="indiceMedia">
-                                                Distancia Total
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td style="padding: 1%">
-                                        <ul class="lista">
-                                            <li class="infoMedia">
-                                                <i class="align-self-center mr-2 material-icons">directions_run</i>
-                                                <span id="velocidadeMedia">0km/h</span>
-                                            </li>
-                                            <li class="indiceMedia">
-                                                Velocidade Media
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                                <tr class="border-0" style="padding: 0%">
-                                    <td style="padding: 0%">
-                                        <ul class="lista" style="padding: 0%">
-                                            <li class="infoMedia">
-                                                <i class="align-self-center mr-2 material-icons">whatshot</i>
-                                                <span id="caloriaTotal">0cal</span>
-                                            </li>
-                                            <li class="indiceMedia">
-                                                Caloria Total
-                                            </li>
-                                        </ul>
-                                    </td>
-                                    <td style="padding: 1%">
-                                        <ul class="lista">
-                                            <li class="infoMedia">
-                                                <i class="align-self-center mr-2 material-icons">favorite_border</i>
-                                                <span id="ritmoMedio">00:00</span>
-                                            </li>
-                                            <li class="indiceMedia">
-                                                Ritmo Medio
-                                            </li>
-                                        </ul>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+            <div id="cont-twitter" class="col-12">
+                <div id="card-twitter" class="card rounded-0 border-dark" style="padding: 0%">
+                    <div id="body-twitter" class="card-body" >
+                        <div class="row" style="padding: 0%; margin: 0%; height: 100%">
+                            <div id="logos-oferecimento" class="col-3" >
+                                <h3 style="text-align: center">ATC LoRa RUN</h3>
+                                <div id="imagens" >
+                                    <div class="row" style="padding-top: 10px">
+                                        <div class="col">
+                                            <img id="atc" src="img/logo/AmericanTowerLogo.png">
+                                        </div>
+                                        <div class="col">
+                                            <img id="everynet" src="img/logo/Everynet.png">
+                                        </div>
+                                        <div class="col">
+                                            <img id="lora" src="img/logo/lora.png">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <img id="tctec" src="img/logo/tctec.png">
+                                        </div>
+                                        <div class="col">
+                                            <img id="bup" src="img/logo/BottomUp.png">
+                                        </div>
+                                        <div class="col">
+                                            <img id="openlabs" src="img/logo/openlab.png">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-9">
+                                <table id="medias">
+                                    <tbody>
+                                        <tr>
+                                            <td style="padding: 0%">
+                                                <ul class="lista">
+                                                    <li class="infoMedia">
+                                                        <i
+                                                            class="align-self-center mr-2 material-icons">supervisor_account</i>
+                                                        <span><%- competidores.length %></span>
+                                                    </li>
+                                                    <li class="indiceMedia">
+                                                        Pessoas
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td style="padding: 0%">
+                                                <ul class="lista">
+                                                    <li class="infoMedia">
+                                                        <i class="align-self-center mr-2 material-icons">location_on</i>
+                                                        <span id="distanciaTotal">0m</span>
+                                                    </li>
+                                                    <li class="indiceMedia">
+                                                        Distancia Total
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td style="padding: 0%">
+                                                <ul class="lista">
+                                                    <li class="infoMedia">
+                                                        <i
+                                                            class="align-self-center mr-2 material-icons">directions_run</i>
+                                                        <span id="velocidadeMedia">0km/h</span>
+                                                    </li>
+                                                    <li class="indiceMedia">
+                                                        Velocidade Media
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td style="padding: 0%">
+                                                <ul class="lista" style="padding: 0%">
+                                                    <li class="infoMedia">
+                                                        <i class="align-self-center mr-2 material-icons">whatshot</i>
+                                                        <span id="caloriaTotal">0cal</span>
+                                                    </li>
+                                                    <li class="indiceMedia">
+                                                        Caloria Total
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td style="padding: 0%">
+                                                <ul class="lista">
+                                                    <li class="infoMedia">
+                                                        <i
+                                                            class="align-self-center mr-2 material-icons">favorite_border</i>
+                                                        <span id="ritmoMedio">00:00</span>
+                                                    </li>
+                                                    <li class="indiceMedia">
+                                                        Ritmo Medio
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
@@ -106,35 +142,6 @@
                     <!-- head -->
                     <div id="body-dash" class="card-body">
                         <table id="tabela" class="table">
-                            <thead class="border-0 header">
-                                <tr class="border-0">
-                                    <th scope="col" class="border-0" style="margin: 0; padding: 0;">
-                                        <ul class="indice">
-                                            <li class="media">
-                                                <i class="align-self-center mr-2 material-icons"
-                                                    style="font-size: 25px; padding-left:37%">supervisor_account</i>
-                                                <div class="media-body">
-                                                    <span id="contador-pessoas"
-                                                        style="font-size: 25px"><%- competidores.length %></span>
-                                                </div>
-                                            </li>
-                                            <li class="descricao" style="padding-left: 37%; text-align: left">
-                                                Pessoas
-                                            </li>
-                                        </ul>
-                                    </th>
-                                    <th scope="col" class="border-0" style="margin: 0; padding: 0;">
-                                        <div class="row index">
-                                            <div class="col-12">
-                                                <h5 class="logo">ATC LoRa RUN</h5>
-                                            </div>
-                                        </div>
-                                    </th>
-                                    <th scope="col" class="border-0">
-
-                                    </th>
-                                </tr>
-                            </thead>
                             <!-- body -->
                             <tbody style=" border-top: 2px solid #d9534f;">
                                 <tr class="border-0">

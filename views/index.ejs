@@ -190,6 +190,7 @@
 <script>
 
     var map
+    var markers = []
 
     $(document).ready(() => {
         carregar()
@@ -297,7 +298,12 @@
             position: ponto,
             map: map,
         })
-
+    }
+    function limparMarcadores() {
+        for (var i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+        markers.splice(0, markers.length)
     }
     function calcularMomento(momento1, momento2) {
         return momento2 - momento1
@@ -599,6 +605,8 @@
             cache: false,
             success: (data) => {
 
+                limparMarcadores()
+
                 var { infos, gps, participantes } = data
                 let todasInfosCompetidores = []
 
@@ -613,6 +621,7 @@
 
                 let competidorIndividual = todasInfosCompetidores.filter((l) => l.participante.devAdress === id)
                 let { information: infosInd, gps: gpsInd, participante: participanteInd } = competidorIndividual[0]
+
 
                 if (gpsInd.length != 0) {
                     iniciarMarcacao(gpsInd)

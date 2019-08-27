@@ -55,7 +55,6 @@
     right: 0%
 }
 
-
 body {
     font-family: 'Trebuchet MS', 'Helvetica', sans-serif;
     background:#e2e2e2;
@@ -141,9 +140,9 @@ body {
 
 #head1 i, #head2 i, #head3 i, #head4 i, #head5 i{
     position: absolute; 
-    top: -30px;
+    top: -38px;
     right: 0; 
-    font-size: 40px;
+    font-size: 50px;
     color: #9e9e9e;
 } 
 

@@ -349,7 +349,7 @@
             optimizeWaypoints: true,
         };
         var request2 = {
-            origin: { lat:-23.61103536, lng: -46.65561229 },
+            origin: { lat: -23.61103536, lng: -46.65561229 },
             destination: { lat: -23.58706598, lng: -46.66408002 },
             travelMode: google.maps.TravelMode.DRIVING,
             avoidTolls: true,
@@ -416,9 +416,41 @@
     // Variaveis Globais
     var pace = 0
     var Velocidade = 0
-    var markers = [];
+    var markers = []
     // Cores
-    var cores = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF', '#FF7F00', '#99CC32', '#D8D8BF', '#00009C', '#871F78', '#007FFF', '#FF1493', '#DC143C', '#2F4F4F', '#1E90FF', '#836FFF', '#BA55D3', '#FF7F50', '#B0E0E6', '#8B0000', '#50C878', '#831D1C', '#78866B', '#6B8E23', '#8FBC8F', '#FF00FF', '#FBEC5D', '#E9967A', '#008080']
+    var cores = [
+        "#1e8fff",
+        "#00ffff",
+        "#20b2b3",
+        "#dda0dd",
+        "#8c6175",
+        "#a11b34",
+        "#789c78",
+        "#ff8c00",
+        "#bdb86b",
+        "#cd5b5b",
+        "#696969",
+        "#ff0000",
+        "#fff200",
+        "#593d15",
+        "#245ec9",
+        "#85ffbc",
+        "#8fab41",
+        "#dcdcdc",
+        "#53adbd",
+        "#e65a84",
+        "#bf1dc2",
+        "#000000",
+        "#191970",
+        "#006400",
+        "#00e348",
+        "#94006f",
+        "#d2b48c",
+        "#627814",
+        "#1b5ec2",
+        "#fa7972",
+        "#eee8aa"
+    ]
 
     function iniciarMarcacao(infos, color) {
 
@@ -549,7 +581,6 @@
             }
             return 0;
         }
-
         info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
     function conectar(id, value, type = 'inner') {

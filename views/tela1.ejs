@@ -299,17 +299,19 @@
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
-            }
+            },
+            preserveViewport: true
         });
         directionsDisplay2 = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
-            }
+            },
+            preserveViewport: true
         });
 
         map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
+            center: { lat: -23.6057828, lng: -46.6523804 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             zoom: 14,
             styles: [{
@@ -363,15 +365,15 @@
         };
 
         directionsService1.route(request1, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
-                directionsDisplay1.setDirections(result); // Renderizamos no mapa o resultado
+            if (status == google.maps.DirectionsStatus.OK) { 
+                directionsDisplay1.setDirections(result); 
             } else {
                 console.log('Deu ruim')
             }
         });
         directionsService2.route(request2, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
-                directionsDisplay2.setDirections(result); // Renderizamos no mapa o resultado
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay2.setDirections(result);
             } else {
                 console.log('Deu ruim')
             }

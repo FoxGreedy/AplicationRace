@@ -55,6 +55,14 @@
     right: 0%
 }
 
+.indice img {
+    position: absolute;
+    z-index: 4;
+    height: 90%;
+    left: 2%;
+    top: 5%;
+}
+
 body {
     font-family: 'Trebuchet MS', 'Helvetica', sans-serif;
     background:#e2e2e2;

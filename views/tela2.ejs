@@ -31,9 +31,12 @@
 <body id="home" onload="iniciar()">
 
     <div id="container" style="height: 100%; position: absolute;">
-
+        
         <!-- Logo -->
         <div>
+            <div class="indice">
+                <img src="img/Users.png">
+            </div>
             <div class="logo">
                 <img id="atc" src="img/logo/AmericanTowerLogo.png">
                 <img id="everynet" src="img/logo/Everynet.png">
@@ -79,19 +82,21 @@
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
-            }
+            },
+            preserveViewport: true
         });
         directionsDisplay2 = new google.maps.DirectionsRenderer({
             suppressMarkers: true,
             polylineOptions: {
                 strokeColor: "red"
-            }
+            },
+            preserveViewport: true
         });
 
         map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
+            center: { lat: -23.594978, lng: -46.6593498 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            zoom: 14,
+            zoom: 14.75,
             styles: [{
                 "featureType": "poi",
                 "stylers": [{
@@ -129,7 +134,7 @@
             optimizeWaypoints: true,
         };
         var request2 = {
-            origin: { lat:-23.61103536, lng: -46.65561229 },
+            origin: { lat: -23.61103536, lng: -46.65561229 },
             destination: { lat: -23.58706598, lng: -46.66408002 },
             travelMode: google.maps.TravelMode.DRIVING,
             avoidTolls: true,
@@ -231,8 +236,8 @@
         "#fa7972",
         "#eee8aa"
     ]
-    
-    function iniciarMarcacao(infos, color, nome, sobrenome) {
+
+    function iniciarMarcacao(infos, color) {
 
         var unique = infos.slice().reverse()
 
@@ -250,8 +255,7 @@
         var marker = new google.maps.Marker({
             position: ponto,
             icon: balao,
-            map: map,
-            label: { color: '#212121', fontSize: '14px', text: `${nome} ${sobrenome}` }
+            map: map
         })
 
         markers.push(marker)
@@ -350,13 +354,9 @@
 
         info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
-    function conectar(id, value, type = 'inner') {
-        if (type == 'inner') document.getElementById(id).innerHTML = value
-        if (type == 'src') document.getElementById(id).src = value
-    }
     function plottarDadosTelona(infos) {
         if (infos[info].gps.length != 0) {
-            iniciarMarcacao(infos[info].gps, infos[info].participante.corPin, infos[info].participante.nome, infos[info].participante.sobrenome)
+            iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
         }
     }
     function plottarDados(infos) {

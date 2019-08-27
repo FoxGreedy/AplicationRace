@@ -208,23 +208,12 @@
             .css('display', 'block')
     })
     function initMap() {
-        directionsDisplay1 = new google.maps.DirectionsRenderer({
-            suppressMarkers: true,
-            polylineOptions: {
-                strokeColor: "red"
-            }
-        });
-        directionsDisplay2 = new google.maps.DirectionsRenderer({
-            suppressMarkers: true,
-            polylineOptions: {
-                strokeColor: "red"
-            }
-        });
+
 
         map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
+            center: { lat: -23.594338, lng: -46.6569469 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            zoom: 14,
+            zoom: 12,
             styles: [{
                 "featureType": "poi",
                 "stylers": [{
@@ -233,6 +222,21 @@
             }],
             scrollwheel: false,
             disableDefaultUI: true,
+        });
+
+        directionsDisplay1 = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "red"
+            },
+            preserveViewport: true
+        });
+        directionsDisplay2 = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "red"
+            },
+            preserveViewport: true
         });
 
         directionsDisplay1.setMap(map)
@@ -262,7 +266,7 @@
             optimizeWaypoints: true,
         };
         var request2 = {
-            origin: { lat:-23.61103536, lng: -46.65561229 },
+            origin: { lat: -23.61103536, lng: -46.65561229 },
             destination: { lat: -23.58706598, lng: -46.66408002 },
             travelMode: google.maps.TravelMode.DRIVING,
             avoidTolls: true,
@@ -298,6 +302,10 @@
             position: ponto,
             map: map,
         })
+
+        map.setZoom(14);
+        map.setCenter(marker.getPosition())
+
     }
     function limparMarcadores() {
         for (var i = 0; i < markers.length; i++) {

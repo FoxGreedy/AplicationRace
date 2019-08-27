@@ -58,9 +58,9 @@
 .indice img {
     position: absolute;
     z-index: 4;
-    height: 90%;
+    height: 70%;
     left: 2%;
-    top: 5%;
+    top: 15%;
 }
 
 body {

@@ -31,7 +31,7 @@
 <body id="home" onload="iniciar()">
 
     <div id="container" style="height: 100%; position: absolute;">
-        
+
         <!-- Logo -->
         <div>
             <div class="indice">
@@ -355,14 +355,15 @@
         info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
     function plottarDadosTelona(infos) {
-        if (infos[info].gps.length != 0) {
-            iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
+        for (info in infos) {
+            if (infos[info].gps.length != 0) {
+                iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
+            }
+                console.log(infos[info].participante.corPin)
         }
     }
     function plottarDados(infos) {
-        for (info in infos) {
-            plottarDadosTelona(infos)
-        }
+        plottarDadosTelona(infos)
     }
 
 </script>

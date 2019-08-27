@@ -7,21 +7,21 @@ function sendOficialDataSource(model, send) {
         let id = dadosJSON.meta.device
         timestamp = new Date()
 
-        if (dadosJSON.type === "uplink") {
+        console.log(dados)
 
-            let applicationEUI = dadosJSON.meta.application,
-                payload = dadosJSON.params.payload
+        if (dadosJSON.type === "uplink") {
+            let payload = dadosJSON.params.payload
 
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor
-
 
             if (status === 99) {
                 // if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
                 // if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
                 await enviarPayloadWelligton(payload, id)
+            } else{
+                console.log('Nem da')
             }
-
         }
     })
 }

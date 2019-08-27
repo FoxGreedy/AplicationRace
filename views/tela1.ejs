@@ -365,8 +365,8 @@
         };
 
         directionsService1.route(request1, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) { 
-                directionsDisplay1.setDirections(result); 
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay1.setDirections(result);
             } else {
                 console.log('Deu ruim')
             }
@@ -485,8 +485,6 @@
             url: '/dados/info',
             success: (dados) => {
 
-                limparMarcadores()
-
                 var todasInfosCompetidor = []
 
                 let { participantes, infos, gps } = dados
@@ -594,7 +592,7 @@
     function plottarDadosTelona(infos) {
         if (info < 5) {
             if (infos[info].gps.length != 0) {
-                iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
+                iniciarMarcacao(infos[info].gps, Number(infos[info].participante.corPin) - 1)
             }
 
             let distancia = infos[info].information.distanciaTotal
@@ -617,11 +615,10 @@
         }
     }
     function plottarDados(infos) {
-        for (info in infos) {
 
-            plottarDadosTelona(infos)
+        limparMarcadores()
+        plottarDadosTelona(infos)
 
-        }
     }
 
 </script>

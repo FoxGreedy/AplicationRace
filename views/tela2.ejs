@@ -238,7 +238,6 @@
     ]
 
     function iniciarMarcacao(infos, color) {
-
         var unique = infos.slice().reverse()
 
         var balao = {
@@ -263,7 +262,6 @@
         marker.addListener('load', function () {
             infowindow.open(map, marker)
         });
-
     }
     function limparMarcadores() {
         for (var i = 0; i < markers.length; i++) {
@@ -276,9 +274,6 @@
             cache: false,
             url: '/dados/info',
             success: (dados) => {
-
-                limparMarcadores()
-
                 var todasInfosCompetidor = []
 
                 let { participantes, infos, gps } = dados
@@ -294,10 +289,8 @@
                         }
                     }
                 }
-
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
-
             },
             error: (e) => {
                 console.error('Error', e)
@@ -357,12 +350,13 @@
     function plottarDadosTelona(infos) {
         for (info in infos) {
             if (infos[info].gps.length != 0) {
-                iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
+                iniciarMarcacao(infos[info].gps, Number(infos[info].participante.corPin) - 1)
             }
-                console.log(infos[info].participante.corPin)
+            console.log(infos[info].participante.corPin)
         }
     }
     function plottarDados(infos) {
+        limparMarcadores()
         plottarDadosTelona(infos)
     }
 

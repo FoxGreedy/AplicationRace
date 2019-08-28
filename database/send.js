@@ -7,10 +7,12 @@ function sendOficialDataSource(model, send) {
         let id = dadosJSON.meta.device
         timestamp = new Date()
 
-        console.log(dados)
-
         if (dadosJSON.type === "uplink") {
             let payload = dadosJSON.params.payload
+            
+            id = id.substring(4).toUpperCase()
+
+            console.log(id)
 
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor

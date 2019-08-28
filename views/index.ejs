@@ -207,9 +207,15 @@
         $('#back')
             .css('display', 'block')
     })
+
+    var directionsDisplay1
+    var directionsDisplay2
+    var directionsService1
+    var directionsService2
+    var percursoDisplay
+    var percursoService
+
     function initMap() {
-
-
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -23.594338, lng: -46.6569469 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -238,13 +244,51 @@
             },
             preserveViewport: true
         });
+        percursoDisplay = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "green"
+            },
+            preserveViewport: true
+        });
+
 
         directionsDisplay1.setMap(map)
         directionsDisplay2.setMap(map)
+        percursoDisplay.setMap(map)
 
         setTimeout(calcRoute, 2000)
     }
+    function determinarRotaPercorrida(gps) {
+        percursoService = new google.maps.DirectionsService()
 
+        var primeira = gps[0]
+        var invertido = gps.reverse()
+        var ultima = invertido[0]
+        var way = []
+
+        if (gps.length > 2) {
+            for (i = 1; i < gps.length - 1; i++) {
+                way.push({ location: { lat: gps[i].lat, lng: gps[i].lat }, stopover: true })
+            }
+        }
+        var percursoRequest = {
+            origin: { lat: primeira.lat, lng: primeira.lng },
+            destination: { lat: ultima.lat, lng: ultima.lng },
+            travelMode: google.maps.TravelMode.WALKING,
+            avoidTolls: true,
+            waypoints: way,
+            optimizeWaypoints: true,
+        };
+
+        percursoService.route(request1, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
+                percursoDisplay.setDirections(result); // Renderizamos no mapa o resultado
+            } else {
+                console.log('Deu ruim')
+            }
+        })
+    }
     function calcRoute() {
         directionsService1 = new google.maps.DirectionsService()
         directionsService2 = new google.maps.DirectionsService()
@@ -453,7 +497,7 @@
             url: `/dados/finalizar/${id}`,
             success: (data) => {
                 limparMarcadores()
-                
+
                 $('#botaoIniciar')
                     .css('display', 'inline-block')
 
@@ -471,11 +515,12 @@
             abrirEstrutura(info, infos)
         }
     }
+
     function carregar() {
         $.ajax({
             cache: false,
             url: '/dados/info',
-            success: (data) => { 
+            success: (data) => {
 
                 limparMarcadores()
 
@@ -489,6 +534,7 @@
                         }
                     }
                 }
+
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
             },
@@ -616,9 +662,12 @@
                 let competidorIndividual = todasInfosCompetidores.filter((l) => l.participante.devAdress === id)
                 let { information: infosInd, gps: gpsInd, participante: participanteInd } = competidorIndividual[0]
 
-
                 if (gpsInd.length != 0) {
                     iniciarMarcacao(gpsInd)
+                }
+
+                if (gpsInd.length >= 2) {
+                    determinarRotaPercorrida(gpsInd)
                 }
 
                 let colocacao = Number(todasInfosCompetidores.indexOf(competidorIndividual[0])) + 1

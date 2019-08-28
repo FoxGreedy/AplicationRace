@@ -96,7 +96,11 @@ router.post('/competidor/cadastrar',
 
 router.get('/iniciar/todos', (req, res) => {
     dados.updateMany({}, {
-        status: 99
+        status: 99,
+        momentoAtual: calcularData(new Date(), -3),
+        momentoInicio: calcularData(new Date(), -3),
+        distanciaAtual: 0,
+        distanciaTotal: 0
     },
         { upsert: true },
         (err, sucesso) => {
@@ -110,7 +114,8 @@ router.get('/iniciar/todos', (req, res) => {
 
 router.get('/finalizar/todos', (req, res) => {
     dados.updateMany({}, {
-        status: 100
+        status: 100,
+        momentoAtual: calcularData(new Date(), -3)
     },
         { upsert: true },
         (err, sucesso) => {
@@ -124,7 +129,9 @@ router.get('/finalizar/todos', (req, res) => {
 
 router.get('/resetar/todos', (req, res) => {
     dados.updateMany({}, {
-        status: 98
+        status: 98,
+        distanciaAtual: 0,
+        distanciaTotal: 0
     },
         { upsert: true },
         (err, sucesso) => {

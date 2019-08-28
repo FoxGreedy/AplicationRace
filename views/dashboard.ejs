@@ -287,22 +287,6 @@
         setInterval(carregar, 10000)
     }
 
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
-            zoom: 12,
-            styles: [{
-                "featureType": "poi",
-                "stylers": [{
-                    "visibility": "off"
-                }]
-            }],
-            scrollwheel: false,
-            disableDefaultUI: true
-        });
-
-    }
-
     function plottarGrafico(id, data) {
 
         new Chart(document.getElementById(id).getContext('2d'), {
@@ -609,8 +593,5 @@
 
 
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhS0HbkkKiUf2BV1T_skrfb2Pw63XzPeI&callback=initMap" async
-    defer></script>
 
 </html>

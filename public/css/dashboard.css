@@ -79,8 +79,8 @@
     background: #fafafa;
     border-radius: 10px;
     margin: 0%;
-    margin-left: 2px;
-    margin-top: -10px;
+    margin-left: 5%;
+    margin-top: -2%;
 }
 
 .indiceMedia{
@@ -112,6 +112,11 @@
 
 .dado{
     width: 50%;
+}
+
+.dadoAlter{
+    width: 50%;
+    border-bottom: #d9534f solid 4px;
 }
 
 .dados{

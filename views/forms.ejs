@@ -47,9 +47,13 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s9">
                         <input id="foto" type="text" class="validate">
                         <label for="foto">Foto</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <input id="mod" type="text" class="validate">
+                        <label for="mod">modalidade</label>
                     </div>
                 </div>
                 <button onclick="enviarDadosCompetidor()" class="btn-large align-left">Cadastrar</button>
@@ -69,6 +73,7 @@
         var devAdress = document.getElementById('devAdress').value
         var peso = document.getElementById('peso').value
         var foto = document.getElementById('foto').value
+        var modalidade = document.getElementById('mod').value
 
 
         var usuario = {
@@ -77,6 +82,7 @@
             devAdress: devAdress,
             peso: peso,
             foto: foto,
+            modalidade: modalidade
         }
 
         $.ajax({

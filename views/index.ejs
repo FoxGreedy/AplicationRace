@@ -356,7 +356,6 @@
         }
     }
     function definirColocacao(info) {
-
         function comparer(a, b) {
             if (a.information.distanciaTotal < b.information.distanciaTotal) {
                 return 1;
@@ -386,9 +385,16 @@
             }
             return 0;
         }
+        function comparerModalidade(a, b) {
+            if (a.participante.modalidade < b.participante.modalidade) {
+                return -1;
+            }
+            if (a.participante.modalidade > b.participante.modalidade) {
+                return 1;
+            }
+        }
 
-        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
-
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo).sort(comparerModalidade);
     }
     function formatarDistancia(distancia, index) {
 
@@ -446,28 +452,14 @@
             type: 'PUT',
             url: `/dados/finalizar/${id}`,
             success: (data) => {
+                limparMarcadores()
+                
                 $('#botaoIniciar')
                     .css('display', 'inline-block')
 
                 $('#botaoFinalizar')
                     .css('display', 'none')
 
-            }, error: (e) => {
-                console.error(e)
-            }
-        })
-    }
-    function desclassificar(id) {
-        $.ajax({
-            cache: false,
-            type: 'PUT',
-            url: `/dados/desclassificar/${id}`,
-            success: (data) => {
-                $('#botaoIniciar')
-                    .css('display', 'inline-block')
-
-                $('#botaoFinalizar')
-                    .css('display', 'none')
             }, error: (e) => {
                 console.error(e)
             }
@@ -483,7 +475,9 @@
         $.ajax({
             cache: false,
             url: '/dados/info',
-            success: (data) => {
+            success: (data) => { 
+
+                limparMarcadores()
 
                 var { infos, gps, participantes } = data
                 let todasInfosCompetidor = []
@@ -522,10 +516,6 @@
 
         let { status } = infos[info].information
 
-        if (status === 0) {
-            $(`#nome${Number(info) + 1}`).css('color', '#ff5252')
-            $(`#sobrenome${Number(info) + 1}`).css('color', '#ff5252')
-        }
         if (status === 99) {
             $(`#nome${Number(info) + 1}`).css('color', '#f9a825')
             $(`#sobrenome${Number(info) + 1}`).css('color', '#f9a825')
@@ -593,13 +583,9 @@
             botaoFinalizar.addEventListener('click', () => {
                 var sim = document.getElementById('sim')
                 sim.addEventListener('click', () => {
-                    desclassificar(cadaInfo.participante.devAdress)
-                })
-                if (distancia < 9000) {
-                    $('#modal1').modal('open');
-                } else {
                     finalizarCompetição(cadaInfo.participante.devAdress)
-                }
+                })
+                $('#modal1').modal('open');
             })
 
             setInterval(() => {

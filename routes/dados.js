@@ -59,7 +59,7 @@ router.get('/info', (req, res) => {
 router.post('/competidor/cadastrar',
     async function sign(req, res) {
 
-        let { devAdress, nome, sobrenome, foto, peso } = req.body
+        let { devAdress, nome, sobrenome, foto, peso, modalidade } = req.body
 
         let deviceExists = await competidor.findOne({ devAdress })
         let competidorExists = await competidor.findOne({ nome, sobrenome })
@@ -82,6 +82,7 @@ router.post('/competidor/cadastrar',
             peso,
             foto,
             corPin: competidores.length + 1,
+            modalidade
         })
 
         await dados.create({
@@ -110,6 +111,20 @@ router.get('/iniciar/todos', (req, res) => {
 router.get('/finalizar/todos', (req, res) => {
     dados.updateMany({}, {
         status: 100
+    },
+        { upsert: true },
+        (err, sucesso) => {
+            if (err) {
+                console.error(err)
+            } else {
+                res.redirect('/')
+            }
+        })
+})
+
+router.get('/resetar/todos', (req, res) => {
+    dados.updateMany({}, {
+        status: 98
     },
         { upsert: true },
         (err, sucesso) => {
@@ -156,24 +171,12 @@ router.put('/finalizar/:devAdress', (req, res) => {
     dados.findOneAndUpdate({ devAdress: devAdress },
         {
             $set: {
-                distanciaTotal: 10000,
                 status: 100,
                 momentoAtual: calcularData(new Date(), -3)
             }
         },
         { upsert: true }, (err, data1) => {
             if (err) console.log(err)
-            else return res.send(data1)
-        })
-})
-
-router.put('/desclassificar/:devAdress', (req, res) => {
-    let { params: { devAdress } } = req
-
-    dados.findOneAndUpdate({ devAdress },
-        { $set: { status: 0 } },
-        { upsert: true }, (err, data1) => {
-            if (err) return res.send(err)
             else return res.send(data1)
         })
 })

@@ -267,11 +267,18 @@
         var ultima = invertido[0]
         var way = []
 
-        if (gps.length > 2) {
-            for (i = 1; i < gps.length - 1; i++) {
-                way.push({ location: new google.maps.LatLng(gps[i].lat,  gps[i].lat ), stopover: true })
+        if (gps.length > 2 && gps.length <= 27) {
+            for (i = 1; i < gps.length - 1; i ++) {
+                way.push({ location: new google.maps.LatLng(gps[i].lat, gps[i].lat), stopover: true })
             }
         }
+
+        if (gps.length > 2 && gps.length > 27) {
+            for (i = 1; i < gps.length - 1; i += 5) {
+                way.push({ location: new google.maps.LatLng(gps[i].lat, gps[i].lat), stopover: true })
+            }
+        }
+        
         var percursoRequest = {
             origin: new google.maps.LatLng(primeira.lat, primeira.lng),
             destination: new google.maps.LatLng(ultima.lat, ultima.lng),

@@ -269,12 +269,12 @@
 
         if (gps.length > 2) {
             for (i = 1; i < gps.length - 1; i++) {
-                way.push({ location: { lat: gps[i].lat, lng: gps[i].lat }, stopover: true })
+                way.push({ location: new google.maps.LatLng(gps[i].lat,  gps[i].lat ), stopover: true })
             }
         }
         var percursoRequest = {
-            origin: { lat: primeira.lat, lng: primeira.lng },
-            destination: { lat: ultima.lat, lng: ultima.lng },
+            origin: new google.maps.LatLng(primeira.lat, primeira.lng),
+            destination: new google.maps.LatLng(ultima.lat, ultima.lng),
             travelMode: google.maps.TravelMode.WALKING,
             avoidTolls: true,
             waypoints: way,

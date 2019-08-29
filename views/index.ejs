@@ -590,12 +590,20 @@
 
         idEstructure.addEventListener('click', () => {
 
+            // $('#botaoIniciar')
+            // .toggleClass('disabled')
+
             if (cadaInfo.information.status === 99) {
                 $('#botaoIniciar')
                     .css('display', 'none')
 
                 $('#botaoFinalizar')
                     .css('display', 'inline-block')
+            }
+
+            if (cadaInfo.information.status === 100) {
+                $('#botaoIniciar')
+                    .addClass('disabled')
             }
 
             detalharInformacao(cadaInfo.participante.devAdress)
@@ -637,6 +645,9 @@
                 var sim = document.getElementById('sim')
                 sim.addEventListener('click', () => {
                     finalizarCompetição(cadaInfo.participante.devAdress)
+                    detalharInformacao(cadaInfo.participante.devAdress)
+                    $('#botaoIniciar')
+                    .addClass('disabled')
                 })
                 $('#modal1').modal('open');
             })

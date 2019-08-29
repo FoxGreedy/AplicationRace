@@ -72,16 +72,8 @@ async function pegarUltimasCoordenadas(id, fuso) {
         console.log(data[0].gps, data[1].gps)
 
         console.log("Distanciaaaaa", distancia)
-        // if (distancia <= 300) {
+
         await atualizarDistancia(id, distancia, fuso)
-        // } else {
-        //     gps.findOneAndDelete(
-        //         {
-        //             devAdress: id,
-        //             gps: data[0].gps
-        //         })
-        //     console.log('Mensagem erro')
-        // }
 
     }
 }

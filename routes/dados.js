@@ -105,9 +105,12 @@ router.get('/iniciar/todos', (req, res) => {
         { upsert: true },
         (err, sucesso) => {
             if (err) {
-                console.error(err)
+                console.log('Error', err)
             } else {
-                res.redirect('/')
+                gps.deleteMany({}, (err, data2) => {
+                    if (err) console.log(err)
+                    else return res.redirect('/')
+                })
             }
         })
 })
@@ -130,15 +133,20 @@ router.get('/finalizar/todos', (req, res) => {
 router.get('/resetar/todos', (req, res) => {
     dados.updateMany({}, {
         status: 98,
+        momentoAtual: calcularData(new Date(), -3),
+        momentoInicio: calcularData(new Date(), -3),
         distanciaAtual: 0,
-        distanciaTotal: 0
+        distanciaTotal: 0,
     },
         { upsert: true },
         (err, sucesso) => {
             if (err) {
-                console.error(err)
+                console.log('Error', err)
             } else {
-                res.redirect('/')
+                gps.deleteMany({}, (err, data2) => {
+                    if (err) console.log(err)
+                    else return res.redirect('/')
+                })
             }
         })
 })

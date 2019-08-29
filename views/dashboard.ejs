@@ -529,7 +529,6 @@
     }
 
     function plottarDados(infos) {
-
         var velocidadeTotal = 0, caloriaTotal = 0, distanciaTotal = 0, ritmoTotal = 0, cont = 0
 
         for (info in infos) {
@@ -584,10 +583,8 @@
 
         conectar('distanciaTotal', formatarDistancia(distanciaTotal))
         conectar('caloriaTotal', formatarCalorias(caloriaTotal))
-
         conectar('velocidadeMedia', `${(velocidadeTotal / infos.length).toFixed(2)}Km/h`)
         conectar('ritmoMedio', formatarParaRitmo((ritmoTotal / 60) / infos.length))
-
     }
 
 

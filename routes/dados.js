@@ -188,21 +188,6 @@ router.put('/finalizar/:devAdress', (req, res) => {
         })
 })
 
-router.get('/teste', async (req, res) => {
-
-    await gps.findOneAndDelete(
-        {
-            devAdress: "ffff3e71bf3683fc",
-            gps: {
-                alt: "1",
-                lat:"-23.602281",
-                lng:"-46.666557"
-            }
-        })
-    res.redirect('/')
-
-})
-
 router.get('/:nomeCompetidor', (req, res) => {
     dados.find({
         nomeCompetidor: req.params.nomeCompetidor

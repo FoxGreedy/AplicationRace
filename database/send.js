@@ -12,8 +12,6 @@ function sendOficialDataSource(model, send) {
             
             id = id.substring(4).toUpperCase()
 
-            console.log(id)
-
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor
 

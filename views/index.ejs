@@ -281,9 +281,9 @@
             optimizeWaypoints: true,
         };
 
-        percursoService.route(request1, function (result, status) {
-            if (status == google.maps.DirectionsStatus.OK) { // Se deu tudo certo
-                percursoDisplay.setDirections(result); // Renderizamos no mapa o resultado
+        percursoService.route(percursoRequest, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                percursoDisplay.setDirections(result);
             } else {
                 console.log('Deu ruim')
             }

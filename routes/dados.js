@@ -59,7 +59,7 @@ router.get('/info', (req, res) => {
 router.post('/competidor/cadastrar',
     async function sign(req, res) {
 
-        let { devAdress, nome, sobrenome, foto, peso } = req.body
+        let { devAdress, nome, sobrenome, foto, peso, modalidade } = req.body
 
         let deviceExists = await competidor.findOne({ devAdress })
         let competidorExists = await competidor.findOne({ nome, sobrenome })
@@ -82,6 +82,7 @@ router.post('/competidor/cadastrar',
             peso,
             foto,
             corPin: competidores.length + 1,
+            modalidade
         })
 
         await dados.create({
@@ -95,7 +96,29 @@ router.post('/competidor/cadastrar',
 
 router.get('/iniciar/todos', (req, res) => {
     dados.updateMany({}, {
-        status: 99
+        status: 99,
+        momentoAtual: calcularData(new Date(), -3),
+        momentoInicio: calcularData(new Date(), -3),
+        distanciaAtual: 0,
+        distanciaTotal: 0
+    },
+        { upsert: true },
+        (err, sucesso) => {
+            if (err) {
+                console.log('Error', err)
+            } else {
+                gps.deleteMany({}, (err, data2) => {
+                    if (err) console.log(err)
+                    else return res.redirect('/')
+                })
+            }
+        })
+})
+
+router.get('/finalizar/todos', (req, res) => {
+    dados.updateMany({}, {
+        status: 100,
+        momentoAtual: calcularData(new Date(), -3)
     },
         { upsert: true },
         (err, sucesso) => {
@@ -107,16 +130,23 @@ router.get('/iniciar/todos', (req, res) => {
         })
 })
 
-router.get('/finalizar/todos', (req, res) => {
+router.get('/resetar/todos', (req, res) => {
     dados.updateMany({}, {
-        status: 100
+        status: 98,
+        momentoAtual: calcularData(new Date(), -3),
+        momentoInicio: calcularData(new Date(), -3),
+        distanciaAtual: 0,
+        distanciaTotal: 0,
     },
         { upsert: true },
         (err, sucesso) => {
             if (err) {
-                console.error(err)
+                console.log('Error', err)
             } else {
-                res.redirect('/')
+                gps.deleteMany({}, (err, data2) => {
+                    if (err) console.log(err)
+                    else return res.redirect('/')
+                })
             }
         })
 })
@@ -156,7 +186,6 @@ router.put('/finalizar/:devAdress', (req, res) => {
     dados.findOneAndUpdate({ devAdress: devAdress },
         {
             $set: {
-                distanciaTotal: 10000,
                 status: 100,
                 momentoAtual: calcularData(new Date(), -3)
             }
@@ -165,32 +194,6 @@ router.put('/finalizar/:devAdress', (req, res) => {
             if (err) console.log(err)
             else return res.send(data1)
         })
-})
-
-router.put('/desclassificar/:devAdress', (req, res) => {
-    let { params: { devAdress } } = req
-
-    dados.findOneAndUpdate({ devAdress },
-        { $set: { status: 0 } },
-        { upsert: true }, (err, data1) => {
-            if (err) return res.send(err)
-            else return res.send(data1)
-        })
-})
-
-router.get('/teste', async (req, res) => {
-
-    await gps.findOneAndDelete(
-        {
-            devAdress: "ffff3e71bf3683fc",
-            gps: {
-                alt: "1",
-                lat:"-23.602281",
-                lng:"-46.666557"
-            }
-        })
-    res.redirect('/')
-
 })
 
 router.get('/:nomeCompetidor', (req, res) => {

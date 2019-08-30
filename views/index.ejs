@@ -207,9 +207,15 @@
         $('#back')
             .css('display', 'block')
     })
+
+    var directionsDisplay1
+    var directionsDisplay2
+    var directionsService1
+    var directionsService2
+    var percursoDisplay
+    var percursoService
+
     function initMap() {
-
-
         map = new google.maps.Map(document.getElementById('map'), {
             center: { lat: -23.594338, lng: -46.6569469 },
             mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -238,13 +244,58 @@
             },
             preserveViewport: true
         });
+        percursoDisplay = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "green"
+            },
+            preserveViewport: true
+        });
+
 
         directionsDisplay1.setMap(map)
         directionsDisplay2.setMap(map)
+        percursoDisplay.setMap(map)
 
         setTimeout(calcRoute, 2000)
     }
+    function determinarRotaPercorrida(gps) {
+        percursoService = new google.maps.DirectionsService()
 
+        var primeira = gps[0]
+        var invertido = gps.reverse()
+        var ultima = invertido[0]
+        var way = []
+
+        if (gps.length > 2 && gps.length <= 27) {
+            for (i = 1; i < gps.length - 1; i++) {
+                way.push({ location: { lat: Number(gps[i].gps.lat), lng: Number(gps[i].gps.lng) }, stopover: true })
+            }
+        }
+        
+        if (gps.length > 2 && gps.length > 27) {
+            for (i = 1; i < gps.length - 1; i += 5) {
+                way.push({ location: { lat: Number(gps[i].gps.lat), lng: Number(gps[i].gps.lng) }, stopover: true })
+            }
+        }
+
+        var percursoRequest = {
+            origin: new google.maps.LatLng(primeira.gps.lat, primeira.gps.lng),
+            destination: new google.maps.LatLng(ultima.gps.lat, ultima.gps.lng),
+            travelMode: google.maps.TravelMode.BICYCLING,
+            avoidTolls: true,
+            waypoints: way,
+            optimizeWaypoints: true,
+        };
+
+        percursoService.route(percursoRequest, function (result, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                percursoDisplay.setDirections(result);
+            } else {
+                console.log('Deu ruim')
+            }
+        })
+    }
     function calcRoute() {
         directionsService1 = new google.maps.DirectionsService()
         directionsService2 = new google.maps.DirectionsService()
@@ -356,7 +407,6 @@
         }
     }
     function definirColocacao(info) {
-
         function comparer(a, b) {
             if (a.information.distanciaTotal < b.information.distanciaTotal) {
                 return 1;
@@ -386,9 +436,16 @@
             }
             return 0;
         }
+        function comparerModalidade(a, b) {
+            if (a.participante.modalidade < b.participante.modalidade) {
+                return -1;
+            }
+            if (a.participante.modalidade > b.participante.modalidade) {
+                return 1;
+            }
+        }
 
-        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
-
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo).sort(comparerModalidade);
     }
     function formatarDistancia(distancia, index) {
 
@@ -446,28 +503,14 @@
             type: 'PUT',
             url: `/dados/finalizar/${id}`,
             success: (data) => {
+                limparMarcadores()
+
                 $('#botaoIniciar')
                     .css('display', 'inline-block')
 
                 $('#botaoFinalizar')
                     .css('display', 'none')
 
-            }, error: (e) => {
-                console.error(e)
-            }
-        })
-    }
-    function desclassificar(id) {
-        $.ajax({
-            cache: false,
-            type: 'PUT',
-            url: `/dados/desclassificar/${id}`,
-            success: (data) => {
-                $('#botaoIniciar')
-                    .css('display', 'inline-block')
-
-                $('#botaoFinalizar')
-                    .css('display', 'none')
             }, error: (e) => {
                 console.error(e)
             }
@@ -479,11 +522,14 @@
             abrirEstrutura(info, infos)
         }
     }
+
     function carregar() {
         $.ajax({
             cache: false,
             url: '/dados/info',
             success: (data) => {
+
+                limparMarcadores()
 
                 var { infos, gps, participantes } = data
                 let todasInfosCompetidor = []
@@ -495,6 +541,7 @@
                         }
                     }
                 }
+
                 definirColocacao(todasInfosCompetidor)
                 plottarDados(todasInfosCompetidor)
             },
@@ -522,10 +569,6 @@
 
         let { status } = infos[info].information
 
-        if (status === 0) {
-            $(`#nome${Number(info) + 1}`).css('color', '#ff5252')
-            $(`#sobrenome${Number(info) + 1}`).css('color', '#ff5252')
-        }
         if (status === 99) {
             $(`#nome${Number(info) + 1}`).css('color', '#f9a825')
             $(`#sobrenome${Number(info) + 1}`).css('color', '#f9a825')
@@ -547,12 +590,20 @@
 
         idEstructure.addEventListener('click', () => {
 
+            // $('#botaoIniciar')
+            // .toggleClass('disabled')
+
             if (cadaInfo.information.status === 99) {
                 $('#botaoIniciar')
                     .css('display', 'none')
 
                 $('#botaoFinalizar')
                     .css('display', 'inline-block')
+            }
+
+            if (cadaInfo.information.status === 100) {
+                $('#botaoIniciar')
+                    .addClass('disabled')
             }
 
             detalharInformacao(cadaInfo.participante.devAdress)
@@ -593,13 +644,12 @@
             botaoFinalizar.addEventListener('click', () => {
                 var sim = document.getElementById('sim')
                 sim.addEventListener('click', () => {
-                    desclassificar(cadaInfo.participante.devAdress)
-                })
-                if (distancia < 9000) {
-                    $('#modal1').modal('open');
-                } else {
                     finalizarCompetição(cadaInfo.participante.devAdress)
-                }
+                    detalharInformacao(cadaInfo.participante.devAdress)
+                    $('#botaoIniciar')
+                    .addClass('disabled')
+                })
+                $('#modal1').modal('open');
             })
 
             setInterval(() => {
@@ -630,9 +680,12 @@
                 let competidorIndividual = todasInfosCompetidores.filter((l) => l.participante.devAdress === id)
                 let { information: infosInd, gps: gpsInd, participante: participanteInd } = competidorIndividual[0]
 
-
                 if (gpsInd.length != 0) {
                     iniciarMarcacao(gpsInd)
+                }
+
+                if (gpsInd.length >= 2) {
+                    determinarRotaPercorrida(gpsInd)
                 }
 
                 let colocacao = Number(todasInfosCompetidores.indexOf(competidorIndividual[0])) + 1

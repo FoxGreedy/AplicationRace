@@ -251,13 +251,12 @@
         }
 
         var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
-
         var marker = new google.maps.Marker({
             position: ponto,
             icon: balao,
             map: map
         })
-
+        
         markers.push(marker)
 
         marker.addListener('load', function () {
@@ -353,7 +352,6 @@
             if (infos[info].gps.length != 0) {
                 iniciarMarcacao(infos[info].gps, Number(infos[info].participante.corPin) - 1)
             }
-            console.log(infos[info].participante.corPin)
         }
     }
     function plottarDados(infos) {

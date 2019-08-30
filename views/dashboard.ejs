@@ -32,11 +32,11 @@
         <div id="items" class="row">
             <div id="cont-twitter" class="col-12">
                 <div id="card-twitter" class="card rounded-0 border-dark" style="padding: 0%">
-                    <div id="body-twitter" class="card-body" >
+                    <div id="body-twitter" class="card-body">
                         <div class="row" style="padding: 0%; margin: 0%; height: 100%">
-                            <div id="logos-oferecimento" class="col-3" >
+                            <div id="logos-oferecimento" class="col-3">
                                 <h3 style="text-align: center">ATC LoRa RUN</h3>
-                                <div id="imagens" >
+                                <div id="imagens">
                                     <div class="row" style="padding-top: 10px">
                                         <div class="col">
                                             <img id="atc" src="img/logo/AmericanTowerLogo.png">
@@ -144,11 +144,17 @@
                         <table id="tabela" class="table">
                             <!-- body -->
                             <tbody style=" border-top: 2px solid #d9534f;">
+
                                 <tr class="border-0">
 
                                     <% for(competidor in competidores) {  %>
 
+                                    <% if (competidor == 2) { %>
+                                    <td class="pessoa" style="border-bottom:#d9534f solid 4px; border-right: #d9534f solid 1px">
+                                        <% } else{ %>
                                     <td class="border border-left-0 border-danger pessoa">
+                                        <% } %>
+
                                         <div class="media">
                                             <div class="imagem">
                                                 <img id="img<%- Number(competidor) + 1%>"
@@ -168,8 +174,11 @@
                                             </div>
                                         </div>
                                     </td>
-
+                                    <% if (competidor == 2) { %>
+                                    <td class="dado" style="border-bottom:#d9534f solid 4px">
+                                        <% } else{ %>
                                     <td class="dado border border-danger">
+                                        <% } %>
                                         <div class="row dados">
                                             <div class="col-3 coluna">
                                                 <div class="media mt-2">
@@ -244,9 +253,14 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="border border-danger">
+                                    <% if (competidor == 2) { %>
+                                        <td style="border-bottom:#d9534f solid 4px; border-left: #d9534f solid 1px; border-right: #d9534f solid 1px">
+                                            <% } else{ %>
+                                                <td class="border border-danger">
+                                            <% } %>
+
                                         <div class="bar">
-                                            <canvas id="graphBar<%- Number(competidor) + 1%>" height=55></canvas>
+                                            <canvas id="graphBar<%- Number(competidor) + 1%>" height=55%></canvas>
                                         </div>
                                     </td>
                                 </tr>
@@ -263,30 +277,12 @@
 
 <script>
 
-    var map
-
     $(document).ready(() => {
         carregar()
     })
 
     function iniciar() {
         setInterval(carregar, 10000)
-    }
-
-    function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: { lat: -23.5911131, lng: -46.6475914 },
-            zoom: 12,
-            styles: [{
-                "featureType": "poi",
-                "stylers": [{
-                    "visibility": "off"
-                }]
-            }],
-            scrollwheel: false,
-            disableDefaultUI: true
-        });
-
     }
 
     function plottarGrafico(id, data) {
@@ -339,27 +335,6 @@
     var cores = ['#FFFFFF', '#FF0000', '#00FF00', '#0000FF', '#FF00FF', '#00FFFF', '#FF7F00', '#99CC32', '#D8D8BF', '#00009C', '#871F78', '#007FFF', '#FF1493', '#DC143C', '#2F4F4F', '#1E90FF', '#836FFF', '#BA55D3', '#FF7F50', '#B0E0E6', '#8B0000', '#50C878', '#831D1C', '#78866B', '#6B8E23', '#8FBC8F', '#FF00FF', '#FBEC5D', '#E9967A', '#008080']
 
 
-    function iniciarMarcacao(infos, color) {
-
-        var unique = infos.slice().reverse()
-
-        var balao = {
-            path: 'M10.292,4.229c-1.487,0-2.691,1.205-2.691,2.691s1.205,2.691,2.691,2.691s2.69-1.205,2.69-2.691S11.779,4.229,10.292,4.229z M10.292,8.535c-0.892,0-1.615-0.723-1.615-1.615S9.4,5.306,10.292,5.306c0.891,0,1.614,0.722,1.614,1.614S11.184,8.535,10.292,8.535z M10.292,1C6.725,1,3.834,3.892,3.834,7.458c0,3.567,6.458,10.764,6.458,10.764s6.458-7.196,6.458-10.764C16.75,3.892,13.859,1,10.292,1z M4.91,7.525c0-3.009,2.41-5.449,5.382-5.449c2.971,0,5.381,2.44,5.381,5.449s-5.381,9.082-5.381,9.082S4.91,10.535,4.91,7.525z',
-            strokeColor: cores[color],
-            fillColor: cores[color],
-            fillOpacity: 0.8,
-            scale: 1,
-            strokeWeight: 0.1,
-            scale: 2,
-        }
-
-        var ponto = new google.maps.LatLng(unique[0].gps.lat, unique[0].gps.lng)
-        var marker = new google.maps.Marker({
-            position: ponto,
-            map: map,
-            icon: balao
-        })
-    }
 
 
     function carregar() {
@@ -492,8 +467,16 @@
             }
             return 0;
         }
+        function comparerModalidade(a, b) {
+            if (a.participante.modalidade < b.participante.modalidade) {
+                return -1;
+            }
+            if (a.participante.modalidade > b.participante.modalidade) {
+                return 1;
+            }
+        }
 
-        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo).sort(comparerModalidade);
     }
 
     function conectar(id, value, type = 'inner') {
@@ -523,13 +506,9 @@
     }
 
     function plottarDados(infos) {
-
         var velocidadeTotal = 0, caloriaTotal = 0, distanciaTotal = 0, ritmoTotal = 0, cont = 0
 
         for (info in infos) {
-            if (infos[info].gps.length != 0) {
-                iniciarMarcacao(infos[info].gps, infos[info].participante.corPin)
-            }
 
             var momentoInicialInicio = filtrarHorario(infos[info].information.momentoInicio),
                 momentoAtualInicio = filtrarHorario(infos[info].information.momentoAtual),
@@ -572,23 +551,18 @@
             cont++
 
             let segundosRitmo = converterRitmo(ritmo)
-
+            // distancia, velocidade * 1000, Number(calorias), (segundosRitmo).toFixed(2)
             plottarGrafico(`graphBar${Number(info) + 1}`, [distancia, velocidade * 1000, Number(calorias), (segundosRitmo).toFixed(2)])
         }
 
         conectar('distanciaTotal', formatarDistancia(distanciaTotal))
         conectar('caloriaTotal', formatarCalorias(caloriaTotal))
-
         conectar('velocidadeMedia', `${(velocidadeTotal / infos.length).toFixed(2)}Km/h`)
         conectar('ritmoMedio', formatarParaRitmo((ritmoTotal / 60) / infos.length))
-
     }
 
 
 
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhS0HbkkKiUf2BV1T_skrfb2Pw63XzPeI&callback=initMap" async
-    defer></script>
 
 </html>

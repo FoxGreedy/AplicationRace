@@ -9,17 +9,15 @@ function sendOficialDataSource(model, send) {
 
         if (dadosJSON.type === "uplink") {
             let payload = dadosJSON.params.payload
-            
+
             id = id.substring(4).toUpperCase()
 
             let competidor = await dadosCompetidor.findOne({ devAdress: id })
             let { status } = competidor
 
             if (status === 99) {
-                // if (applicationEUI === '1111111111111111') await enviarPayloadVagoon(payload, model, id)
-                // if (applicationEUI === '972a3d8621f7825a') await enviarPayloadWelligton(payload, id)
                 await enviarPayloadWelligton(payload, id)
-            } else{
+            } else {
                 console.log('Nem da')
             }
         }
@@ -81,26 +79,21 @@ async function pegarUltimasCoordenadas(id, fuso) {
 async function atualizarDistancia(id, distancia, fuso) {
     let dados = await dadosCompetidor.findOne({ devAdress: id })
 
-    console.log('Dados retornados')
     if (dados) {
-        console.log('Distancia percorrida', distancia, 'Distancia Total', dados.distanciaTotal)
-
         let distanciaTotalAtual = Number(dados.distanciaTotal) + Number(distancia)
-        console.log(distanciaTotalAtual)
 
         dados.distanciaTotal = distanciaTotalAtual
         dados.distanciaAtual = distancia
         dados.momentoAtual = calcularData(new Date(), fuso)
 
         await dados.save()
-
     }
 }
 
-function hexToDec(value){
+function hexToDec(value) {
     let valueInt = parseInt(value, 16)
 
-    if(valueInt < 10) return `0${valueInt}`
+    if (valueInt < 10) return `0${valueInt}`
     return `${valueInt}`
 }
 
@@ -142,18 +135,14 @@ function enviarPayloadVagoon(payload, model, id) {
 
     let NewCoordinate = new model()
 
-    console.log(coordenadas)
     if (coordenadas.length > 1) {
         let altitude = coordenadas[0]
         let latitude = coordenadas[1].replace(/[ ]+/g, '');
         let longitude = coordenadas[2].replace(/[ ]+/g, '');
 
-        console.log(altitude, latitude, longitude)
 
         if (Number(latitude) == 0 || Number(longitude) == 0) {
-
             console.log('Latitude e Longitude Não Definida')
-
         } else {
 
             NewCoordinate.devAdress = id
@@ -168,7 +157,6 @@ function enviarPayloadVagoon(payload, model, id) {
                     pegarUltimasCoordenadas(id, -3)
                 }
             })
-
         }
     }
 }

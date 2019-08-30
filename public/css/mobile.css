@@ -9,6 +9,12 @@
     background: #f5f5f5;
 }
 
+
+.gps{
+    position: absolute; 
+    right: 3%;
+}
+
 #mobile{
     background: #f5f5f5 ;
     font-family: 'Trebuchet MS', 'Helvetica', sans-serif;

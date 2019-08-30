@@ -61,6 +61,9 @@
                             </div>
                         </div>
                         <div class="col s9">
+                            <span class="gps" id="iconStatusGPS<%- Number(i) + 1%>">
+                                <i class="tiny material-icons">brightness_1</i>
+                            </span>
                             <div class="dados">
                                 <span id="nome<%- Number(i) + 1%>">
                                     unknown
@@ -272,7 +275,7 @@
                 way.push({ location: { lat: Number(gps[i].gps.lat), lng: Number(gps[i].gps.lng) }, stopover: true })
             }
         }
-        
+
         if (gps.length > 2 && gps.length > 27) {
             for (i = 1; i < gps.length - 1; i += 5) {
                 way.push({ location: { lat: Number(gps[i].gps.lat), lng: Number(gps[i].gps.lng) }, stopover: true })
@@ -282,7 +285,7 @@
         var percursoRequest = {
             origin: new google.maps.LatLng(primeira.gps.lat, primeira.gps.lng),
             destination: new google.maps.LatLng(ultima.gps.lat, ultima.gps.lng),
-            travelMode: google.maps.TravelMode.BICYCLING,
+            travelMode: google.maps.TravelMode.WALKING,
             avoidTolls: true,
             waypoints: way,
             optimizeWaypoints: true,
@@ -522,7 +525,24 @@
             abrirEstrutura(info, infos)
         }
     }
+    function gerarStatusGPS(gps, posicao) {
+        if (gps.length == 0) {
+            $('#iconStatusGPS').css('color', '#000000')
+        } else {
+            let inverse = gps.reverse()
+            let { momento: ultima } = inverse[0]
+            let { momento: penultima } = inverse[1]
 
+            let diferenca = calcularMomento(tranformarMomentoSegundos(filtrarHorario(penultima)),
+                tranformarMomentoSegundos(filtrarHorario(ultima)))
+
+            if (diferenca >= 65) {
+                $(`#iconStatusGPS${posicao}`).css('color', '#ef5350')
+            } else {
+                $(`#iconStatusGPS${posicao}`).css('color', '#00c853')
+            }
+        }
+    }
     function carregar() {
         $.ajax({
             cache: false,
@@ -567,6 +587,8 @@
         conectar(`calorias${Number(info) + 1}`, calcularCalorias(calcularVelocidade(distancia, momentoDiferenca), infos[info].participante.peso, momentoDiferenca, info))
         conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
 
+        gerarStatusGPS(infos[info].gps, Number(info) + 1)
+
         let { status } = infos[info].information
 
         if (status === 99) {
@@ -589,9 +611,6 @@
         let distancia = cadaInfo.information.distanciaTotal
 
         idEstructure.addEventListener('click', () => {
-
-            // $('#botaoIniciar')
-            // .toggleClass('disabled')
 
             if (cadaInfo.information.status === 99) {
                 $('#botaoIniciar')
@@ -647,7 +666,7 @@
                     finalizarCompetição(cadaInfo.participante.devAdress)
                     detalharInformacao(cadaInfo.participante.devAdress)
                     $('#botaoIniciar')
-                    .addClass('disabled')
+                        .addClass('disabled')
                 })
                 $('#modal1').modal('open');
             })

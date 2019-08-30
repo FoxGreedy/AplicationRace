@@ -526,7 +526,7 @@
         }
     }
     function gerarStatusGPS(gps, posicao) {
-        if (gps.length == 0) {
+        if (gps.length < 2) {
             $('#iconStatusGPS').css('color', '#000000')
         } else {
             let inverse = gps.reverse()

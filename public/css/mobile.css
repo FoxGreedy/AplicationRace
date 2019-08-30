@@ -9,6 +9,11 @@
     background: #f5f5f5;
 }
 
+.badja{
+    position: absolute;
+    left: 0%;
+    top: 0%;
+}
 
 .gps{
     position: absolute; 

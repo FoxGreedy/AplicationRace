@@ -61,6 +61,7 @@
                             </div>
                         </div>
                         <div class="col s9">
+                            <span id="badge<%- Number(i) + 1%>" class="new badge badja" data-badge-caption="Km"></span>
                             <span class="gps" id="iconStatusGPS<%- Number(i) + 1%>">
                                 <i class="tiny material-icons">brightness_1</i>
                             </span>
@@ -439,16 +440,8 @@
             }
             return 0;
         }
-        function comparerModalidade(a, b) {
-            if (a.participante.modalidade < b.participante.modalidade) {
-                return -1;
-            }
-            if (a.participante.modalidade > b.participante.modalidade) {
-                return 1;
-            }
-        }
 
-        info.sort(comparer).sort(comparerStatus).sort(comparerTempo).sort(comparerModalidade);
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
     function formatarDistancia(distancia, index) {
 
@@ -543,6 +536,18 @@
             }
         }
     }
+    function gerarModalidadeParticipantes(modalidade, posicao) {
+        if (modalidade === 10) {
+            $(`#badge${Number(posicao) + 1}`)
+                .text(10)
+                .removeClass('blue')
+        }
+        if (modalidade === 5) {
+            $(`#badge${Number(posicao) + 1}`)
+                .text(5)
+                .addClass('red')
+        }
+    }
     function carregar() {
         $.ajax({
             cache: false,
@@ -588,6 +593,7 @@
         conectar(`ritmo${Number(info) + 1}`, calcularPace(distancia, momentoDiferenca))
 
         gerarStatusGPS(infos[info].gps, Number(info) + 1)
+        gerarModalidadeParticipantes(infos[info].participante.modalidade, info)
 
         let { status } = infos[info].information
 

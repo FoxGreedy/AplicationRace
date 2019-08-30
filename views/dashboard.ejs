@@ -149,11 +149,7 @@
 
                                     <% for(competidor in competidores) {  %>
 
-                                    <% if (competidor == 2) { %>
-                                    <td class="pessoa" style="border-bottom:#d9534f solid 4px; border-right: #d9534f solid 1px">
-                                        <% } else{ %>
                                     <td class="border border-left-0 border-danger pessoa">
-                                        <% } %>
 
                                         <div class="media">
                                             <div class="imagem">
@@ -163,8 +159,12 @@
                                                 <div class="colocacao">
                                                     <%- Number(competidor)+1 %>°
                                                 </div>
+
                                             </div>
-                                            <div class="media-body">
+                                            <div class="media-body" style="position: relative">
+                                                <span id="badge<%- Number(competidor) + 1%>"
+                                                    class="badja" style="color: #f2f2f2; 
+                                                                font-size: 10px;"></span>
                                                 <div id="nome<%- Number(competidor) + 1%>" class="nome">
                                                     Unknown
                                                 </div>
@@ -174,11 +174,8 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <% if (competidor == 2) { %>
-                                    <td class="dado" style="border-bottom:#d9534f solid 4px">
-                                        <% } else{ %>
+
                                     <td class="dado border border-danger">
-                                        <% } %>
                                         <div class="row dados">
                                             <div class="col-3 coluna">
                                                 <div class="media mt-2">
@@ -253,12 +250,9 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <% if (competidor == 2) { %>
-                                        <td style="border-bottom:#d9534f solid 4px; border-left: #d9534f solid 1px; border-right: #d9534f solid 1px">
-                                            <% } else{ %>
-                                                <td class="border border-danger">
-                                            <% } %>
-
+                                    <td
+                                        style="border-bottom:#d9534f solid 4px; border-left: #d9534f solid 1px; border-right: #d9534f solid 1px">
+                                    <td class="border border-danger">
                                         <div class="bar">
                                             <canvas id="graphBar<%- Number(competidor) + 1%>" height=55%></canvas>
                                         </div>
@@ -467,16 +461,8 @@
             }
             return 0;
         }
-        function comparerModalidade(a, b) {
-            if (a.participante.modalidade < b.participante.modalidade) {
-                return -1;
-            }
-            if (a.participante.modalidade > b.participante.modalidade) {
-                return 1;
-            }
-        }
 
-        info.sort(comparer).sort(comparerStatus).sort(comparerTempo).sort(comparerModalidade);
+        info.sort(comparer).sort(comparerStatus).sort(comparerTempo);
     }
 
     function conectar(id, value, type = 'inner') {
@@ -505,6 +491,19 @@
         return `00:00`
     }
 
+    function gerarModalidadeParticipantes(modalidade, posicao) {
+        if (modalidade === 10) {
+            $(`#badge${Number(posicao) + 1}`)
+                .text('10Km')
+                .removeClass('blue')
+        }
+        if (modalidade === 5) {
+            $(`#badge${Number(posicao) + 1}`)
+                .text('5km')
+                .addClass('red')
+        }
+    }
+
     function plottarDados(infos) {
         var velocidadeTotal = 0, caloriaTotal = 0, distanciaTotal = 0, ritmoTotal = 0, cont = 0
 
@@ -527,6 +526,8 @@
             conectar(`calorias${Number(info) + 1}`, formatarCalorias(Number(calorias)))
             conectar(`velocidade${Number(info) + 1}`, (velocidade).toFixed(2))
             conectar(`ritmo${Number(info) + 1}`, ritmo)
+
+            gerarModalidadeParticipantes(infos[info].participante.modalidade, info)
 
             let { status } = infos[info].information
 

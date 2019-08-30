@@ -499,10 +499,9 @@
                     }
                 }
 
-                let competidor10metros = todasInfosCompetidor.filter((l) => l.participante.modalidade === 10)
-
-                definirColocacao(competidor10metros)
-                plottarDados(competidor10metros)
+                console.log(todasInfosCompetidor)
+                definirColocacao(todasInfosCompetidor)
+                plottarDados(todasInfosCompetidor)
             },
             error: (e) => {
                 console.error('Error', e)

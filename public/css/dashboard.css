@@ -15,6 +15,15 @@
     height: 100%
 }
 
+.badja{
+    position: absolute;
+    z-index: 3;
+    top: 0%;
+    right: 0%;
+    background: #00c853 ;
+    padding: 2%
+}
+
 #medias{
     height: 100%
 }

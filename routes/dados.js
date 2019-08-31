@@ -1,7 +1,6 @@
 const express = require('express')
 const router = express.Router()
 
-
 const competidor = require('../model/competidor')
 const dados = require('../model/dados')
 const gps = require('../model/gps')
